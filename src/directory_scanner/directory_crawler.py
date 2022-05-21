@@ -1,5 +1,5 @@
 import os
-from directory_scaner.directory_crawler import rep
+from directory_scanner.directory_crawler import rep
 from unidecode import unidecode
 
 from selenium import webdriver
