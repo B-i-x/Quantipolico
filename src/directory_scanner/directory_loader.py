@@ -1,9 +1,9 @@
 import sys
 
 from src.database_class import Database
-import config.local 
+import config.local
 
-sys.path.append(r"C:\Users\alexr\Documents\Projects\Mathematical Politics\repository")
+sys.path.append(r"C:\Users\alexr\Documents\Projects\Mathematical Politics\repository\src")
 
 def main():
 
