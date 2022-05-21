@@ -26,5 +26,7 @@ class Database():
         if conn.total_changes == 0: 
             self.conn = conn
             return True
-            
-        else: return False
+
+        else: 
+            print("database connection failed!")
+            return False
