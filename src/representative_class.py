@@ -1,3 +1,4 @@
+
 class rep: 
     '''every single person in congress has an
     homepage - link to the home page
@@ -6,7 +7,7 @@ class rep:
     party - R or D or I
     district - number 1-x
     '''
-    def __init__(self, homepage, name, state, party, district):
+    def __init__(self, homepage: str, name: str, state: str, party: str, district: int):
         self.home = homepage
 
         self.name = name
