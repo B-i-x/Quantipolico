@@ -1,3 +1,6 @@
+import os, sys
+sys.path.insert(0, os.path.abspath("."))
+
 from src.representative_class import rep
 
 def representative_class_test():
