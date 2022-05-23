@@ -1,4 +1,4 @@
-from src.directory_scanner.database_class import Database
+from directory_scanner.database_class import Database
 import config.local
 
 def main():

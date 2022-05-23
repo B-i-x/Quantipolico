@@ -4,7 +4,7 @@ from sqlite3 import Error
 
 class Database():
 
-    def __init__(self, path) -> None:
+    def __init__(self, path=None) -> None:
         self.path = path
 
         self.conn = None
