@@ -1,29 +1,26 @@
 from representative_class import rep
-from database_class import directory_db_connect
+from database_class import db_db_connect
 
-def connect_to_databases():
+def connect_to_database():
     '''
     Code returns
     0: All connections are successful
-    1: directory connection has failed
+    1: connection has failed
     '''
     code = 0
-    print("Connecting to databases...\n")
+    print("Connecting to database...")
 
-    if not directory_db_connect():
+    db_conn = db_db_connect()
+
+    if not db_conn:
         code = 1
-    
-    directory_conn = directory_db_connect()
 
-    return (code, directory_conn)
+    return (code, db_conn)
 
 def main():
 
-    connect_to_databases()
+    code, db_conn = connect_to_database()
 
-    r = rep("a", "a", "a", "a", 0)
-
-    print(r.name)
 
 if __name__ == "__main__":
     main()
@@ -33,8 +30,8 @@ if __name__ == "__main__":
 
     connect to databases
 
-    if not directory_data_valid
-        scan directory
+    if not db_data_valid
+        scan db
 
     if not individual_data_valid
         get press releases
