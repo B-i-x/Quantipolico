@@ -28,8 +28,9 @@ def fill_directory(data, directory_table):
     col_sql = directory_table.set_insert_columns(["name", "state", "party", "district_number", "homepage_link"])
     
     data_sql = ""
+
     for person in data:
-        print(person[0], person[1], person[2], person[3], person[4], "\n")
+        
         if person == data[-1]:
             data_sql += directory_table.set_insert_data([person[0], person[1], person[2], person[3], person[4]], last = True)
         else:

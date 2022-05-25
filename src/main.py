@@ -16,7 +16,7 @@ if __name__ == "__main__":
     '''
     possible structure
 
-    connect to databases
+    connect to database
 
     if not db_data_valid
         scan db
