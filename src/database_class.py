@@ -23,17 +23,28 @@ class DataTable():
         self.name = name
 
     def setup(self, not_exists_check: bool, columns):
+        '''columns must be formatted as follows:
+        [[column_name_1, column_sql_datatype]...,[column_name_x, column_sql_datatype] ]'''
         query = "CREATE TABLE "
         if not_exists_check:
             query += "IF NOT EXISTS "
         
         query += f"{self.name} ("
 
-        query += "id integer PRIMARY KEY"
+        query += "id integer PRIMARY KEY, "
+
+        for col in columns:
+            col_name = col[0]
+            datatype = col[1]
+
+            query += f"{col_name} {datatype}, "
+        
+        query += ");"
+
+        return query
 
 
-
-def directory_db_connect():
+def db_connect():
 
     path = r"C:\Users\alexr\Documents\Projects\Mathematical Politics\repository\src\db\main.db"
 

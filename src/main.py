@@ -1,25 +1,33 @@
-from representative_class import rep
-from database_class import db_db_connect
+from database_class import db_connect
+from database_class import DataTable
 
-def connect_to_database():
-    '''
-    Code returns
-    0: All connections are successful
-    1: connection has failed
-    '''
-    code = 0
-    print("Connecting to database...")
+def directory_table_setup(database_connection):
 
-    db_conn = db_db_connect()
+    directory_table = DataTable(database_connection, "Directory")
 
-    if not db_conn:
-        code = 1
+    sql = directory_table.setup(True, 
+    [
+        ["name", "text"],
+        ["party", "text"],
+        ["state", "text"],
+        ["district_number", "text"],
+        ["homepage_link", "text"],
+        ["general_pressrelease_link", "text"]
+    ]
+    )
 
-    return (code, db_conn)
+    print(sql)
+
+    
 
 def main():
 
-    code, db_conn = connect_to_database()
+    db_conn = db_connect()
+
+    if not db_conn:
+        return
+    
+    directory_table_setup(db_conn)
 
 
 if __name__ == "__main__":
