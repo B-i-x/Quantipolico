@@ -16,9 +16,9 @@ def directory_table_setup(database_connection):
     ]
     )
 
-    print(sql)
+    directory_table.execute(sql)
 
-    
+    return directory_table
 
 def main():
 
@@ -27,7 +27,9 @@ def main():
     if not db_conn:
         return
     
-    directory_table_setup(db_conn)
+    directory_tbl = directory_table_setup(db_conn)
+
+    directory_tbl.is_empty()
 
 
 if __name__ == "__main__":

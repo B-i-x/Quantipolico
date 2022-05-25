@@ -1,13 +1,13 @@
+'''
+what this file does is manages the directory crawler and interfaces with the directory table in order to fill data and validate data'''
 from database_class import Database
-import config.local
 
-def main():
+def directory_crawl():
 
-    db = Database(config.local.Directory_database_path())
-
-    if not db.connect: return
+    pass
 
     
 if __name__ == "__main__":
-    main()
+    directory_crawl()
+    
     
