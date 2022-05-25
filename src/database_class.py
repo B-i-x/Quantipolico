@@ -74,12 +74,6 @@ class DataTable():
             return True
         else: return False
 
-    def is_valid(self):
-        '''validates based on some requesities I will define at some point in my life
-        returns true if valid
-        false is not valid'''
-        
-
 
 def db_connect():
 

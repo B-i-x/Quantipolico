@@ -1,24 +1,5 @@
 from database_class import db_connect
-from database_class import DataTable
-
-def directory_table_setup(database_connection):
-
-    directory_table = DataTable(database_connection, "Directory")
-
-    sql = directory_table.setup(True, 
-    [
-        ["name", "text"],
-        ["party", "text"],
-        ["state", "text"],
-        ["district_number", "text"],
-        ["homepage_link", "text"],
-        ["general_pressrelease_link", "text"]
-    ]
-    )
-
-    directory_table.execute(sql)
-
-    return directory_table
+from directory_scanner.directory_loader import load_directory
 
 def main():
 
@@ -26,11 +7,8 @@ def main():
 
     if not db_conn:
         return
-    
-    directory_tbl = directory_table_setup(db_conn)
 
-    directory_tbl.is_empty()
-
+    load_directory(db_conn, load="refresh")
 
 if __name__ == "__main__":
     main()
