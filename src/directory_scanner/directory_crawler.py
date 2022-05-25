@@ -5,6 +5,9 @@ from selenium.webdriver.common.by import By
 
 def reformat_name(s: str) -> str:
 
+    if s == "LaHood,Darin(link is external)":
+        return "Darin LaHood"
+
     if s.find("(link is external)") == -1:
         return None
 
@@ -18,14 +21,6 @@ def reformat_name(s: str) -> str:
         return None
 
     return s
-
-def reformat_district(s: str) -> int:
-    
-    if s == "At Large" or s == "Delegate" or s == "Resident Commissioner":
-        return 1
-
-    i = s[:-2]
-    return int(i)
 
 def crawl():
     house_directory = 'https://www.house.gov/representatives'
@@ -52,11 +47,7 @@ def crawl():
 
             name = reformat_name(name_list_elem[elem_num].text)
 
-            link = link_list_elem[elem_num].get_attribute('href')
-
-            district_num = reformat_district(district_list_elem[elem_num].text)
-
-            data.append([name, state_name, party_list_elem[elem_num].text, district_num, link])
+            data.append([name, state_name, party_list_elem[elem_num].text, district_list_elem[elem_num].text, link_list_elem[elem_num].get_attribute('href')])
 
     driver.quit()
 

@@ -24,8 +24,19 @@ def directory_table_setup(database_connection):
     return directory_table
 
 def fill_directory(data, directory_table):
-    pass
+    
+    col_sql = directory_table.set_insert_columns(["name", "state", "party", "district_number", "homepage_link"])
+    
+    data_sql = ""
+    for person in data:
+        print(person[0], person[1], person[2], person[3], person[4], "\n")
+        if person == data[-1]:
+            data_sql += directory_table.set_insert_data([person[0], person[1], person[2], person[3], person[4]], last = True)
+        else:
+            data_sql += directory_table.set_insert_data([person[0], person[1], person[2], person[3], person[4]])
 
+    directory_table.insert(col_sql, data_sql)
+    
 def load_directory(database_connection, load: str):
     '''this function is the main function of this file
     1 - first create the directory table if it does not exist
@@ -34,10 +45,8 @@ def load_directory(database_connection, load: str):
 
     if load == "refresh":
         data = crawl()
-        print(data)
-        #print(reformat_name("Mooney, Alex(link is external)"))
 
-        #fill_directory(data, directory_tbl)
+        fill_directory(data, directory_tbl)
 
 
     

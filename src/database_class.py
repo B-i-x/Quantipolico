@@ -74,6 +74,47 @@ class DataTable():
             return True
         else: return False
 
+    def set_insert_columns(self,columns: list):
+        """part of self.insert, the columns list should be a list of strings"""
+        query = f"INSERT INTO {self.name} "
+        
+        query = "("
+        for col in columns:
+
+            query += f"{col}"
+
+            if col != columns[-1]:
+                query += ","
+
+            query += " "
+
+        query += ") VALUES "
+
+    def set_insert_data(self, data: list, last = False):
+        
+        query = " ("
+        for value in data:
+            query += value
+
+            if value != data[-1]:
+                query += ","
+
+        query += ")"
+
+        if not last:
+            query += ","
+        else:
+            query += ";"
+
+        return query
+
+    def insert(self, columns_query: str, values: str):
+
+        insert_query = columns_query + values
+
+        print(insert_query)
+    
+
 
 def db_connect():
 
