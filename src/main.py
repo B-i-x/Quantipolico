@@ -36,4 +36,6 @@ if __name__ == "__main__":
         get press releases
     
     scan articles with new dates
+
+    //*[@id="rso"]/div[1]/div/div[1]/div/div/div[1]/div/a/h3
     '''

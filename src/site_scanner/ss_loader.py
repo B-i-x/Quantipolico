@@ -23,15 +23,15 @@ def validate_pressReleases_sites(directory_tbl):
         d = crawler_obj.start()
 
         for n in names:
-            s = "".join(n) #convert tuple to string
+            name = "".join(n) #convert tuple to string
 
             l = ""
             if n == names[-1]:
-                l = search(d, s, last=True)
+                l = search(d, name, last=True)
             elif n == names[0]:
-                l = search(d, s, first=True)
+                l = search(d, name, first=True)
             else:
-                search(d, s)
+                l = search(d, name)
 
             print(l)
             
