@@ -52,7 +52,7 @@ def load_directory(database_connection, load: str):
         fill_directory(data, directory_tbl)
 
     if load == "light":
-        pass
+        return directory_tbl
 
 
     

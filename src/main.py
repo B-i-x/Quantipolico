@@ -2,7 +2,7 @@ from database_class import db_connect
 
 from directory_scanner.ds_loader import load_directory
 
-from site_scanner.ss_loader import load_pressReleases_sites
+from site_scanner.ss_loader import validate_pressReleases_sites
 from site_scanner.ss_loader import load_individuals
 
 
@@ -13,11 +13,11 @@ def main():
     if not db_conn:
         return
 
-    load_directory(db_conn, load="light")
+    directory_table = load_directory(db_conn, load="light")
 
-    load_individuals(db_conn, load="hard")
+    individual_tables = load_individuals(db_conn, load="hard")
 
-    load_pressReleases_sites(db_conn, load="hard")
+    validate_pressReleases_sites(directory_table)
 
 
 

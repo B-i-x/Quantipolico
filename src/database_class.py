@@ -18,6 +18,7 @@ class Database():
             print(e)
             return False
 
+
 class DataTable():
 
     def __init__(self, db_connection, name: str) -> None:
@@ -129,6 +130,14 @@ class DataTable():
         self.execute(query)
         self.conn.commit()
     
+    def select_col_from_table(self, col: str):
+        '''returns one column from a table in a list form'''
+        query = f"SELECT {col} FROM {self.name}"
+
+        cur = self.conn.cursor()
+        cur.execute(query)
+
+        return cur.fetchall()
 
 
 def db_connect():
