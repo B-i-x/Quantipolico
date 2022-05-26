@@ -1,5 +1,5 @@
 from database_class import db_connect
-from directory_scanner.directory_loader import load_directory
+from directory_scanner.ds_loader import load_directory
 
 def main():
 
@@ -8,7 +8,7 @@ def main():
     if not db_conn:
         return
 
-    load_directory(db_conn, load="hard_refresh")
+    load_directory(db_conn, load="light")
 
 if __name__ == "__main__":
     main()
