@@ -44,7 +44,10 @@ def load_directory(database_connection, load: str):
     2 - '''
     directory_tbl = directory_table_setup(database_connection)
 
-    if load == "refresh":
+    if load == "hard_refresh":
+        directory_tbl.delete_self()
+        directory_tbl = directory_table_setup(database_connection)
+
         data = crawl()
 
         fill_directory(data, directory_tbl)

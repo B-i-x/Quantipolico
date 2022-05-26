@@ -51,7 +51,5 @@ def crawl():
 
     driver.quit()
 
-    print(data)
-
     return data
     

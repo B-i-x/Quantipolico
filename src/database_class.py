@@ -1,6 +1,8 @@
 import sqlite3
 from sqlite3 import Error
 
+from numpy import insert
+
 class Database():
 
     def __init__(self, path: str) -> None:
@@ -96,7 +98,7 @@ class DataTable():
         
         query = " ("
         for value in data:
-            query += "'" + value + "'"
+            query += '"' + value + '"'
 
             if value != data[-1]:
                 query += ","
@@ -114,7 +116,18 @@ class DataTable():
 
         insert_query = columns_query + values
 
+        #print(insert_query)
+
         self.execute(insert_query)
+
+        self.conn.commit()
+
+    def delete_self(self):
+
+        query = f"DROP TABLE {self.name}"
+
+        self.execute(query)
+        self.conn.commit()
     
 
 

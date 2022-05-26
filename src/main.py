@@ -8,7 +8,7 @@ def main():
     if not db_conn:
         return
 
-    load_directory(db_conn, load="refresh")
+    load_directory(db_conn, load="hard_refresh")
 
 if __name__ == "__main__":
     main()
