@@ -1,6 +1,10 @@
 from database_class import db_connect
+
 from directory_scanner.ds_loader import load_directory
-from site_scanner.ss_loader import load_individual_sites
+
+from site_scanner.ss_loader import load_pressReleases_sites
+from site_scanner.ss_loader import load_individuals
+
 
 def main():
 
@@ -11,7 +15,9 @@ def main():
 
     load_directory(db_conn, load="light")
 
-    load_individual_sites(db_conn, load="Get Press Release Website")
+    load_individuals(db_conn, load="hard")
+
+    load_pressReleases_sites(db_conn, load="hard")
 
 
 
