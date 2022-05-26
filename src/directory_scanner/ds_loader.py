@@ -2,7 +2,6 @@
 what this file does is manages the directory crawler and interfaces with the directory table in order to fill sql table and validate data'''
 from database_class import DataTable
 from directory_scanner.ds_crawler import crawl
-from directory_scanner.ds_crawler import reformat_name
 
 def directory_table_setup(database_connection):
 

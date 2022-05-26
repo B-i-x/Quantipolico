@@ -1,5 +1,6 @@
 from database_class import db_connect
 from directory_scanner.ds_loader import load_directory
+from site_scanner.ss_loader import load_individual_sites
 
 def main():
 
@@ -9,6 +10,10 @@ def main():
         return
 
     load_directory(db_conn, load="light")
+
+    load_individual_sites(db_conn, load="Get Press Release Website")
+
+
 
 if __name__ == "__main__":
     main()

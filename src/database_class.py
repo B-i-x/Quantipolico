@@ -141,6 +141,3 @@ def db_connect():
         return directory_db.conn
     else:
         return False
-
-
-
