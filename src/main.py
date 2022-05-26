@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 from database_class import db_connect
 
 from directory_scanner.ds_loader import load_directory
@@ -19,8 +20,6 @@ def main():
 
     validate_pressReleases_sites(directory_table)
 
-
-
 if __name__ == "__main__":
     main()
 
@@ -37,5 +36,4 @@ if __name__ == "__main__":
     
     scan articles with new dates
 
-    //*[@id="rso"]/div[1]/div/div[1]/div/div/div[1]/div/a/h3
     '''

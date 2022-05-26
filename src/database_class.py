@@ -1,8 +1,6 @@
 import sqlite3
 from sqlite3 import Error
 
-from numpy import insert
-
 class Database():
 
     def __init__(self, path: str) -> None:
@@ -77,7 +75,7 @@ class DataTable():
             return True
         else: return False
 
-    def set_insert_columns(self,columns: list):
+    def __set_insert_columns(self,columns: list):
         """part of self.insert, the columns list should be a list of strings"""
         query = f"INSERT INTO {self.name} "
         
@@ -95,8 +93,8 @@ class DataTable():
 
         return query
 
-    def set_insert_data(self, data: list, last = False):
-        
+    def __set_insert_data(self, data: list, last = False):
+        '''creates insert query for one row of data'''
         query = " ("
         for value in data:
             query += '"' + value + '"'
@@ -113,15 +111,33 @@ class DataTable():
 
         return query
 
-    def insert(self, columns_query: str, values: str):
+    def insert(self, columns: list, data: list, committing=False):
+        '''inserts the 2D list of data into the specified column(s)
+        the naming of the columns must be a list of strings and must match the order of the 2d array
+        ex:
+        Columns[]: ["name", "state", "party", "district_number"]
 
-        insert_query = columns_query + values
+        Data[]: [["John", "Arizo", "somet", "151251351551351"],
+                  [["Smit", "Calif", "elseg", "651651023511033"]]
+        '''
+        col_query = self.__set_insert_columns(columns)
 
-        #print(insert_query)
+        data_query = ""
 
-        self.execute(insert_query)
+        for row in data:
+            if row == data[-1]:
+                data_query += self.__set_insert_data(row, last=True)
+            else:
+                data_query += self.__set_insert_data(row)
 
-        self.conn.commit()
+        insert_query = col_query + data_query
+
+        if not committing:
+            print(insert_query)
+            
+        else:
+            self.execute(insert_query)
+            self.conn.commit()
 
     def delete_self(self):
 
@@ -131,13 +147,27 @@ class DataTable():
         self.conn.commit()
     
     def select_col_from_table(self, col: str):
-        '''returns one column from a table in a list form'''
+        '''returns one column from a table in a list of tuples'''
         query = f"SELECT {col} FROM {self.name}"
 
         cur = self.conn.cursor()
         cur.execute(query)
 
         return cur.fetchall()
+
+    def has_col_null(self, col: str):
+        '''checks if column of table has any null
+        returns true if there are nulls in table
+        returns false if there are no nulls'''
+        data = self.select_col_from_table(col)
+
+        for tup_value in data:
+            
+            if tup_value == (None,):
+                return True
+        
+        return False
+
 
 
 def db_connect():

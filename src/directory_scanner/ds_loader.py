@@ -21,21 +21,6 @@ def directory_table_setup(database_connection):
     directory_table.execute(sql)
 
     return directory_table
-
-def fill_directory(data, directory_table):
-    
-    col_sql = directory_table.set_insert_columns(["name", "state", "party", "district_number", "homepage_link"])
-    
-    data_sql = ""
-
-    for person in data:
-        
-        if person == data[-1]:
-            data_sql += directory_table.set_insert_data([person[0], person[1], person[2], person[3], person[4]], last = True)
-        else:
-            data_sql += directory_table.set_insert_data([person[0], person[1], person[2], person[3], person[4]])
-
-    directory_table.insert(col_sql, data_sql)
     
 def load_directory(database_connection, load: str):
     '''this function is the main function of this file
@@ -43,16 +28,19 @@ def load_directory(database_connection, load: str):
     2 - '''
     directory_tbl = directory_table_setup(database_connection)
 
-    if load == "hard_refresh":
+    if load == "hard":
         directory_tbl.delete_self()
         directory_tbl = directory_table_setup(database_connection)
 
         data = crawl()
 
-        fill_directory(data, directory_tbl)
+        directory_tbl.insert(["name", "state", "party", "district_number", "homepage_link"], data, committing=True)
 
-    if load == "light":
+    elif load == "light":
         return directory_tbl
+
+    else: print("load configuration not recognized")
+
 
 
     
