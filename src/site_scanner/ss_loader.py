@@ -1,5 +1,11 @@
 from site_scanner.ss_crawler import search
 
+from site_scanner.ss_crawler import Crawler
+
+def reformat_sql_query_result(s: str) -> str:
+
+    s.replace("('").replace("")
+
 
 def validate_pressReleases_sites(directory_tbl):
     '''this checks whether each representative has a press release website
@@ -7,11 +13,30 @@ def validate_pressReleases_sites(directory_tbl):
     get names from directory table'''
 
     press_releases = 1 #check the directory table and do real validation
+
     if press_releases == 1:
+
         names = directory_tbl.select_col_from_table("name")
 
-        print(names)
-        link = search("Jerry Carl")
+        crawler_obj = Crawler('https://www.google.com/')
+
+        d = crawler_obj.start()
+
+        for n in names:
+            s = "".join(n) #convert tuple to string
+
+            l = ""
+            if n == names[-1]:
+                l = search(d, s, last=True)
+            elif n == names[0]:
+                l = search(d, s, first=True)
+            else:
+                search(d, s)
+
+            print(l)
+            
+
+        #link = search("Jerry Carl")
         #do some crawling
     
 
