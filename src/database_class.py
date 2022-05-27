@@ -16,14 +16,61 @@ class Database():
             print(e)
             return False
 
+class SQL_Query:
+
+    def __init__(self, database_connection) -> None:
+        self.conn = database_connection
+        self.query = None
+
+    def execute(self) -> bool:
+        '''runs the sql query and prints the error if failed
+        returns the cursor object if successful
+        returns false if not'''
+
+        if self.query is None:
+            print("SQL Query not defined yet, cannot execute on empty query!")
+            return
+
+        try:
+            cur = self.conn.cursor()
+            cur.execute(self.query)
+            return cur
+
+        except Error as e:
+            print(e)
+            return False
+
+    def commit(self):
+
+        execution = self.execute()
+
+        if not execution:
+            print("Return Execution Failed!")
+            return
+
+        self.conn.commit()
+
+    def __str__(self) -> str:
+        self.print_query()
+    
+    def print_query(self):
+        print(self.query)
+
+    def set(self, str_sql: str) -> None:
+
+        self.query = str_sql
 
 class DataTable():
-
+    '''this class makes SQL_Query objects that are relevant to the dataTable
+    honestly this is more like an sql generator
+    inefficient because sql is already very easy to use but it just makes things look nice'''
     def __init__(self, db_connection, name: str) -> None:
         self.conn = db_connection
         self.name = name
 
-    def setup(self, not_exists_check: bool, columns):
+        self.query = SQL_Query()
+
+    def setup(self, not_exists_check: bool, columns: list) -> SQL_Query:
         '''columns must be formatted as follows:
         [[column_name_1, column_sql_datatype]...,[column_name_x, column_sql_datatype] ]'''
 
@@ -49,33 +96,23 @@ class DataTable():
 
         query += ");"
 
-        return query
+        self.query.set(query)
 
-    def execute(self, sql_query):
-        '''runs the sql query and prints the error if failed
-        returns the cursor object if successful
-        returns false if not'''
-        try:
-            cur = self.conn.cursor()
-            cur.execute(sql_query)
-            return cur
+        return self.query
 
-        except Error as e:
-            print(e)
-            return False
-
-    def is_empty(self):
+    def is_empty(self) -> bool:
         '''checks if the table is empty
         returns true if is empty 
         returns false is NOT empty'''
-        
-        query = f"SELECT count(*) FROM (select 0 from {self.name} limit 1);"
 
-        if self.execute(query).fetchone()[0] == 0:
+
+        self.query.set(f"SELECT count(*) FROM (select 0 from {self.name} limit 1);")
+
+        if self.query.execute().fetchone()[0] == 0:
             return True
         else: return False
 
-    def __set_insert_columns(self,columns: list):
+    def __set_insert_columns(self,columns: list) -> str:
         """part of self.insert, the columns list should be a list of strings"""
         query = f"INSERT INTO {self.name} "
         
@@ -93,8 +130,8 @@ class DataTable():
 
         return query
 
-    def __set_insert_data(self, data: list, last = False):
-        '''creates insert query for one row of data'''
+    def __set_insert_data(self, data: list, last = False) -> str:
+        '''creates insert query_str for one row of data'''
         query = " ("
         for value in data:
             query += '"' + value + '"'
@@ -111,7 +148,7 @@ class DataTable():
 
         return query
 
-    def insert_list(self, columns: list, data: list, committing=False):
+    def insert_list_into_col(self, columns: list, data: list) -> SQL_Query:
         '''inserts the 2D list of data into the specified column(s)
         the naming of the columns must be a list of strings and must match the order of the 2d array
         ex:
@@ -130,32 +167,26 @@ class DataTable():
             else:
                 data_query += self.__set_insert_data(row)
 
-        insert_query = col_query + data_query
+        self.query.set(col_query + data_query)
 
-        if not committing:
-            print(insert_query)
-            
-        else:
-            self.execute(insert_query)
-            self.conn.commit()
+        return self.query
 
-    def delete_self(self):
+    def delete_self(self) -> None:
 
-        query = f"DROP TABLE {self.name}"
+        self.query.set(f"DROP TABLE {self.name}")
 
-        self.execute(query)
-        self.conn.commit()
+        self.query.commit()
     
-    def select_col_from_table(self, col: str):
+    def select_col_from_table(self, col: str) -> list:
         '''returns one column from a table in a list of tuples'''
-        query = f"SELECT {col} FROM {self.name}"
 
-        cur = self.conn.cursor()
-        cur.execute(query)
+        self.query.set(f"SELECT {col} FROM {self.name}")
 
-        return cur.fetchall()
+        self.query.commit()
 
-    def has_col_null(self, col: str):
+        return self.query.execute().fetchall()
+
+    def has_col_null(self, col: str) -> bool:
         '''checks if column of table has any null
         returns true if there are nulls in table
         returns false if there are no nulls'''
@@ -167,6 +198,20 @@ class DataTable():
                 return True
         
         return False
+
+    def insert_into_row(self, data: str, insert_col: str, condition_col: str = None, condition: str=None) -> SQL_Query:
+        '''inserts one piece of data into a row'''
+
+        query = f"UPDATE {self.name} SET {insert_col} = '{data}'"
+
+        if condition != None and condition_col != None:
+            query += f" WHERE {condition_col} = {condition};"
+        else: query += f";"
+
+        self.query.set(query)
+
+        return self.query
+
 
 
 

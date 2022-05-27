@@ -18,7 +18,7 @@ def directory_table_setup(database_connection):
     ]
     )
 
-    directory_table.execute(sql)
+    sql.execute()
 
     return directory_table
     
@@ -34,12 +34,15 @@ def load_directory(database_connection, load: str):
 
         data = crawl()
 
-        directory_tbl.insert_list(["name", "state", "party", "district_number", "homepage_link"], data, committing=True)
+        directory_tbl.insert_list_into_col(columns=["name", "state", "party", "district_number", "homepage_link"], data=data).commit()
 
     elif load == "light":
-        return directory_tbl
+        '''do some type of validation'''
+        pass
 
     else: print("load configuration not recognized")
+
+    return directory_tbl
 
 
 
