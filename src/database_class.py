@@ -45,7 +45,7 @@ class SQL_Query:
         execution = self.execute()
 
         if not execution:
-            print("Return Execution Failed!")
+            print("SQL Execution Failed!")
             return
 
         self.conn.commit()
@@ -60,15 +60,21 @@ class SQL_Query:
 
         self.query = str_sql
 
-    def get(self, all: bool = False):
+    def get(self, all: bool = True):
         
-        e = self.execute()
+        cursor = self.execute()
 
-        if not e:
+        
+        if not cursor or cursor is None:
+            
+            print("SQL Execution Failed!")
 
-            if not all:
-                return e.fetchone()[0]
-            else: return e.fetchall()
+            return
+
+        if all == False:
+            return cursor.fetchone()
+
+        else: return cursor.fetchall()
             
 
 
@@ -196,7 +202,11 @@ class DataTable():
         query = f"SELECT {col} FROM {self.name}"
 
         if not condition is None:
-            query += " WHERE {condition_col} = {condition};"
+            query += f" WHERE {condition_col}"
+            if condition == "NULL":
+                query += f" IS NULL;"
+            else:
+                query += f"= {condition};"
          
         else:
             query += ";"
@@ -221,13 +231,13 @@ class DataTable():
         
         return False
 
-    def insert_into_row(self, data: str, insert_col: str, condition_col: str = None, condition: str=None) -> SQL_Query:
+    def insert_into_cell(self, data: str, insert_col: str, condition_col: str = None, condition: str=None) -> SQL_Query:
         '''inserts one piece of data into a row fulfulling the specified conditions'''
 
         query = f"UPDATE {self.name} SET {insert_col} = '{data}'"
 
         if not condition is None:
-            query += f" WHERE {condition_col} = {condition};"
+            query += f' WHERE {condition_col} = "{condition}";'
 
         else: query += f";"
 
@@ -239,7 +249,7 @@ class DataTable():
 
         query = str(self.col_from_table("name", "general_pressrelease_link", "NULL"))
 
-        self.query.set(query[:len(query) - 1] + " LIMIT 1;")
+        self.query.set(query[:len(query) - 1] + " ORDER BY id ASC LIMIT 1;")
 
         return self.query
 

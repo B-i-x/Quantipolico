@@ -1,7 +1,7 @@
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.keys import Keys
 
 from selenium.webdriver.support.ui import WebDriverWait
@@ -12,7 +12,7 @@ class WebDriver_Interface:
     def __init__(self, link=None):
         pass
 
-    def refresh(self):
+    def init_driver(self):
         p = r"C:\Users\alexr\Documents\Projects\Mathematical Politics\repository\dep\chromedriver_win32\chromedriver.exe"
 
         driver = webdriver.Chrome(executable_path=p)
@@ -22,59 +22,46 @@ class WebDriver_Interface:
 
 class PressRelease_Scanner:
 
-    def __init__(self, names: list, debug = False) -> None:
+    def __init__(self, debug = False) -> None:
         '''names is a tuple from DataTable.select_col_from_table'''
         self.driver = WebDriver_Interface()
 
-        self.names = ["".join(n) for n in names]
-
-        self.return_at_count = None
-
-        self.nested_data = []
+        self.curr_name = self.return_link = None
 
         self.first_website_flag = True #false means the website is not on its first one and true means it is
 
+        self.failure = False
+
         self.debug = debug
+
+        self.__open()
     
     def run(self) -> None:
-
-        if self.return_at_count is None:
-            print("Set a return count first!")
-            return
         
-        self.__refresh()
+        search_bar_xpath = self.__get_search_bar_xpath()
 
-        return_count = 0
+        self.failure = self.__get_individual_link(self.curr_name, search_bar_xpath)
 
-        links_list = []
+        self.first_website_flag = False
 
-        for name in self.names:
+        if self.debug:
+            print(self.return_link)
 
-            if return_count == self.return_at_count:
+        if self.failure:
+            self.__quit()
+        
+    def set_name(self, name: str) -> None:
 
-                if self.debug:
-                    print(links_list)
-                    print(self.nested_data)
+        self.curr_name = name
 
-                self.nested_data.append(links_list)
-
-                links_list.clear()
-
-                self.__refresh()
-
-                self.first_website_flag = True
-
-            #this is where the code execution goes\/\/\/
-
-            links_list.append(self.__get_individual_link(name, self.__get_search_bar_xpath()))
-
-            return_count += 1
-
-            self.first_website_flag = False
-
-    def __get_individual_link(self, name: str, search_bar_xpath: str) -> str:
+    def __get_individual_link(self, name: str, search_bar_xpath: str) -> bool:
         '''gets the press release link from the page on google of the given person's name'''
-        searchBar = self.driver.find_element(By.XPATH, search_bar_xpath)
+
+        try:
+            searchBar = self.driver.find_element(By.XPATH, search_bar_xpath)
+
+        except NoSuchElementException:
+            return False
 
         searchBar.clear()
 
@@ -91,30 +78,22 @@ class PressRelease_Scanner:
 
         first_link = self.driver.find_element(By.XPATH, first_link_xpath) 
 
-        press_releases_link = first_link.get_attribute("href")
+        self.return_link = first_link.get_attribute("href")
 
-        return press_releases_link
+    def get_link(self) -> str:
+        """returns link for that name"""
+        
+        return self.return_link
 
-    def get_data(self) -> list:
-        """returns flattened list of self.data"""
-
-        d = []
-
-        for group in self.nested_data:
-
-            for link in group:
-                d.append(link)
-
-        return d
-
-    def __refresh(self) ->None:
-
-        if not self.first_website_flag:
-            self.driver.quit()
-
-        self.driver = self.driver.refresh()
+    def __open(self) ->None:
+        
+        self.driver = self.driver.init_driver()
 
         self.driver.get("https://www.google.com/")
+    
+    def __quit(self) -> None:
+
+        self.driver.close()
 
     def __get_search_bar_xpath(self) -> str:
 
@@ -123,8 +102,7 @@ class PressRelease_Scanner:
         
         return '//div[@ID="searchform"]//input[1]'
 
-    def set_return_at_count(self, i: int):
-        self.return_at_count = i
+
 
 def get_link_for_individual(driver, name: str, last = False, first = False) -> str:
 
