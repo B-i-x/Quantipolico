@@ -1,3 +1,4 @@
+from matplotlib.pyplot import sca
 from site_scanner.ss_crawler import PressRelease_Scanner
 from database_class import DataTable
 
@@ -9,17 +10,24 @@ def validate_pressReleases_sites(directory_tbl: DataTable):
     
     get names from directory table'''
 
-    if directory_tbl.has_col_null("general_pressrelease_link"):
+    scanner = PressRelease_Scanner(debug=True)
 
-        directory_tbl.cell_satisfying_condition("name", "general_pressrelease_link", "NULL").print_query()
-        name = directory_tbl.cell_satisfying_condition("name", "general_pressrelease_link", "NULL").get()
+    while directory_tbl.has_col_null("general_pressrelease_link"):
 
-        print(name)
+        name = directory_tbl.cell_satisfying_condition("name", "general_pressrelease_link", "NULL").get(all=False)
+
+        name = "".join(name) #converts tup name to string name
         
+        scanner.set_name(name)
 
-        #directory_tbl.insert_list(["general_pressrelease_link"], pressRelease_links)
-        
-        #do some crawling
+        scanner.run()
+
+        link = scanner.get_link()
+
+        sql = directory_tbl.insert_into_cell(link, "general_pressrelease_link", "name", name)
+
+        print(sql)
+        sql.commit()
     
 
 def load_individuals(database_connection, load: str):
