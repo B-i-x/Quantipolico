@@ -1,26 +1,21 @@
 from site_scanner.ss_crawler import PressRelease_Scanner
+from database_class import DataTable
 
 def insert_into_table():
     pass
 
-def validate_pressReleases_sites(directory_tbl):
+def validate_pressReleases_sites(directory_tbl: DataTable):
     '''this checks whether each representative has a press release website
     
     get names from directory table'''
 
     if directory_tbl.has_col_null("general_pressrelease_link"):
 
-        names = directory_tbl.select_col_from_table("name")
+        directory_tbl.cell_satisfying_condition("name", "general_pressrelease_link", "NULL").print_query()
+        name = directory_tbl.cell_satisfying_condition("name", "general_pressrelease_link", "NULL").get()
 
-        crawler = PressRelease_Scanner(names, debug=True)
-
-        crawler.set_return_at_count(5)
-
-        crawler.run()
-
-        links = crawler.get_data()
-
-        print(links)
+        print(name)
+        
 
         #directory_tbl.insert_list(["general_pressrelease_link"], pressRelease_links)
         

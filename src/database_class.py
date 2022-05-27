@@ -17,12 +17,12 @@ class Database():
             return False
 
 class SQL_Query:
-
+    '''interface class for SQLlite3'''
     def __init__(self, database_connection) -> None:
         self.conn = database_connection
         self.query = None
 
-    def execute(self) -> bool:
+    def execute(self):
         '''runs the sql query and prints the error if failed
         returns the cursor object if successful
         returns false if not'''
@@ -51,7 +51,7 @@ class SQL_Query:
         self.conn.commit()
 
     def __str__(self) -> str:
-        self.print_query()
+        return self.query
     
     def print_query(self):
         print(self.query)
@@ -59,6 +59,18 @@ class SQL_Query:
     def set(self, str_sql: str) -> None:
 
         self.query = str_sql
+
+    def get(self, all: bool = False):
+        
+        e = self.execute()
+
+        if not e:
+
+            if not all:
+                return e.fetchone()[0]
+            else: return e.fetchall()
+            
+
 
 class DataTable():
     '''this class makes SQL_Query objects that are relevant to the dataTable
@@ -68,7 +80,7 @@ class DataTable():
         self.conn = db_connection
         self.name = name
 
-        self.query = SQL_Query()
+        self.query = SQL_Query(db_connection)
 
     def setup(self, not_exists_check: bool, columns: list) -> SQL_Query:
         '''columns must be formatted as follows:
@@ -172,26 +184,36 @@ class DataTable():
         return self.query
 
     def delete_self(self) -> None:
-
+        '''special cuz it commits'''
         self.query.set(f"DROP TABLE {self.name}")
 
         self.query.commit()
     
-    def select_col_from_table(self, col: str) -> list:
-        '''returns one column from a table in a list of tuples'''
+    def col_from_table(self, col: str, condition_col: str = None, condition: str = None) -> str:
+        '''returns one column from a table in a list of tuples
+        can also do conditions'''
+        
+        query = f"SELECT {col} FROM {self.name}"
 
-        self.query.set(f"SELECT {col} FROM {self.name}")
+        if not condition is None:
+            query += " WHERE {condition_col} = {condition};"
+         
+        else:
+            query += ";"
 
-        self.query.commit()
+        self.query.set(query)
 
-        return self.query.execute().fetchall()
+        return self.query
 
     def has_col_null(self, col: str) -> bool:
         '''checks if column of table has any null
         returns true if there are nulls in table
         returns false if there are no nulls'''
-        data = self.select_col_from_table(col)
+        data = self.col_from_table(col).get(all=True)
 
+        if data is None:
+            return True
+        
         for tup_value in data:
             
             if tup_value == (None,):
@@ -200,19 +222,26 @@ class DataTable():
         return False
 
     def insert_into_row(self, data: str, insert_col: str, condition_col: str = None, condition: str=None) -> SQL_Query:
-        '''inserts one piece of data into a row'''
+        '''inserts one piece of data into a row fulfulling the specified conditions'''
 
         query = f"UPDATE {self.name} SET {insert_col} = '{data}'"
 
-        if condition != None and condition_col != None:
+        if not condition is None:
             query += f" WHERE {condition_col} = {condition};"
+
         else: query += f";"
 
         self.query.set(query)
 
         return self.query
 
+    def cell_satisfying_condition(self, search_col: str, condition_col: str, condition: str) -> SQL_Query:
 
+        query = str(self.col_from_table("name", "general_pressrelease_link", "NULL"))
+
+        self.query.set(query[:len(query) - 1] + " LIMIT 1;")
+
+        return self.query
 
 
 def db_connect():
