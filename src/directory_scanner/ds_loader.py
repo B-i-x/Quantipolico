@@ -34,7 +34,7 @@ def load_directory(database_connection, load: str):
 
         data = crawl()
 
-        directory_tbl.insert(["name", "state", "party", "district_number", "homepage_link"], data, committing=True)
+        directory_tbl.insert_list(["name", "state", "party", "district_number", "homepage_link"], data, committing=True)
 
     elif load == "light":
         return directory_tbl

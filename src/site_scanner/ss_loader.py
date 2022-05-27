@@ -1,6 +1,4 @@
-from site_scanner.ss_crawler import search
-
-from site_scanner.ss_crawler import Crawler
+from site_scanner.ss_crawler import PressRelease_Scanner
 
 def insert_into_table():
     pass
@@ -12,14 +10,18 @@ def validate_pressReleases_sites(directory_tbl):
 
     if directory_tbl.has_col_null("general_pressrelease_link"):
 
-        driver_obj = Crawler('https://www.google.com/')
-
         names = directory_tbl.select_col_from_table("name")
 
-        pressRelease_links = search(driver_obj, names)
+        crawler = PressRelease_Scanner(names)
 
-        directory_tbl.insert(["general_pressrelease_link"], pressRelease_links)
-        #link = search("Jerry Carl")
+        crawler.set_return_at_count(20)
+
+        crawler.run()
+
+        links = crawler.get_data()
+
+        #directory_tbl.insert_list(["general_pressrelease_link"], pressRelease_links)
+        
         #do some crawling
     
 

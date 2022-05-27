@@ -111,7 +111,7 @@ class DataTable():
 
         return query
 
-    def insert(self, columns: list, data: list, committing=False):
+    def insert_list(self, columns: list, data: list, committing=False):
         '''inserts the 2D list of data into the specified column(s)
         the naming of the columns must be a list of strings and must match the order of the 2d array
         ex:
