@@ -8,24 +8,25 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 class WebDriver_Interface:
-    
-    def __init__(self, link=None):
-        self.link = link
 
-    def __new__(cls, link=None):
-      
+    def __init__(self, link=None):
+        pass
+
+    def refresh(self):
         p = r"C:\Users\alexr\Documents\Projects\Mathematical Politics\repository\dep\chromedriver_win32\chromedriver.exe"
-        driver = webdriver.Chrome(executable_path= p)
+
+        driver = webdriver.Chrome(executable_path=p)
 
         return driver
+    
 
 class PressRelease_Scanner:
 
-    def __init__(self, names: list) -> None:
+    def __init__(self, names: list, debug = False) -> None:
         '''names is a tuple from DataTable.select_col_from_table'''
         self.driver = WebDriver_Interface()
 
-        self.names = [["".join(n) for n in names]]
+        self.names = ["".join(n) for n in names]
 
         self.return_at_count = None
 
@@ -33,6 +34,7 @@ class PressRelease_Scanner:
 
         self.first_website_flag = True #false means the website is not on its first one and true means it is
 
+        self.debug = debug
     
     def run(self) -> None:
 
@@ -50,6 +52,10 @@ class PressRelease_Scanner:
 
             if return_count == self.return_at_count:
 
+                if self.debug:
+                    print(links_list)
+                    print(self.nested_data)
+
                 self.nested_data.append(links_list)
 
                 links_list.clear()
@@ -60,20 +66,22 @@ class PressRelease_Scanner:
 
             #this is where the code execution goes\/\/\/
 
-            links_list.append(self.__get_individual_link(name, self.__get_search_bar_xpath))
+            links_list.append(self.__get_individual_link(name, self.__get_search_bar_xpath()))
 
             return_count += 1
 
             self.first_website_flag = False
 
     def __get_individual_link(self, name: str, search_bar_xpath: str) -> str:
-
+        '''gets the press release link from the page on google of the given person's name'''
         searchBar = self.driver.find_element(By.XPATH, search_bar_xpath)
 
         searchBar.clear()
 
+        type_in = name + " press releases"
+
         a3 = webdriver.ActionChains(self.driver)
-        a3.move_to_element(searchBar).click().send_keys(name + " press releases", Keys.ENTER).perform()
+        a3.move_to_element(searchBar).click().send_keys(type_in, Keys.ENTER).perform()
 
         first_link_xpath = r'//div[@id="rso"]//div//a'
 
@@ -88,7 +96,7 @@ class PressRelease_Scanner:
         return press_releases_link
 
     def get_data(self) -> list:
-        """returns unnested self.data"""
+        """returns flattened list of self.data"""
 
         d = []
 
@@ -103,6 +111,8 @@ class PressRelease_Scanner:
 
         if not self.first_website_flag:
             self.driver.quit()
+
+        self.driver = self.driver.refresh()
 
         self.driver.get("https://www.google.com/")
 

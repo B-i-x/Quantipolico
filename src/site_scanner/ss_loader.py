@@ -12,13 +12,15 @@ def validate_pressReleases_sites(directory_tbl):
 
         names = directory_tbl.select_col_from_table("name")
 
-        crawler = PressRelease_Scanner(names)
+        crawler = PressRelease_Scanner(names, debug=True)
 
-        crawler.set_return_at_count(20)
+        crawler.set_return_at_count(5)
 
         crawler.run()
 
         links = crawler.get_data()
+
+        print(links)
 
         #directory_tbl.insert_list(["general_pressrelease_link"], pressRelease_links)
         
