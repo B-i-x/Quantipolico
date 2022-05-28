@@ -1,5 +1,6 @@
 '''
 what this file does is manages the directory crawler and interfaces with the directory table in order to fill sql table and validate data'''
+from weakref import ref
 from sqlite3_interface import DataTable
 from directory_scanner.ds_crawler import crawl
 
@@ -7,7 +8,7 @@ def directory_table_setup(database_connection):
 
     directory_table = DataTable(database_connection, "Directory")
 
-    sql = directory_table.setup(True, 
+    sql = directory_table.setup(
     [
         ["name", "text"],
         ["party", "text"],
@@ -15,7 +16,7 @@ def directory_table_setup(database_connection):
         ["district_number", "text"],
         ["homepage_link", "text"],
         ["general_pressrelease_link", "text"]
-    ]
+    ], not_exists_check=True
     )
 
     sql.execute()
@@ -33,6 +34,8 @@ def load_directory(database_connection, load: str):
         directory_tbl = directory_table_setup(database_connection)
 
         data = crawl()
+
+        name_data = crawl(refresh_name=True)
 
         directory_tbl.insert_list_into_col(columns=["name", "state", "party", "district_number", "homepage_link"], data=data).commit()
 

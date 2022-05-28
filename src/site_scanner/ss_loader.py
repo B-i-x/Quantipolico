@@ -1,9 +1,5 @@
-from matplotlib.pyplot import sca
 from site_scanner.ss_crawler import PressRelease_Scanner
 from sqlite3_interface import DataTable
-
-def insert_into_table():
-    pass
 
 def validate_pressReleases_sites(directory_tbl: DataTable) -> bool:
     '''this checks whether each representative has a press release website
@@ -30,26 +26,45 @@ def validate_pressReleases_sites(directory_tbl: DataTable) -> bool:
             sql = directory_tbl.insert_into_cell(link, "general_pressrelease_link", "name", name)
 
             print(sql)
+
             sql.commit()
     
     #i should prolly still do some validation down here????
 
     return True
 
-def load_individuals(database_connection, directory_tbl: DataTable, load: str):
+def load_individuals(database_connection, directory_tbl: DataTable, load: str) -> list:
     '''makes all the tables for the 441 people of congress + ur mom'''
+
+    individual_tbls = []
+
     if load == "hard":
 
         all_names = directory_tbl.col_from_table("name").get()
 
         for n in all_names:
             name = "".join(n)
-            
 
-        print(all_names)
+            print(name)
+            
+            tbl = DataTable(database_connection, name)
+
+            sql = tbl.setup(
+            [
+                ["title", "text"],
+                ["content", "text"],
+                ["day", "text"],
+                ["month", "text"],
+                ["year", "text"]
+            ], 
+            not_exists_check=True)
+
+            #print(sql)
+
+            #sql.execute()
        
         #create them for the first time
-        pass
+        
     elif load == "light":
         #checks that they all exist, a.k.a stupid validation 
         pass

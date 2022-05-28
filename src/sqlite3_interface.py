@@ -19,6 +19,10 @@ class Database():
             print(e)
             return False
 
+    def delete_all_tables_except(directory_table):
+
+        q = "SELECT 'DROP TABLE ' || name || ';' FROM sqlite_master WHERE type = 'table' AND name NOT IN ('X', 'Y', 'Z');"
+
 class SQL_Query:
     '''handles sql queries in a more logical way i feel
     interface class for SQLlite3'''
@@ -92,7 +96,7 @@ class DataTable():
 
         self.query = SQL_Query(db_connection)
 
-    def setup(self, not_exists_check: bool, columns: list) -> SQL_Query:
+    def setup(self, columns: list,not_exists_check: bool=True) -> SQL_Query:
         '''columns must be formatted as follows:
         [[column_name_1, column_sql_datatype]...,[column_name_x, column_sql_datatype] ]'''
 

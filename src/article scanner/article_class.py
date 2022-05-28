@@ -5,9 +5,3 @@ class article():
         self.title = self.content = None
         
         self.day = self.month = self.year = None
-
-    def get_length(self) -> int:
-
-        return self.calculate_length()
-
-        

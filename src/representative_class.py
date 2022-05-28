@@ -7,28 +7,28 @@ class rep:
     party - R or D or I
     district - number 1-x
     '''
-    def __init__(self, homepage: str, name: str, state: str, party: str, district: int):
-        self.home = homepage
+    def __init__(self) -> None:
+        pass
 
-        self.name = name
+def reformat_name(input: str) -> str:
+    """this reformats the crawled names into their database names"""  
 
-        self.stte = state
+    if s.find("(link is external)") == -1:
+        return None
 
-        self.pty = party
+    try:
+        s = s.replace("(link is external)", "").replace("'", "").replace(".", "").replace("-", "")
 
-        self.dtct = district
+        s = s.split(" ")
 
-        self.create_artice_list()
+        if len(s) == 2:
+            s = s[1] + s[0]
+        elif len(s) == 3:
+            s = s[1] + s[2] + s[0]
+        
+    except IndexError:
+        return None
 
-    def create_artice_list(self):
-        '''creates the list of links for each person'''
-        self.lart = []
-
-    def set_press_release_homepage(self, press_release_homepage):
-        '''this is the link to where all the press releases are stored'''
-        self.prhm = press_release_homepage
-
-    def set_id(self, i):
-        self.id = i
+    return s
 
 
