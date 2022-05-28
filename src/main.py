@@ -1,5 +1,5 @@
 
-from database_class import db_connect
+from sqlite3_interface import db_connect
 
 from directory_scanner.ds_loader import load_directory
 
@@ -16,7 +16,7 @@ def main():
 
     directory_table = load_directory(db_conn, load="light")
 
-    individual_tables = load_individuals(db_conn, load="hard")
+    individual_tables = load_individuals(db_conn, directory_table, load="hard")
 
     validate_pressReleases_sites(directory_table)
 

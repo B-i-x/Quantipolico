@@ -1,8 +1,11 @@
 import sqlite3
 from sqlite3 import Error
 
+'''
+this file has all the sqllite related stuuff
+'''
 class Database():
-
+    '''an interface with sqlite3 python package but handles the database part'''
     def __init__(self, path: str) -> None:
         self.path = path
 
@@ -17,7 +20,8 @@ class Database():
             return False
 
 class SQL_Query:
-    '''interface class for SQLlite3'''
+    '''handles sql queries in a more logical way i feel
+    interface class for SQLlite3'''
     def __init__(self, database_connection) -> None:
         self.conn = database_connection
         self.query = None
@@ -61,7 +65,8 @@ class SQL_Query:
         self.query = str_sql
 
     def get(self, all: bool = True):
-        
+        '''returns object of sql query
+        returns list by default'''
         cursor = self.execute()
 
         
@@ -76,12 +81,11 @@ class SQL_Query:
 
         else: return cursor.fetchall()
             
-
-
 class DataTable():
     '''this class makes SQL_Query objects that are relevant to the dataTable
     honestly this is more like an sql generator
-    inefficient because sql is already very easy to use but it just makes things look nice'''
+    inefficient because i am not generating a huge amount of similiar sql
+    but it just makes things look nice when called in functions'''
     def __init__(self, db_connection, name: str) -> None:
         self.conn = db_connection
         self.name = name

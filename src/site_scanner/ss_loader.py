@@ -1,38 +1,52 @@
 from matplotlib.pyplot import sca
 from site_scanner.ss_crawler import PressRelease_Scanner
-from database_class import DataTable
+from sqlite3_interface import DataTable
 
 def insert_into_table():
     pass
 
-def validate_pressReleases_sites(directory_tbl: DataTable):
+def validate_pressReleases_sites(directory_tbl: DataTable) -> bool:
     '''this checks whether each representative has a press release website
     
-    get names from directory table'''
+    if press releases valid return true
+    if not valid return false'''
 
-    scanner = PressRelease_Scanner(debug=True)
+    if directory_tbl.has_col_null("general_pressrelease_link"):
 
-    while directory_tbl.has_col_null("general_pressrelease_link"):
+        scanner = PressRelease_Scanner(debug=True)
 
-        name = directory_tbl.cell_satisfying_condition("name", "general_pressrelease_link", "NULL").get(all=False)
+        while directory_tbl.has_col_null("general_pressrelease_link"):
 
-        name = "".join(name) #converts tup name to string name
-        
-        scanner.set_name(name)
+            name = directory_tbl.cell_satisfying_condition("name", "general_pressrelease_link", "NULL").get(all=False)
 
-        scanner.run()
+            name = "".join(name) #converts tup name to string name
+            
+            scanner.set_name(name)
 
-        link = scanner.get_link()
+            scanner.run()
 
-        sql = directory_tbl.insert_into_cell(link, "general_pressrelease_link", "name", name)
+            link = scanner.get_link()
 
-        print(sql)
-        sql.commit()
+            sql = directory_tbl.insert_into_cell(link, "general_pressrelease_link", "name", name)
+
+            print(sql)
+            sql.commit()
     
+    #i should prolly still do some validation down here????
 
-def load_individuals(database_connection, load: str):
+    return True
+
+def load_individuals(database_connection, directory_tbl: DataTable, load: str):
     '''makes all the tables for the 441 people of congress + ur mom'''
     if load == "hard":
+
+        all_names = directory_tbl.col_from_table("name").get()
+
+        for n in all_names:
+            name = "".join(n)
+            
+
+        print(all_names)
        
         #create them for the first time
         pass
