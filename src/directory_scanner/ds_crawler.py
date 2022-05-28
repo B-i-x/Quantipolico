@@ -13,6 +13,8 @@ class Directory_Scanner:
 
         self.names = self.links = self.parties = self.states = self.districts = []
 
+        self.name_state = {}
+
     def __open(self) ->None:
         
         self.driver = self.driver.init_driver()
@@ -20,7 +22,7 @@ class Directory_Scanner:
         self.driver.get('https://www.house.gov/representatives')
 
     def run(self) -> None:
-        
+        '''it makes sense right? no it does not'''
 
         for state_num in range(1, 56+1):
             state_table_xpath = f'//*[@id="by-state"]/div/div//table[{state_num}]'
@@ -34,14 +36,30 @@ class Directory_Scanner:
 
             state_name = self.driver.find_elements(By.XPATH, state_table_xpath + self.get_addition_for("state_name", return_type="XPATH"))
 
+            self.get_addition_for("state_name", return_type="LIST").append(state_name)
+
             for type_of_data in data_search_order:
 
                 data_elem_list = self.driver.find_elements(By.XPATH, state_table_xpath + self.get_addition_for(type_of_data, return_type="XPATH"))
 
-                self.get_addition_for(type_of_data, "LIST").extend(data_elem_list)
+                #sets the data string list as the appropiate class attribute of the data
+                #e.g self.names = [name_elem.text for name_elem in name_elem_list]
+                data_string_list = []
 
+                if type_of_data == 'link':
+                    data_string_list = [elem.get_attribute('href') for elem in data_elem_list]
+                else:
+                    data_string_list = [elem.text for elem in data_elem_list]
+
+                
+                self.get_addition_for(type_of_data, "LIST").extend(data_string_list)
+
+
+            self.name_state[state_name] = self.get_addition_for("name", "LIST")
         
     def get_addition_for(self, data: str, return_type: str):
+        '''this function gets the type of data to be mined and gets the appropiate xpath 
+        or the list the stores the data once it is mind'''
         xpath = None
         
         return_list = []
@@ -77,6 +95,11 @@ class Directory_Scanner:
             print("UNRECOGNIZED RETURN VALUE")
             return
 
+    def mass_data() -> list:
+        '''returns all the seperate data type lists as one list for the datatable.insert()'''
+        data = []
+
+    
 
 def crawl(refresh_name: bool = False):
     house_directory = 'https://www.house.gov/representatives'
