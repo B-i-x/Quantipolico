@@ -30,6 +30,8 @@ def reformat_name(s: str) -> str:
     except IndexError:
         return None
 
+    f = f.replace(" ", "")
+
     return f
 
 
