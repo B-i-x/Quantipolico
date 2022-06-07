@@ -8,8 +8,6 @@ from site_scanner.ss_loader import validate_pressReleases_sites
 from article_scanner.article_loader import load_articles, search_and_load_articles
 
 
-
-
 def main():
 
     db_conn = db_connect()
@@ -17,7 +15,7 @@ def main():
     if not db_conn:
         return
 
-    directory_table = load_directory(db_conn, load="refactoring")
+    directory_table = load_directory(db_conn, load="light")
 
     validate_pressReleases_sites(directory_table)
 

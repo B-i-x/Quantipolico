@@ -1,11 +1,9 @@
 
 from src.sqlite3_interface import DataTable, Database
 
+class article():
 
-def load_articles(db_conn: Database, load: str) -> DataTable:
-    pass
-
-def search_and_load_articles(db_conn, load) -> str:
-    '''returns 
-    a code of diagnostics like new articles added and 
-    success/failure codes'''
+    def __init__(self):
+        self.title = self.content = None
+        
+        self.day = self.month = self.year = None

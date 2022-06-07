@@ -262,6 +262,12 @@ class DataTable():
 
         return self.query
 
+    def set_custom_query(self, q: str) -> SQL_Query:
+
+        self.query.set(q)
+
+        return self.query
+
 
 def db_connect():
 
