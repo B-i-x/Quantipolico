@@ -90,6 +90,7 @@ class DataTable():
     honestly this is more like an sql generator
     inefficient because i am not generating a huge amount of similiar sql
     but it just makes things look nice when called in functions'''
+    
     def __init__(self, db_connection, name: str) -> None:
         self.conn = db_connection
         self.name = name
