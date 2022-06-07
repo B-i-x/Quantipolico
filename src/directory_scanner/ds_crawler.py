@@ -1,8 +1,9 @@
+from lib2to3.pgen2 import driver
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
 from representative_class import reformat_name
-from src.webdriver_interface import WebDriver_Interface
+from webdriver_interface import WebDriver_Interface
 
 class Directory_Scanner:
 
@@ -12,6 +13,23 @@ class Directory_Scanner:
         self.__open()
 
         self.names = self.links = self.parties = self.states = self.districts = []
+
+
+        self.xpath_additions = {
+            "names" :  "//td[2]",
+            "districts": "//td[1]",
+            "links": "//td[2]//a",
+            "parties": "//td[3]",
+            "states" :  "//caption"
+        }
+
+        self.datatype_lists = {
+            "names" : [],
+            "districts": [],
+            "links": [],
+            "parties": [],
+            "states" : []
+        }
 
         self.name_state = {}
 
@@ -24,23 +42,23 @@ class Directory_Scanner:
     def run(self) -> None:
         '''it makes sense right? no it does not'''
 
+        data_search_order = [
+            "names",
+            "links",
+            "parties",
+            "districts",
+        ]
+
         for state_num in range(1, 56+1):
             state_table_xpath = f'//*[@id="by-state"]/div/div//table[{state_num}]'
 
-            data_search_order = [
-                "name",
-                "link",
-                "party",
-                "district",
-            ]
+            state_name = self.driver.find_elements(By.XPATH, state_table_xpath + self.get_datatype_xpath("states"))
 
-            state_name = self.driver.find_elements(By.XPATH, state_table_xpath + self.get_addition_for("state_name", return_type="XPATH"))
-
-            self.get_addition_for("state_name", return_type="LIST").append(state_name)
+            self.get_datatype_list("states").append(state_name)
 
             for type_of_data in data_search_order:
 
-                data_elem_list = self.driver.find_elements(By.XPATH, state_table_xpath + self.get_addition_for(type_of_data, return_type="XPATH"))
+                data_elem_list = self.driver.find_elements(By.XPATH, state_table_xpath + self.get_datatype_xpath(type_of_data))
 
                 #sets the data string list as the appropiate class attribute of the data
                 #e.g self.names = [name_elem.text for name_elem in name_elem_list]
@@ -51,53 +69,53 @@ class Directory_Scanner:
                 else:
                     data_string_list = [elem.text for elem in data_elem_list]
 
+                    if type_of_data == 'name':
+
+                        for name in data_string_list:
+                            self.name_state[name] = state_name
+
                 
-                self.get_addition_for(type_of_data, "LIST").extend(data_string_list)
+                self.get_datatype_list(type_of_data).append(data_string_list)
 
+        self.driver.quit()
 
-            self.name_state[state_name] = self.get_addition_for("name", "LIST")
-        
-    def get_addition_for(self, data: str, return_type: str):
-        '''this function gets the type of data to be mined and gets the appropiate xpath 
-        or the list the stores the data once it is mind'''
-        xpath = None
-        
-        return_list = []
+    def get_datatype_list(self, datatype: str) -> list:
+        '''returns the list the stores the specified datatype'''
 
-        if data == "district":
-            xpath = "//td[1]"
-            return_list = self.districts
+        if datatype in self.datatype_lists:
+            
+            return self.datatype_lists[datatype]
 
-        elif data == "name":
-            xpath = "//td[2]"
-            return_list = self.names
-
-        elif data == "link":
-            xpath = "//td[2]//a"
-            return_list = self.links
-
-        elif data == "party":
-            xpath = "//td[3]"
-            return_list = self.parties
-
-        elif data == "state_name":
-            xpath = "//caption"
-            return_list = self.states
         else:
             print("UNRECOGNIZED DATA TYPE TO SEARCH FOR")
             return
 
-        if return_type == "XPATH":
-            return xpath
-        elif return_type == "LIST":
-            return return_list
-        else: 
-            print("UNRECOGNIZED RETURN VALUE")
+
+    def get_datatype_xpath(self, datatype: str) -> str:
+        """returns the appropriate xpath"""
+
+        if datatype in self.xpath_additions:
+            
+            return self.xpath_additions[datatype]
+
+        else:
+            print("UNRECOGNIZED DATA TYPE TO SEARCH FOR")
             return
 
-    def mass_data() -> list:
+
+    def get_mass_data(self) -> list:
         '''returns all the seperate data type lists as one list for the datatable.insert()'''
         data = []
+
+        for index, name in enumerate(self.names):
+
+            data.append([name, self.name_state[name], self.parties[index], self.districts[index], self.links[index]])
+
+        return data
+
+    def print_all_data(self):
+
+        print(self.datatype_lists.items())
 
     
 

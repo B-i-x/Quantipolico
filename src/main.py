@@ -14,9 +14,9 @@ def main():
     if not db_conn:
         return
 
-    directory_table = load_directory(db_conn, load="light")
+    directory_table = load_directory(db_conn, load="refactoring")
 
-    individual_tables = load_individuals(db_conn, directory_table, load="hard")
+    #individual_tables = load_individuals(db_conn, directory_table, load="hard")
 
     validate_pressReleases_sites(directory_table)
 
