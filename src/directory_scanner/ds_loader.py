@@ -52,9 +52,7 @@ def load_directory(database_connection, load: str):
 
         crawler.run()
 
-        crawler.print_all_data()
-
-        #data = crawler.get_mass_data()
+        print(crawler.get_mass_data())
 
         
 

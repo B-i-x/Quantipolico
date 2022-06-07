@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from lib2to3.pgen2 import driver
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -52,7 +53,7 @@ class Directory_Scanner:
         for state_num in range(1, 56+1):
             state_table_xpath = f'//*[@id="by-state"]/div/div//table[{state_num}]'
 
-            state_name = self.driver.find_elements(By.XPATH, state_table_xpath + self.get_datatype_xpath("states"))
+            state_name = self.driver.find_element(By.XPATH, state_table_xpath + self.get_datatype_xpath("states")).text
 
             self.get_datatype_list("states").append(state_name)
 
@@ -64,18 +65,25 @@ class Directory_Scanner:
                 #e.g self.names = [name_elem.text for name_elem in name_elem_list]
                 data_string_list = []
 
-                if type_of_data == 'link':
+                if type_of_data == 'links':
                     data_string_list = [elem.get_attribute('href') for elem in data_elem_list]
                 else:
                     data_string_list = [elem.text for elem in data_elem_list]
 
-                    if type_of_data == 'name':
+                    if type_of_data == 'names':
+                        
+                        data_string_list = [reformat_name(n) for n in data_string_list]
 
                         for name in data_string_list:
-                            self.name_state[name] = state_name
+                        
+                                self.name_state[name] = state_name
 
+                        
+                for data in data_string_list:
                 
-                self.get_datatype_list(type_of_data).append(data_string_list)
+                    self.get_datatype_list(type_of_data).append(data)
+
+            self.get_datatype_list("states").append(state_name)
 
         self.driver.quit()
 
@@ -116,6 +124,8 @@ class Directory_Scanner:
     def print_all_data(self):
 
         print(self.datatype_lists.items())
+
+        print(self.name_state.items())
 
     
 

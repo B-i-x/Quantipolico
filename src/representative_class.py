@@ -10,25 +10,26 @@ class rep:
     def __init__(self) -> None:
         pass
 
-def reformat_name(input: str) -> str:
+def reformat_name(s: str) -> str:
     """this reformats the crawled names into their database names"""  
 
     if s.find("(link is external)") == -1:
         return None
+        
 
     try:
         s = s.replace("(link is external)", "").replace("'", "").replace(".", "").replace("-", "")
 
-        s = s.split(" ")
+        s = s.split(",")
 
-        if len(s) == 2:
-            s = s[1] + s[0]
-        elif len(s) == 3:
-            s = s[1] + s[2] + s[0]
+        f = ""
+        for n in range(len(s)):
+
+            f = f + s[-(n+1)]
         
     except IndexError:
         return None
 
-    return s
+    return f
 
 
