@@ -5,6 +5,10 @@ from directory_scanner.ds_loader import load_directory
 
 from site_scanner.ss_loader import validate_pressReleases_sites
 
+from article_scanner.article_loader import load_articles, search_and_load_articles
+
+
+
 
 def main():
 
@@ -16,6 +20,10 @@ def main():
     directory_table = load_directory(db_conn, load="refactoring")
 
     validate_pressReleases_sites(directory_table)
+
+    articles_table = load_articles(db_conn, load="hard")
+
+    search_and_load_articles(db_conn, load="hard")
 
 if __name__ == "__main__":
     main()
