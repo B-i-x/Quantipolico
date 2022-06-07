@@ -113,13 +113,21 @@ class Directory_Scanner:
 
     def get_mass_data(self) -> list:
         '''returns all the seperate data type lists as one list for the datatable.insert()'''
-        data = []
+        columned_data = []
 
-        for index, name in enumerate(self.names):
 
-            data.append([name, self.name_state[name], self.parties[index], self.districts[index], self.links[index]])
+        for datatype in self.datatype_lists:
 
-        return data
+            if datatype == "states":
+                continue
+
+            datatype_list = self.datatype_lists[datatype]
+
+            columned_data.append(datatype_list)
+
+        data = zip(*columned_data)
+
+        return list(data)
 
     def print_all_data(self):
 
