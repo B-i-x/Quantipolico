@@ -1,4 +1,6 @@
 from sqlite3_interface import Database, DataTable, SQL_Query
+from src.article_scanner.article_crawler import Article_Scanner
+from database_searcher import SELECT_Searcher, WHERE
 
 def load_articles(db_conn: Database, load: str) -> DataTable:
 
@@ -28,3 +30,21 @@ def search_and_load_articles(db_conn, load) -> str:
     '''returns 
     a code of diagnostics like new articles added and 
     success/failure codes'''
+
+    crawler = Article_Scanner()
+
+    if load == "research":
+
+        random_id_set_1 = [420, 324,357,251,218,297,167,302,174,20]
+
+        select = SELECT_Searcher(db_conn)
+
+        select.table("Directory")
+        select.columns(["general_pressrelease_link"])
+        select.add_parameter(WHERE("id").has_values(random_id_set_1))
+
+        print(select)
+
+        links = select.get_result()
+
+        print(links)
