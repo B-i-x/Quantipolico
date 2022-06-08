@@ -68,12 +68,11 @@ class SQL_Query:
 
         self.query = str_sql
 
-    def get(self, all: bool = True, return_type: str = None):
+    def get(self, all: bool = True, return_type: str = "List of Strings"):
         '''returns object of sql query
         returns list by default'''
         cursor = self.execute()
 
-        
         if not cursor or cursor is None:
             
             print("SQL Execution Failed!")

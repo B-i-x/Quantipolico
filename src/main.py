@@ -7,6 +7,8 @@ from site_scanner.ss_loader import validate_pressReleases_sites
 
 from article_scanner.article_loader import load_articles, search_and_load_articles
 
+from sql_generation import SQL
+
 def main():
 
     db_conn = db_connect()
@@ -22,7 +24,7 @@ def main():
 
     articles_table = load_articles(db_conn, load="hard")
 
-    search_and_load_articles(db_conn, load="research")
+    search_and_load_articles(sql, load="research")
 
 if __name__ == "__main__":
     main()

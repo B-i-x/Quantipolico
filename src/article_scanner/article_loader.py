@@ -1,9 +1,6 @@
-from random import random
-from certifi import where
 from sqlite3_interface import Database, DataTable
 from article_scanner.article_crawler import Article_Scanner
-from database_searcher import SELECT_Searcher, WHERE
-from src.sql_generation import Select
+from sql_generation import SQL
 
 def load_articles(db_conn: Database, load: str) -> DataTable:
 
@@ -33,7 +30,7 @@ def load_articles(db_conn: Database, load: str) -> DataTable:
 
     return articles_table
 
-def search_and_load_articles(db_conn, load) -> str:
+def search_and_load_articles(sql: SQL, load) -> str:
     '''returns 
     a code of diagnostics like new articles added and 
     success/failure codes'''
@@ -46,20 +43,15 @@ def search_and_load_articles(db_conn, load) -> str:
 
         random_id_set_2 = [296, 75, 243, 411, 136, 221, 106, 247, 407, 201]
 
-        '''select = Select(db_conn)
-
+        select = sql.create_select_query()
         select.table("Directory")
         select.columns(["general_pressrelease_link"])
 
-        id = WHERE("id")
+        id = select.where_paramater_for_col("id")
         id.has_values(random_id_set_2)
-        select.add_parameter(id)
 
-        print(select)
-
-        links = select.get_result()
+        links = sql.get_result_from_query(select)
 
         print(links)
 
         crawler.research(links)
-        '''
