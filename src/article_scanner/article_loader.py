@@ -1,3 +1,4 @@
+from certifi import where
 from sqlite3_interface import Database, DataTable
 from article_scanner.article_crawler import Article_Scanner
 from database_searcher import SELECT_Searcher, WHERE
@@ -45,10 +46,15 @@ def search_and_load_articles(db_conn, load) -> str:
 
         select.table("Directory")
         select.columns(["general_pressrelease_link"])
-        select.add_parameter(WHERE("id").has_values(random_id_set_1))
+
+        id = WHERE("id")
+        id.has_values(random_id_set_1)
+        select.add_parameter(id)
 
         print(select)
 
         links = select.get_result()
 
         print(links)
+
+        crawler.research(links)

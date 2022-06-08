@@ -7,6 +7,9 @@ class SELECT_Paramater():
 
         self.type = ""
 
+    def get_query(self) -> str:
+        return self.query
+
 class WHERE(SELECT_Paramater):
 
     def __init__(self, column: str) -> None:
@@ -14,7 +17,7 @@ class WHERE(SELECT_Paramater):
 
         self.type = "WHERE"
 
-        self.query = self.query + " {column} "
+        self.query = self.query + f" {column} "
 
     def is_value(self, value):
 
@@ -42,6 +45,8 @@ class SELECT_Searcher():
             "table_name": "",
             "columns" : []
         }
+
+        self.query = "NULL QUERY"
         
         self.db_conn = database_connection
 
@@ -59,7 +64,7 @@ class SELECT_Searcher():
 
         parameter_num = str(len(self.query_data) - 2)
         
-        self.query_data[param.type + parameter_num] = param.query
+        self.query_data[param.type + parameter_num] = param.get_query()
         
 
     def __make_query(self) -> SQL_Query:
@@ -74,7 +79,7 @@ class SELECT_Searcher():
 
                 q = q + ","
 
-        q = q + " " + "FROM " + self.query_data["table_name"]
+        q = q + " " + f'FROM {self.query_data["table_name"]} '
 
         extra_queries = []
 
@@ -86,17 +91,17 @@ class SELECT_Searcher():
 
         single_where_query = True
 
-        for q in extra_queries:
+        for paramater in extra_queries:
 
-            if "WHERE" in q:
+            if "WHERE" in paramater:
 
                 if single_where_query:
 
-                    q = q + "WHERE" + self.query_data[q]
+                    q = q + "WHERE" + self.query_data[paramater]
 
                 else:
 
-                    q = q + "AND" + self.query_data[q]
+                    q = q + "AND" + self.query_data[paramater]
 
                 single_where_query = False
 
@@ -104,14 +109,21 @@ class SELECT_Searcher():
 
         self.query = q
 
-        return SQL_Query(self.db_conn).set(q)
+        obj = SQL_Query(self.db_conn)
+
+        obj.set(q)
+
+        return obj
     
 
     def get_result(self):
         sql = self.__make_query()
 
-        return sql.get()
+        return sql.get(return_type="List of Strings")
 
 
     def __str__(self) -> str:
-        print(self.__make_query())
+        self.__make_query()
+        
+        return self.query
+            

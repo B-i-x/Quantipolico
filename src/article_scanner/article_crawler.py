@@ -15,16 +15,23 @@ class Article_Scanner():
 
         self.driver = WebDriver_Interface()
 
-        self.__open()
-
     def __open(self) -> None:
-
+        '''opens the chrome browser'''
         self.driver = self.driver.init_driver()
 
     def research(self, links: list) -> None:
 
+        self.__open()
+
         for l in links:
+            
             self.driver.get(l)
+
+            if l != links[-1]:
+
+                self.driver.execute_script("window.open('');")
+                chwd = self.driver.window_handles
+                self.driver.switch_to.window(chwd[-1])
 
         
 

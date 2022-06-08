@@ -68,7 +68,7 @@ class SQL_Query:
 
         self.query = str_sql
 
-    def get(self, all: bool = True):
+    def get(self, all: bool = True, return_type: str = None):
         '''returns object of sql query
         returns list by default'''
         cursor = self.execute()
@@ -83,7 +83,11 @@ class SQL_Query:
         if all == False:
             return cursor.fetchone()
 
-        else: return cursor.fetchall()
+        elif all and return_type is None: return cursor.fetchall()
+
+        elif all and return_type == "List of Strings":
+            l = ["".join(x) for x in cursor.fetchall()]
+            return l
             
 class DataTable():
     '''this class makes SQL_Query objects that are relevant to the dataTable

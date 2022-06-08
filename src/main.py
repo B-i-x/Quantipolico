@@ -21,7 +21,7 @@ def main():
 
     articles_table = load_articles(db_conn, load="hard")
 
-    search_and_load_articles(db_conn, load="hard")
+    search_and_load_articles(db_conn, load="research")
 
 if __name__ == "__main__":
     main()
