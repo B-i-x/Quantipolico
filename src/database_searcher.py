@@ -62,9 +62,10 @@ class SELECT_Searcher():
 
     def add_parameter(self, param: SELECT_Paramater) -> None:
 
-        parameter_num = str(len(self.query_data) - 2)
-        
-        self.query_data[param.type + parameter_num] = param.get_query()
+        if param.type not in self.query_data:
+            self.query_data[param.type] = []
+
+        self.query_data[param.type].append(param.get_query())
         
 
     def __make_query(self) -> SQL_Query:
@@ -73,39 +74,24 @@ class SELECT_Searcher():
 
         for col in self.query_data["columns"]:
 
-            q = q + " " + col
+            q += " " + col
 
             if col != self.query_data["columns"][-1]:
 
-                q = q + ","
+                q += ","
 
-        q = q + " " + f'FROM {self.query_data["table_name"]} '
+        q += " " + f'FROM {self.query_data["table_name"]} '
 
-        extra_queries = []
+        if "WHERE" in self.query_data:
 
-        for query_type in self.query_data:
+            for parameter in self.query_data["WHERE"]:
 
-            if query_type != "columns" and query_type != "table_name":
+                if parameter == self.query_data["WHERE"][0]: q = q + " WHERE "
+                else: q += " AND "
 
-                extra_queries.append(query_type)
+                q += parameter
 
-        single_where_query = True
-
-        for paramater in extra_queries:
-
-            if "WHERE" in paramater:
-
-                if single_where_query:
-
-                    q = q + "WHERE" + self.query_data[paramater]
-
-                else:
-
-                    q = q + "AND" + self.query_data[paramater]
-
-                single_where_query = False
-
-        q = q + ";"
+        q += ";"
 
         self.query = q
 

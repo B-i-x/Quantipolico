@@ -1,3 +1,4 @@
+from random import random
 from certifi import where
 from sqlite3_interface import Database, DataTable
 from article_scanner.article_crawler import Article_Scanner
@@ -42,13 +43,15 @@ def search_and_load_articles(db_conn, load) -> str:
 
         random_id_set_1 = [420, 324,357,251,218,297,167,302,174,20]
 
+        random_id_set_2 = [296, 75, 243, 411, 136, 221, 106, 247, 407, 201]
+
         select = SELECT_Searcher(db_conn)
 
         select.table("Directory")
         select.columns(["general_pressrelease_link"])
 
         id = WHERE("id")
-        id.has_values(random_id_set_1)
+        id.has_values(random_id_set_2)
         select.add_parameter(id)
 
         print(select)
