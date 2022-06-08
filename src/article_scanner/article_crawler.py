@@ -37,7 +37,7 @@ class Article_Scanner():
                 chwd = self.driver.window_handles
                 self.driver.switch_to.window(chwd[-1])
 
-        
+    
 
 
             

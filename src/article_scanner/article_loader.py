@@ -3,6 +3,7 @@ from certifi import where
 from sqlite3_interface import Database, DataTable
 from article_scanner.article_crawler import Article_Scanner
 from database_searcher import SELECT_Searcher, WHERE
+from src.sql_generation import Select
 
 def load_articles(db_conn: Database, load: str) -> DataTable:
 
@@ -45,7 +46,7 @@ def search_and_load_articles(db_conn, load) -> str:
 
         random_id_set_2 = [296, 75, 243, 411, 136, 221, 106, 247, 407, 201]
 
-        select = SELECT_Searcher(db_conn)
+        select = Select(db_conn)
 
         select.table("Directory")
         select.columns(["general_pressrelease_link"])

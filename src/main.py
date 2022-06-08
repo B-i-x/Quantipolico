@@ -15,6 +15,8 @@ def main():
     if not db_conn:
         return
 
+    sql = SQL(db_conn)
+
     directory_table = load_directory(db_conn, load="light")
 
     validate_pressReleases_sites(directory_table)
