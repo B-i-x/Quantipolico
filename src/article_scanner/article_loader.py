@@ -46,7 +46,7 @@ def search_and_load_articles(db_conn, load) -> str:
 
         random_id_set_2 = [296, 75, 243, 411, 136, 221, 106, 247, 407, 201]
 
-        select = Select(db_conn)
+        '''select = Select(db_conn)
 
         select.table("Directory")
         select.columns(["general_pressrelease_link"])
@@ -62,3 +62,4 @@ def search_and_load_articles(db_conn, load) -> str:
         print(links)
 
         crawler.research(links)
+        '''
