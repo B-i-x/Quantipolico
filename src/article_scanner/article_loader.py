@@ -1,5 +1,5 @@
-from sqlite3_interface import Database, DataTable, SQL_Query
-from src.article_scanner.article_crawler import Article_Scanner
+from sqlite3_interface import Database, DataTable
+from article_scanner.article_crawler import Article_Scanner
 from database_searcher import SELECT_Searcher, WHERE
 
 def load_articles(db_conn: Database, load: str) -> DataTable:
@@ -23,6 +23,10 @@ def load_articles(db_conn: Database, load: str) -> DataTable:
         '''
 
         articles_table.set_custom_query(sql_str).execute()
+
+    elif load == "light":
+        """TODO: #9 I dont even know why I am doing these load situations"""
+        pass
 
     return articles_table
 
