@@ -34,8 +34,7 @@ class WHERE(SELECT_Paramater):
                 self.query = self.query + ","
 
         self.query = self.query + ") "
-            
-    
+        
 
 class SELECT_Searcher():
 
