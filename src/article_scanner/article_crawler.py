@@ -88,6 +88,10 @@ class Article_Layout_Structure():
                 "article_xpath": '//h2[@class="newsie-titler"]//a',
                 "article_count_on_page" : 10
                 },
+            "sablan" : {
+                "article_xpath": '//div[@class="list-item"]',
+                "article_count_on_page" : 10
+            }
         }
 
 class Find_Press_Release_Text(Article_Layout_Structure):

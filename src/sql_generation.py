@@ -64,7 +64,6 @@ class Where(Query_Generator):
 
         return q
 
-
 class Select(Query_Generator):
 
     def __init__(self) -> None:
@@ -139,6 +138,18 @@ class Create_Table(Query_Generator):
     def make_query(self) -> str:
         pass
 
+class Manual(Query_Generator):
+
+    def __init__(self) -> None:
+        super().__init__(type="Custom")
+
+    def set(self, query: str) -> None:
+
+        self.query = query
+
+    def make_query(self) -> str:
+        return super().make_query()
+
 class SQL:
 
     def __init__(self, database_connection) -> None:
@@ -186,6 +197,15 @@ class SQL:
 
     def get_result_from_query(self, query_generator_class: Query_Generator, return_type: str = "List of Strings"):
 
+        cursor = self.execute_query(query_generator_class)
+
+        if return_type != "List of Strings":
+            return cursor.fetchall()
+        
+        return ["".join(x) for x in cursor.fetchall()]
+
+    def execute_query(self, query_generator_class: Query_Generator):
+
         qgc = query_generator_class
         query = qgc.make_query()
 
@@ -193,11 +213,7 @@ class SQL:
 
         cursor = self.execute(query)
 
-        if return_type != "List of Strings":
-            return cursor.fetchall()
-        
-        return ["".join(x) for x in cursor.fetchall()]
-
+        return cursor
 
 
     def print_query(self, query_generator_class: Query_Generator):

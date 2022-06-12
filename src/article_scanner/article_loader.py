@@ -2,6 +2,8 @@ from sqlite3_interface import Database, DataTable
 from article_scanner.article_crawler import Article_Finder
 from sql_generation import SQL
 
+import random
+
 def load_articles(db_conn: Database, load: str) -> DataTable:
 
     articles_table = DataTable(db_conn, "Articles")
@@ -30,6 +32,17 @@ def load_articles(db_conn: Database, load: str) -> DataTable:
 
     return articles_table
 
+def get_links_from_ids(sql: SQL, id_list: list) -> list:
+
+    select = sql.create_select_query()
+    select.table("Directory")
+    select.columns(["general_pressrelease_link"])
+
+    id = select.where_paramater_for_col("id")
+    id.has_values(id_list)
+
+    return sql.get_result_from_query(select)
+
 def search_for_articles(sql: SQL, load) -> str:
     '''returns 
     a code of diagnostics like new articles added and 
@@ -43,14 +56,11 @@ def search_for_articles(sql: SQL, load) -> str:
 
         random_id_set_2 = [296, 75, 243, 411, 136, 221, 106, 247, 407, 201]
 
-        select = sql.create_select_query()
-        select.table("Directory")
-        select.columns(["general_pressrelease_link"])
+        random_id_set_length = 20
 
-        id = select.where_paramater_for_col("id")
-        id.has_values(random_id_set_1)
+        generated_random_id_set = random.sample(range(0,441), random_id_set_length)
 
-        links = sql.get_result_from_query(select)
+        links = get_links_from_ids(sql, )
 
         print(links)
 
