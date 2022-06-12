@@ -66,9 +66,28 @@ class Article_Layout_Structure():
 
         self.article_count_on_page = None
 
-        self.article_xpath_bank = {
-            0 : [],
-            1 : []
+        self.article_layout_bank = {
+            #yes ik this looks like an object job but honestly this is so much less lines
+            "find_press_release_first" : {
+                #this layout has the press release nicely under the article
+                "article_xpath": '//*[text()="Press Release"]//ancestor::div[1]/div[1]//a',
+                "article_count_on_page" : 10
+                },
+            "table" : {
+                #simple table format
+                "article_xpath": "//table//a",
+                "article_count_on_page" : 10
+                },
+            "read_more" : {
+                #simple read more button
+                "article_xpath": "//a[contains(text(),'Read more')]",
+                "article_count_on_page" : 10
+                },
+            "newsie" : {
+                #stupid layout
+                "article_xpath": '//h2[@class="newsie-titler"]//a',
+                "article_count_on_page" : 10
+                },
         }
 
 class Find_Press_Release_Text(Article_Layout_Structure):
