@@ -9,7 +9,7 @@ class article():
         
         self.day = self.month = self.year = None
 
-class Article_Scanner():
+class Article_Finder():
 
     def __init__(self) -> None:
 
@@ -37,11 +37,81 @@ class Article_Scanner():
                 chwd = self.driver.window_handles
                 self.driver.switch_to.window(chwd[-1])
 
+    def match_press_release_website():
+        pass
+
     
+class Press_Release_Website():
+    '''this object quantifies all relevant parts of a website that needs to be scanned
+    it has an article layout
+    it has next layout
+    '''
+    def __init__(self) -> None:
+        
+        self.type = {
+            "article_layout_structure" : "",
+            "next_layout_structure" : ""
+        }
+        pass
 
+    def get_article_xpath(self) -> str:
+        '''gets the article xpath from the key xpath'''
+        pass
 
+class Article_Layout_Structure():
+
+    def __init__(self) -> None:
+        self.name = ""
+        self.article_xpath = ""
+
+        self.article_count_on_page = None
+
+        self.article_xpath_bank = {
+            0 : [],
+            1 : []
+        }
+
+class Find_Press_Release_Text(Article_Layout_Structure):
+
+    def __init__(self) -> None:
+        super().__init__()
+
+        self.article_xpath = '//*[text()="Press Release"]//ancestor::div[1]/div[1]//a'
+
+        self.article_count_on_page = 10
             
+class Table(Article_Layout_Structure):
 
+    def __init__(self) -> None:
+        super().__init__()
 
+        self.article_xpath = "//table//a"
 
-            
+        self.article_count_on_page = 10
+
+class Read_more(Article_Layout_Structure):
+
+    def __init__(self) -> None:
+        super().__init__()
+
+        self.article_xpath = "//a[contains(text(),'Read more')]"
+
+        self.article_count_on_page = 10
+
+class Newsie(Article_Layout_Structure):
+
+    def __init__(self) -> None:
+        super().__init__()
+
+        self.article_xpath = '//h2[@class="newsie-titler"]//a'
+
+        self.article_count_on_page = 10
+
+class Read_more_modified(Article_Layout_Structure):
+
+    def __init__(self) -> None:
+        super().__init__()
+
+        self.article_xpath = "//a[contains(text(),'Read more')]"
+
+        self.article_count_on_page = 15

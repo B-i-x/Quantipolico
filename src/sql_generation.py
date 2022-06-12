@@ -5,7 +5,7 @@ from sqlite3 import Error
 class Query_Generator():
     '''types of queries 
     SELECT 
-        WHERE'''
+        WHERE (can only be access from a select)'''
     def __init__(self, type = None) -> None:
 
         self.query_data = {}
@@ -124,6 +124,21 @@ class Select(Query_Generator):
 
         return q
 
+class Create_Table(Query_Generator):
+    """TODO: #12 FINISH CREATE TABLE CLASS"""
+    def __init__(self) -> None:
+        super().__init__(type="CREATE_TABLE")
+
+    def name(self, name: str):
+
+        self.n = name
+
+    def columns(self, columns: list) -> None:
+        pass
+
+    def make_query(self) -> str:
+        pass
+
 class SQL:
 
     def __init__(self, database_connection) -> None:
@@ -132,9 +147,11 @@ class SQL:
 
     def create_select_query(self) -> Select:
 
-        self.select = Select()
+        return Select()
 
-        return self.select
+    def create_table(self) -> Create_Table:
+
+        return Create_Table()
 
     def clear(self):
         self.select = self.query = None
