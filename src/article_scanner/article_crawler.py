@@ -1,6 +1,5 @@
-
-
 from webdriver_interface import WebDriver_Interface
+from selenium.common.exceptions import NoSuchElementException
 
 class article():
 
@@ -37,36 +36,84 @@ class Article_Finder():
                 chwd = self.driver.window_handles
                 self.driver.switch_to.window(chwd[-1])
 
-    def match_press_release_website():
-        pass
+    def __new_tab(self):
 
-    
-class Press_Release_Website():
-    '''this object quantifies all relevant parts of a website that needs to be scanned
-    it has an article layout
-    it has next layout
-    '''
-    def __init__(self) -> None:
+        self.driver.execute_script("window.open('');")
+        chwd = self.driver.window_handles
+        self.driver.switch_to.window(chwd[-1])
+
+        return chwd[0]
         
-        self.type = {
-            "article_layout_structure" : "",
-            "next_layout_structure" : ""
-        }
-        pass
 
-    def get_article_xpath(self) -> str:
-        '''gets the article xpath from the key xpath'''
-        pass
+    def find_press_release_website_type(self,links: list, ids: list) -> list:
 
+        self.__open()
+
+        article_layout_search_order = [
+            "read_more",
+            "find_press_release_first",
+            "newsie",
+            "table",
+            "sablan"
+        ]
+
+        id_layout = []
+
+        ids.sort()
+        for set in list(zip(ids, links)):
+
+            id = set[0]
+
+            link = set[1]
+
+            self.driver.get(link)
+
+            layout = Press_Release_Layout()
+
+            article_layout = layout.article_layout()
+
+            for type in article_layout_search_order:
+
+                article_xpath = article_layout.types[type]["article_xpath"]
+
+                try:
+                    article_elements = self.driver.find_elements_by_xpath(article_xpath)
+
+                except NoSuchElementException:
+                    continue
+
+
+            if id != ids[-1]:
+                self.__new_tab()
+
+            if len(article_elements) == article_layout.types[type]["article_count_on_page"]:
+                
+                print(id, link, type)
+                
+                id_layout.append([id, type])
+
+                chwd = self.driver.window_handles
+
+                self.driver.switch_to.window(chwd[-2])
+
+                self.driver.close()
+
+
+        print(id_layout)
+
+        return id_layout
+
+         
+        
 class Article_Layout_Structure():
 
     def __init__(self) -> None:
         self.name = ""
-        self.article_xpath = ""
+        self.article_layout_type = ""
 
         self.article_count_on_page = None
 
-        self.article_layout_bank = {
+        self.types = {
             #yes ik this looks like an object job but honestly this is so much less lines
             "find_press_release_first" : {
                 #this layout has the press release nicely under the article
@@ -93,6 +140,22 @@ class Article_Layout_Structure():
                 "article_count_on_page" : 10
             }
         }
+    
+class Press_Release_Layout():
+    '''this object quantifies all relevant parts of a website that needs to be scanned
+    it has an article layout
+    it has next layout
+    '''
+    def __init__(self) -> None:
+        
+        self.article_layout_structure = Article_Layout_Structure()
+        pass
+
+    def article_layout(self) -> Article_Layout_Structure:
+
+        return self.article_layout_structure
+
+
 
 class Find_Press_Release_Text(Article_Layout_Structure):
 

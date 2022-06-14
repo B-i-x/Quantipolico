@@ -60,8 +60,10 @@ def search_for_articles(sql: SQL, load) -> str:
 
         generated_random_id_set = random.sample(range(0,441), random_id_set_length)
 
-        links = get_links_from_ids(sql, )
+        links = get_links_from_ids(sql, generated_random_id_set)
 
         print(links)
 
-        crawler.research(links)
+        #crawler.research(links)
+
+        crawler.find_press_release_website_type(links, generated_random_id_set)
