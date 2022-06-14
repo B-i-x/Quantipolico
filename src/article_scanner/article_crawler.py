@@ -47,7 +47,7 @@ class Article_Finder():
 
     def find_press_release_website_type(self,links: list, ids: list) -> list:
 
-        self.__open()
+        self.__open("keep open")
 
         article_layout_search_order = [
             "read_more",
@@ -79,11 +79,11 @@ class Article_Finder():
                 try:
                     article_elements = self.driver.find_elements_by_xpath(article_xpath)
 
-                    article_layout.type = type
+                    if len(article_elements) == article_layout.types[type]["article_count_on_page"]:
 
-                    print(type)
+                        article_layout.type = type
 
-                    break
+                        break
 
                 except NoSuchElementException:
                     continue
@@ -125,6 +125,10 @@ class Article_Layout_Structure():
 
         self.types = {
             #yes ik this looks like an object job but honestly this is so much less lines
+            "" : {
+            "article_xpath": 'unknown',
+            "article_count_on_page" : -1
+                },
             "find_press_release_first" : {
                 #this layout has the press release nicely under the article
                 "article_xpath": '//*[text()="Press Release"]//ancestor::div[1]/div[1]//a',
@@ -147,6 +151,14 @@ class Article_Layout_Structure():
                 },
             "sablan" : {
                 "article_xpath": '//div[@class="list-item"]',
+                "article_count_on_page" : 10
+            },
+            "find_press_release_first_modification_div[1->4]" : {
+                "article_xpath": '//*[text()="Press Release"]//ancestor::div[4]/div[1]//a',
+                "article_count_on_page" : 10
+            },
+            "read_more_modification_InitialCaps" : {
+                "article_xpath": "//a[contains(text(),'Read More')]",
                 "article_count_on_page" : 10
             }
         }
