@@ -46,7 +46,7 @@ class Article_Finder():
         
 
     def find_press_release_website_type(self,links: list, ids: list) -> list:
-
+        '''TODO: #14 THIS FUNCTION IS WAY TOO LONG'''
         self.__open("keep open")
 
         article_layout_search_order = [
