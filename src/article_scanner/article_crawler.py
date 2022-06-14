@@ -79,6 +79,12 @@ class Article_Finder():
                 try:
                     article_elements = self.driver.find_elements_by_xpath(article_xpath)
 
+                    article_layout.type = type
+
+                    print(type)
+
+                    break
+
                 except NoSuchElementException:
                     continue
 
@@ -86,10 +92,10 @@ class Article_Finder():
             if id != ids[-1]:
                 self.__new_tab()
 
-            if len(article_elements) == article_layout.types[type]["article_count_on_page"]:
+            if len(article_elements) == article_layout.types[article_layout.type]["article_count_on_page"]:
                 
                 print(id, link, type)
-                
+
                 id_layout.append([id, type])
 
                 chwd = self.driver.window_handles
@@ -97,6 +103,10 @@ class Article_Finder():
                 self.driver.switch_to.window(chwd[-2])
 
                 self.driver.close()
+
+                chwd = self.driver.window_handles
+
+                self.driver.switch_to.window(chwd[-1])
 
 
         print(id_layout)
@@ -109,7 +119,7 @@ class Article_Layout_Structure():
 
     def __init__(self) -> None:
         self.name = ""
-        self.article_layout_type = ""
+        self.type = ""
 
         self.article_count_on_page = None
 
