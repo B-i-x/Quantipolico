@@ -69,6 +69,13 @@ class Where(Query_Generator):
 
         return q
 
+    def not_value(self, value) -> None:
+
+        self.query_data["operator"] = "<>"
+
+        self.query_data["value"] = str(value)
+
+
 class Select(Query_Generator):
 
     def __init__(self) -> None:

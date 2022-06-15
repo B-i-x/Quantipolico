@@ -1,3 +1,4 @@
+from certifi import where
 from sqlite3_interface import Database, DataTable
 from article_scanner.article_crawler import Article_Finder
 from sql_generation import SQL
@@ -40,6 +41,9 @@ def get_links_from_ids(sql: SQL, id_list: list) -> list:
 
     id = select.where_paramater_for_col("id")
     id.has_values(id_list)
+
+    where_pr_layout = select.where_paramater_for_col("press_release_layout")
+    where_pr_layout.not_value("")
 
     return sql.get_result_from_query(select)
 
@@ -84,5 +88,7 @@ def search_for_articles(sql: SQL, load) -> str:
             where_id = update.where_paramater_for_col("id")
             where_id.is_value(id)
 
-            sql.commit_query(update)
+            sql.print_query(update)
+
+            #sql.commit_query(update)
 
