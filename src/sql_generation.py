@@ -3,9 +3,14 @@ from re import sub
 from sqlite3 import Error
 
 class Query_Generator():
-    '''types of queries 
+    '''
+    queries 
     SELECT 
-        WHERE (can only be access from a select)'''
+    UPDATE
+
+        sub-queries
+        WHERE (can only be access from a select or update)
+    '''
     def __init__(self, type = None) -> None:
 
         self.query_data = {}
@@ -123,6 +128,38 @@ class Select(Query_Generator):
 
         return q
 
+class Update(Query_Generator):
+
+    def __init__(self) -> None:
+        super().__init__(type="UPDATE")
+
+    def table(self, table_name : str) -> None:
+
+        self.query_data["table_name"] = table_name
+
+    def col(self, col_name: str) -> None:
+
+        self.query_data["column"] = col_name
+
+    def value(self, value) -> None:
+
+        self.query_data["value"] = value
+
+    def where_paramater_for_col(self, column: str) -> Where:
+
+        w = Where(column)
+
+        if "WHERE" not in self.query_data:
+            self.query_data["WHERE"] = []
+        
+        self.query_data["WHERE"].append(w)
+
+        return w
+
+    def make_query(self) -> str:
+        
+        q = "UPDATE"
+
 class Create_Table(Query_Generator):
     """TODO: #12 FINISH CREATE TABLE CLASS"""
     def __init__(self) -> None:
@@ -163,6 +200,10 @@ class SQL:
     def create_table(self) -> Create_Table:
 
         return Create_Table()
+
+    def create_update_query(self) -> Update:
+
+        return Update()
 
     def clear(self):
         self.select = self.query = None

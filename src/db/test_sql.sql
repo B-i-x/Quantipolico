@@ -1,7 +1,7 @@
 -- SQLite
 
 SELECT * FROM Directory;
-
+SELECT press_release_layout FROM Directory
 
 /*
 INSERT INTO Directory (name) VALUES ("poop");
@@ -24,3 +24,6 @@ PRAGMA writable_schema = 1;
 DELETE FROM sqlite_master WHERE type = 'table' AND name NOT IN ('Directory');
 PRAGMA writable_schema = 0;
 VACUUM;
+
+ALTER TABLE Directory
+ADD COLUMN press_release_layout;

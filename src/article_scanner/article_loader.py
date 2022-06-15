@@ -66,4 +66,20 @@ def search_for_articles(sql: SQL, load) -> str:
 
         #crawler.research(links)
 
-        crawler.find_press_release_website_type(links, generated_random_id_set)
+        matches = crawler.find_press_release_website_type(links, generated_random_id_set)
+
+       
+        for match in matches:
+
+            id = match[0]
+
+            press_release_layout_type = match[1]
+
+            update = sql.create_update_query()
+
+            update.table("Directory")
+            update.col("press_release_layout")
+
+            where_id = update.where_paramater_for_col("id")
+            where_id.is_value(id)
+
