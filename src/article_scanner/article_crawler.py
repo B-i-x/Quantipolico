@@ -51,7 +51,9 @@ class Article_Finder():
 
         article_layout_search_order = [
             "read_more",
+            "read_more_modification_InitialCaps",
             "find_press_release_first",
+            "find_press_release_first_modification_div[1->4]",
             "newsie",
             "table",
             "sablan"

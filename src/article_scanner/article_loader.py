@@ -56,7 +56,7 @@ def search_for_articles(sql: SQL, load) -> str:
 
         random_id_set_2 = [296, 75, 243, 411, 136, 221, 106, 247, 407, 201]
 
-        random_id_set_length = 20
+        random_id_set_length = 10
 
         generated_random_id_set = random.sample(range(0,441), random_id_set_length)
 
@@ -79,7 +79,10 @@ def search_for_articles(sql: SQL, load) -> str:
 
             update.table("Directory")
             update.col("press_release_layout")
+            update.value(press_release_layout_type)
 
             where_id = update.where_paramater_for_col("id")
             where_id.is_value(id)
+
+            sql.commit_query(update)
 

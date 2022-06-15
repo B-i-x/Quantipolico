@@ -139,6 +139,8 @@ class Update(Query_Generator):
 
     def col(self, col_name: str) -> None:
 
+        self.query_data["multiple_columns"] = False
+
         self.query_data["column"] = col_name
 
     def value(self, value) -> None:
@@ -159,6 +161,25 @@ class Update(Query_Generator):
     def make_query(self) -> str:
         
         q = "UPDATE"
+
+        q += f" {self.query_data['table_name']}"
+
+        q += " SET"
+
+        if not self.query_data["multiple_columns"]:
+
+            q += f" {self.query_data['column']} = '{self.query_data['value']}'"
+
+        if "WHERE" in self.query_data:
+
+            for parameter in self.query_data["WHERE"]:
+
+                if parameter == self.query_data["WHERE"][0]: q = q + " WHERE "
+                else: q += " AND "
+
+                q += parameter.make_query()
+
+        return q
 
 class Create_Table(Query_Generator):
     """TODO: #12 FINISH CREATE TABLE CLASS"""
@@ -236,7 +257,7 @@ class SQL:
 
         self.db_conn.commit()
 
-    def get_result_from_query(self, query_generator_class: Query_Generator, return_type: str = "List of Strings"):
+    def get_result_from_query(self, query_generator_class: Query_Generator, return_type: str = "List of Strings", commit: bool= False):
 
         cursor = self.execute_query(query_generator_class)
 
@@ -256,6 +277,11 @@ class SQL:
 
         return cursor
 
+    def commit_query(self, query_generator_class: Query_Generator):
+
+        self.execute_query(query_generator_class)
+
+        self.db_conn.commit()
 
     def print_query(self, query_generator_class: Query_Generator):
 
