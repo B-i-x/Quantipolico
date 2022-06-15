@@ -56,6 +56,7 @@ class Article_Finder():
             "find_press_release_first_modification_div[1->4]",
             "newsie",
             "table",
+            "continue_reading_InitialCaps",
             "sablan"
         ]
 
@@ -162,6 +163,10 @@ class Article_Layout_Structure():
             "read_more_modification_InitialCaps" : {
                 "article_xpath": "//a[contains(text(),'Read More')]",
                 "article_count_on_page" : 10
+            },
+            "continue_reading_InitialCaps" : {
+                "article_xpath": "//a[contains(text(),'Continue')]",
+                "article_count_on_page" : 20
             }
         }
     

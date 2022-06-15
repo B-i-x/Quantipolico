@@ -43,7 +43,7 @@ def get_links_from_ids(sql: SQL, id_list: list) -> list:
     id.has_values(id_list)
 
     where_pr_layout = select.where_paramater_for_col("press_release_layout")
-    where_pr_layout.not_value("")
+    where_pr_layout.is_null()
 
     return sql.get_result_from_query(select)
 
@@ -60,7 +60,7 @@ def search_for_articles(sql: SQL, load) -> str:
 
         random_id_set_2 = [296, 75, 243, 411, 136, 221, 106, 247, 407, 201]
 
-        random_id_set_length = 10
+        random_id_set_length = 25
 
         generated_random_id_set = random.sample(range(0,441), random_id_set_length)
 
@@ -88,7 +88,7 @@ def search_for_articles(sql: SQL, load) -> str:
             where_id = update.where_paramater_for_col("id")
             where_id.is_value(id)
 
-            sql.print_query(update)
+            #sql.print_query(update)
 
-            #sql.commit_query(update)
+            sql.commit_query(update)
 

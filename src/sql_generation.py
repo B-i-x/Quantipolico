@@ -75,6 +75,17 @@ class Where(Query_Generator):
 
         self.query_data["value"] = str(value)
 
+    def not_null(self) -> None:
+
+        self.query_data["operator"] = "IS NOT"
+
+        self.query_data["value"] = 'NULL'
+
+    def is_null(self) -> None:
+
+        self.query_data["operator"] = "IS"
+
+        self.query_data["value"] = 'NULL'
 
 class Select(Query_Generator):
 
