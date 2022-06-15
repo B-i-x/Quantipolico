@@ -52,6 +52,10 @@ def search_for_articles(sql: SQL, load) -> str:
     a code of diagnostics like new articles added and 
     success/failure codes'''
 
+    manual_pr_links = [
+        [2, "https://clyde.house.gov/news/documentquery.aspx?DocumentTypeID=27"]
+    ]
+
     crawler = Article_Finder()
 
     if load == "research":
@@ -66,7 +70,7 @@ def search_for_articles(sql: SQL, load) -> str:
 
         links = get_links_from_ids(sql, generated_random_id_set)
 
-        print(links)
+        #print(links)
 
         #crawler.research(links)
 

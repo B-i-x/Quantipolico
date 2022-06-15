@@ -69,6 +69,8 @@ class Article_Finder():
 
             link = set[1]
 
+            print(id, link)
+
             self.driver.get(link)
 
             layout = Press_Release_Layout()

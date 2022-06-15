@@ -1,7 +1,7 @@
 -- SQLite
 
 SELECT * FROM Directory;
-SELECT press_release_layout FROM Directory
+SELECT name FROM Directory where name = ""
 
 /*
 INSERT INTO Directory (name) VALUES ("poop");
