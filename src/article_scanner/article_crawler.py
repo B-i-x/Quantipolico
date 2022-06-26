@@ -100,6 +100,8 @@ class Article_Finder():
 
             #print(id, link)
 
+            self.driver.get(link)
+
             if id in specialized_ids:
 
                 id_layout.append([id, specialized_ids[id].name])
@@ -110,13 +112,11 @@ class Article_Finder():
 
                 if specialized_ids[id].name == "see_more":
 
-                    button_xpath = '//*[@id="__next"]/div[1]/div/div[2]/div[1]/div/button/span/button'
+                    button_xpath = "//*[@id='__next']/div[1]/div/div[2]/div[1]/div/button/span/button"
 
                     exit_button = self.driver.find_element_by_xpath(button_xpath)
 
                     webdriver.ActionChains(self.driver).move_to_element(exit_button).click().perform()
-
-            self.driver.get(link)
 
             if not match_found:
 
@@ -426,7 +426,7 @@ class P(Article_Layout_Structure):
 
         amount = 6
 
-        ids = [148, 138, 19, 111, 316, 275, 424, 388]
+        ids = [148, 138, 19, 111, 316, 275, 424, 388, 321, 406, 414]
 
         super().__init__(name, article_xpath, amount, ids)
 
