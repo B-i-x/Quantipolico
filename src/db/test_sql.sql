@@ -36,3 +36,5 @@ UPDATE Directory SET general_pressrelease_link = 'https://matsui.house.gov/media
 
 UPDATE Directory SET general_pressrelease_link = 'https://mcclain.house.gov/press-releases' where id = 211;
 UPDATE Directory SET general_pressrelease_link = 'https://davis.house.gov/media' where id = 142;
+
+UPDATE Directory SET general_pressrelease_link = 'https://watsoncoleman.house.gov/newsroom/press-releases' where id = 257;

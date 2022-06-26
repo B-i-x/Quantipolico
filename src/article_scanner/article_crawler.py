@@ -329,3 +329,29 @@ class I(Article_Layout_Structure):
         amount = [10, 11, 25]
 
         super().__init__(name, article_xpath, amount)
+
+class J(Article_Layout_Structure):
+
+    def __init__(self) -> None:
+
+        name = "click_here_to_read_the_full_news_release"
+
+        article_xpath = "//a[contains(text(),'Click here to read the full news release')]"
+
+        amount = 10
+
+        ids = 119
+
+        super().__init__(name, article_xpath, amount, ids)
+
+class K(Article_Layout_Structure):
+
+    def __init__(self) -> None:
+
+        name = "more"
+
+        article_xpath = "//a[contains(text(),'More')]"
+
+        amount = 10
+
+        super().__init__(name, article_xpath, amount)
