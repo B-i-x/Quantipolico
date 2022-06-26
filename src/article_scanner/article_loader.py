@@ -47,6 +47,7 @@ def get_links_from_ids(sql: SQL, id_list: list) -> list:
 
     return sql.get_result_from_query(select, return_type="tuples")
 
+    
 def get_layout_popularity(sql: SQL) -> dict:
 
     select = sql.create_select_query()
@@ -58,7 +59,7 @@ def get_layout_popularity(sql: SQL) -> dict:
 
     layouts =  sql.get_result_from_query(select)
 
-    print(layouts)
+    #print(layouts)
 
     popularity = {}
 
@@ -71,12 +72,29 @@ def get_layout_popularity(sql: SQL) -> dict:
         else:
 
             popularity[layout] += 1
-
-    #print(popularity)
-
-    sorted_popularity = [k for k, v in sorted(popularity.items(), key = lambda item: item[1], reverse=True)]
         
-    return sorted_popularity
+    return popularity
+
+def summary(sql: SQL):
+
+    popularity = get_layout_popularity(sql)
+    total = 440
+    sum_of_matches = 0
+    
+    for count in popularity.values():
+
+        sum_of_matches += count
+
+    print(f"{'__________CURRENT SUMMARY__________':^79}")
+    print(f"{'LAYOUT' : ^60} {'COUNT' : ^7} {'PERCENTAGE%':^12}")
+
+    for layout in popularity:
+        
+        print(f"{layout : <60} {popularity[layout] : ^7} {((popularity[layout]/sum_of_matches)*100):^12.2f}")
+
+    print(f"{'TOTAL' : <60} {sum_of_matches : ^7} {((sum_of_matches/total)*100):^12.2f}")
+
+    print(f"STILL MISSING {total - sum_of_matches}")
 
 
 def search_for_articles(sql: SQL, load) -> str:
@@ -88,7 +106,7 @@ def search_for_articles(sql: SQL, load) -> str:
 
     if load == "research":
 
-        random_id_set_length = 25
+        random_id_set_length = 100
 
         generated_random_id_set = random.sample(range(0,441), random_id_set_length)
 
@@ -98,11 +116,13 @@ def search_for_articles(sql: SQL, load) -> str:
 
         #crawler.research(links)
 
-        layout_popularity = get_layout_popularity(sql)
+        popularity = get_layout_popularity(sql)
 
-        print(layout_popularity)
+        #print(layout_popularity)
 
-        matches = crawler.find_press_release_website_type(links_w_ids, layout_popularity)
+        sorted_popularity = [k for k, v in sorted(popularity.items(), key = lambda item: item[1], reverse=True)]
+
+        matches = crawler.find_press_release_website_type(links_w_ids, sorted_popularity)
        
         for match in matches:
 
@@ -123,3 +143,4 @@ def search_for_articles(sql: SQL, load) -> str:
 
             sql.commit_query(update)
         
+        summary(sql)

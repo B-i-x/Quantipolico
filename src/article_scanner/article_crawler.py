@@ -58,18 +58,34 @@ class Article_Finder():
 
             for cls in all_article_layouts:
 
-                if cls.name == layout:
+                if cls.name == layout and not cls.specialized:
 
                     sorted_layout_order[index] = cls
 
 
         for index, cls in enumerate(all_article_layouts):
 
-            if cls not in sorted_layout_order.values():
+            if cls not in sorted_layout_order.values() and not cls.specialized:
                 
                 sorted_layout_order[max(sorted_layout_order) + 1] = cls
 
         [print(cls.name) for cls in sorted_layout_order.values()]
+
+        specialized_ids = {}
+
+        for cls in all_article_layouts:
+
+            if cls.specialized:
+
+                if type(cls.ids) == int:
+
+                    specialized_ids[cls.ids] = cls
+
+                elif type(cls.ids) == list:
+
+                    for id in cls.ids:
+
+                        specialized_ids[id] = cls
 
 
         id_layout = []
@@ -84,38 +100,48 @@ class Article_Finder():
 
             #print(id, link)
 
+            if id in specialized_ids:
+
+                id_layout.append(id, link, specialized_ids[id].name)
+
+                match_found = True
+
+                print(id, link, specialized_ids[id].name)
+
             self.driver.get(link)
 
-            for layout in sorted_layout_order.values():
+            if not match_found:
 
-                try:
-                    article_elements = self.driver.find_elements_by_xpath(layout.article_xpath)
+                for layout in sorted_layout_order.values():
 
-                    if type(layout.count_on_page) == int:
+                    try:
+                        article_elements = self.driver.find_elements_by_xpath(layout.article_xpath)
 
-                        if layout.count_on_page == len(article_elements):
-                            
-                            match_found = True
+                        if type(layout.count_on_page) == int:
 
-                    else:
-
-                        for count in layout.count_on_page:
-
-                            if count == len(article_elements):
-
-                                match_found = True
+                            if layout.count_on_page == len(article_elements):
                                 
+                                match_found = True
 
-                except NoSuchElementException:
-                    continue
-                
-                if match_found:
+                        else:
 
-                    print(id, link, layout.name)
+                            for count in layout.count_on_page:
 
-                    id_layout.append([id, layout.name])
+                                if count == len(article_elements):
 
-                    break
+                                    match_found = True
+                                    
+
+                    except NoSuchElementException:
+                        continue
+                    
+                    if match_found:
+
+                        print(id, link, layout.name)
+
+                        id_layout.append([id, layout.name])
+
+                        break
 
             if set != links_and_ids[-1]:
                 self.__new_tab()
@@ -154,54 +180,6 @@ class Article_Layout_Structure():
             self.ids = ids
 
             self.specialized = True
-
-        self.types = {
-            #yes ik this looks like an object job but honestly this is so much less lines
-            "" : {
-            "article_xpath": 'unknown',
-            "article_count_on_page" : -1
-                },
-            "find_press_release_first" : {
-                #this layout has the press release nicely under the article
-                "article_xpath": '//*[text()="Press Release"]//ancestor::div[1]/div[1]//a',
-                "article_count_on_page" : 10
-                },
-            "table" : {
-                #simple table format
-                "article_xpath": "//table//a",
-                "article_count_on_page" : 10
-                },
-            "read_more" : {
-                #simple read more button
-                "article_xpath": "//a[contains(text(),'Read more')]",
-                "article_count_on_page" : 10
-                },
-            "newsie" : {
-                #stupid layout
-                "article_xpath": '//h2[@class="newsie-titler"]//a',
-                "article_count_on_page" : 10
-                },
-            "sablan" : {
-                "article_xpath": '//div[@class="list-item"]',
-                "article_count_on_page" : 10
-            },
-            "find_press_release_first_modification_div[1->4]" : {
-                "article_xpath": '//*[text()="Press Release"]//ancestor::div[4]/div[1]//a',
-                "article_count_on_page" : 10
-            },
-            "read_more_modification_InitialCaps" : {
-                "article_xpath": "//a[contains(text(),'Read More')]",
-                "article_count_on_page" : 10
-            },
-            "continue_reading_InitialCaps" : {
-                "article_xpath": "//a[contains(text(),'Continue')]",
-                "article_count_on_page" : 20
-            },
-            "read_more_modification_InitialCaps_15Count" : {
-                "article_xpath": "//a[contains(text(),'Read More')]",
-                "article_count_on_page" : 15
-            }
-        }
 
 
 class A(Article_Layout_Structure):
@@ -258,9 +236,9 @@ class E(Article_Layout_Structure):
 
         name = "find_press_release_first_modification_div[1->4]"
 
-        article_xpath = "//a[contains(text(),'Read more')]"
+        article_xpath = '//*[text()="Press Release"]//ancestor::div[4]/div[1]//a'
 
-        article_count_on_page = 10
+        article_count_on_page = [10, 25]
 
         super().__init__(name, article_xpath, article_count_on_page)
 
@@ -303,3 +281,15 @@ class E(Article_Layout_Structure):
 
         super().__init__(name, article_xpath, article_count_on_page, id)
 
+class F(Article_Layout_Structure):
+    '''for nancy pelosi'''
+    def __init__(self) -> None:
+
+        name = "nancy"
+
+        article_xpath = "//*[contains(text(),'Press Release')]/parent::div//a[contains(text(),'Press Release')]//ancestor::div[1]/div[1]//a"
+
+        amount = 10
+
+        ids = 34
+        super().__init__(name, article_xpath, amount, ids)
