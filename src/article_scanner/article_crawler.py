@@ -404,7 +404,7 @@ class O(Article_Layout_Structure):
 
         article_xpath = "//table//a[1]"
 
-        amount = 10
+        amount = [10, 15]
 
         super().__init__(name, article_xpath, amount)
 
@@ -419,5 +419,17 @@ class P(Article_Layout_Structure):
         amount = 6
 
         ids = [148, 138, 19, 111]
+
+        super().__init__(name, article_xpath, amount, ids)
+
+class Q(Article_Layout_Structure):
+
+    def __init__(self) -> None:
+
+        name = "find_press_release_first_modification_uses_headings"
+
+        article_xpath = "//a[text()='Press Releases']//ancestor::div[1]//h2//a"
+
+        amount = 10
 
         super().__init__(name, article_xpath, amount)
