@@ -122,7 +122,7 @@ def search_for_articles(sql: SQL, load) -> str:
 
         sorted_popularity = [k for k, v in sorted(popularity.items(), key = lambda item: item[1], reverse=True)]
 
-        matches = crawler.find_press_release_website_type(links_w_ids[0:random_id_length], sorted_popularity)
+        matches = crawler.find_press_release_website_type(links_w_ids, sorted_popularity)
        
         for match in matches:
 

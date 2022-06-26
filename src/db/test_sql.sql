@@ -43,9 +43,14 @@ UPDATE Directory SET general_pressrelease_link = 'https://grijalva.house.gov/cat
 
 UPDATE Directory SET general_pressrelease_link = 'https://hayes.house.gov/press-releases' where id = 87;
 
-DELETE FROM Directory WHERE id = 201;
+DELETE FROM Directory WHERE id = 279;
 
 UPDATE Directory SET general_pressrelease_link = 'https://teddeutch.house.gov/press' where id = 111;
 UPDATE Directory SET general_pressrelease_link = 'https://newman.house.gov/press' where id = 138;
 
+UPDATE Directory SET general_pressrelease_link = 'https://carey.house.gov/media/press-releases' where id = 317;
+UPDATE Directory SET general_pressrelease_link = 'https://joyce.house.gov/press' where id = 316;
+UPDATE Directory SET general_pressrelease_link = 'https://ritchietorres.house.gov/press' where id = 275;
 
+UPDATE Directory SET general_pressrelease_link = 'https://mcmorris.house.gov/press' where id = 424;
+UPDATE Directory SET general_pressrelease_link = 'https://nehls.house.gov/press' where id = 388;

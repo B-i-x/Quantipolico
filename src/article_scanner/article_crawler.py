@@ -1,6 +1,6 @@
-from soupsieve import match
 from webdriver_interface import WebDriver_Interface
 from selenium.common.exceptions import NoSuchElementException
+from selenium import webdriver
 
 class article():
 
@@ -107,6 +107,14 @@ class Article_Finder():
                 match_found = True
 
                 print(id, link, specialized_ids[id].name)
+
+                if specialized_ids[id].name == "see_more":
+
+                    button_xpath = '//*[@id="__next"]/div[1]/div/div[2]/div[1]/div/button/span/button'
+
+                    exit_button = self.driver.find_element_by_xpath(button_xpath)
+
+                    webdriver.ActionChains(self.driver).move_to_element(exit_button).click().perform()
 
             self.driver.get(link)
 
@@ -390,9 +398,9 @@ class N(Article_Layout_Structure):
 
         article_xpath = "//*[contains(text(),'Read More')]//parent::a"
 
-        amount = 20
+        amount = [20, 6]
 
-        ids = 11
+        ids = [11, 269]
 
         super().__init__(name, article_xpath, amount, ids)
 
@@ -418,7 +426,7 @@ class P(Article_Layout_Structure):
 
         amount = 6
 
-        ids = [148, 138, 19, 111]
+        ids = [148, 138, 19, 111, 316, 275, 424, 388]
 
         super().__init__(name, article_xpath, amount, ids)
 
@@ -429,6 +437,68 @@ class Q(Article_Layout_Structure):
         name = "find_press_release_first_modification_uses_headings"
 
         article_xpath = "//a[text()='Press Releases']//ancestor::div[1]//h2//a"
+
+        amount = 10
+
+        super().__init__(name, article_xpath, amount)
+
+class U(Article_Layout_Structure):
+
+    def __init__(self) -> None:
+
+        name = "date_div_2_modification_uses_headings"
+
+        article_xpath = "//*[contains(text(), 'Jan') or contains(text(), 'Feb') or contains(text(), 'Mar') or  contains(text(), 'Apr') or contains(text(), 'May') or contains(text(), 'Jun') or contains(text(), 'Jul') or contains(text(), 'Aug') or contains(text(), 'Sep') or contains(text(), 'Oct') or contains(text(), 'Nov') or contains(text(), 'Dec')]/ancestor::div[1]//h2//a"
+
+        amount = [4,10]
+
+        super().__init__(name, article_xpath, amount)
+
+class R(Article_Layout_Structure):
+
+    def __init__(self) -> None:
+
+        name = "date_div_2_modification_uses_class_name_body"
+
+        article_xpath = "//*[contains(text(), 'Jan') or contains(text(), 'Feb') or contains(text(), 'Mar') or  contains(text(), 'Apr') or contains(text(), 'May') or contains(text(), 'Jun') or contains(text(), 'Jul') or contains(text(), 'Aug') or contains(text(), 'Sep') or contains(text(), 'Oct') or contains(text(), 'Nov') or contains(text(), 'Dec')]/ancestor::div[2]//a[@class='media-digest-body-link']"
+
+        amount = 10
+
+        ids = 86
+
+        super().__init__(name, article_xpath, amount, ids)
+
+class S(Article_Layout_Structure):
+
+    def __init__(self) -> None:
+
+        name = "date_div_2_modification_uses_heading_3"
+
+        article_xpath = "//*[contains(text(), 'Jan') or contains(text(), 'Feb') or contains(text(), 'Mar') or  contains(text(), 'Apr') or contains(text(), 'May') or contains(text(), 'Jun') or contains(text(), 'Jul') or contains(text(), 'Aug') or contains(text(), 'Sep') or contains(text(), 'Oct') or contains(text(), 'Nov') or contains(text(), 'Dec')]/ancestor::div[1]//h3/a"
+
+        amount = 10
+
+        super().__init__(name, article_xpath, amount)
+
+class T(Article_Layout_Structure):
+
+    def __init__(self) -> None:
+
+        name = "date_div_2_modification_uses_heading_3_div[1->3]"
+
+        article_xpath = "//*[contains(text(), 'Jan') or contains(text(), 'Feb') or contains(text(), 'Mar') or  contains(text(), 'Apr') or contains(text(), 'May') or contains(text(), 'Jun') or contains(text(), 'Jul') or contains(text(), 'Aug') or contains(text(), 'Sep') or contains(text(), 'Oct') or contains(text(), 'Nov') or contains(text(), 'Dec')]/ancestor::div[3]//h3//a"
+
+        amount = 10
+
+        super().__init__(name, article_xpath, amount)
+
+class V(Article_Layout_Structure):
+
+    def __init__(self) -> None:
+
+        name = "date_div_2_modification_uses_spans"
+
+        article_xpath = "//*[contains(text(), 'Jan') or contains(text(), 'Feb') or contains(text(), 'Mar') or  contains(text(), 'Apr') or contains(text(), 'May') or contains(text(), 'Jun') or contains(text(), 'Jul') or contains(text(), 'Aug') or contains(text(), 'Sep') or contains(text(), 'Oct') or contains(text(), 'Nov') or contains(text(), 'Dec')]//ancestor::table[1]//span//span//a"
 
         amount = 10
 
