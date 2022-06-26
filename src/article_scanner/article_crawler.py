@@ -395,3 +395,16 @@ class N(Article_Layout_Structure):
         ids = 11
 
         super().__init__(name, article_xpath, amount, ids)
+
+class O(Article_Layout_Structure):
+
+    def __init__(self) -> None:
+
+        name = "table_modification_no_attachments"
+
+        article_xpath = "//table//a[1]"
+
+        amount = 10
+
+        super().__init__(name, article_xpath, amount)
+    

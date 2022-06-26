@@ -40,3 +40,8 @@ UPDATE Directory SET general_pressrelease_link = 'https://davis.house.gov/media'
 UPDATE Directory SET general_pressrelease_link = 'https://watsoncoleman.house.gov/newsroom/press-releases' where id = 257;
 
 UPDATE Directory SET general_pressrelease_link = 'https://grijalva.house.gov/category/congress_press_release/' where id = 12;
+
+UPDATE Directory SET general_pressrelease_link = 'https://hayes.house.gov/press-releases' where id = 87;
+
+DELETE FROM Directory WHERE id = 44;
+
