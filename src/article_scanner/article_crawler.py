@@ -1,3 +1,4 @@
+from soupsieve import match
 from webdriver_interface import WebDriver_Interface
 from selenium.common.exceptions import NoSuchElementException
 
@@ -45,24 +46,37 @@ class Article_Finder():
         return chwd[0]
         
 
-    def find_press_release_website_type(self,links_and_ids: list) -> list:
+    def find_press_release_website_type(self,links_and_ids: list, search_order) -> list:
         '''TODO: #14 THIS FUNCTION IS WAY TOO LONG'''
         self.__open("keep open")
 
-        article_layout_search_order = [
-            "read_more",
-            "read_more_modification_InitialCaps",
-            "find_press_release_first",
-            "find_press_release_first_modification_div[1->4]",
-            "newsie",
-            "table",
-            "continue_reading_InitialCaps",
-            "sablan"
-        ]
+        sorted_layout_order = {}
+
+        all_article_layouts =  [cls() for cls in Article_Layout_Structure.__subclasses__()]
+        
+        for index, layout in enumerate(search_order):
+
+            for cls in all_article_layouts:
+
+                if cls.name == layout:
+
+                    sorted_layout_order[index] = cls
+
+
+        for index, cls in enumerate(all_article_layouts):
+
+            if cls not in sorted_layout_order.values():
+                
+                sorted_layout_order[max(sorted_layout_order) + 1] = cls
+
+        [print(cls.name) for cls in sorted_layout_order.values()]
+
 
         id_layout = []
 
         for set in links_and_ids:
+
+            match_found = False
 
             id = set[0]
 
@@ -72,35 +86,41 @@ class Article_Finder():
 
             self.driver.get(link)
 
-            layout = Press_Release_Layout()
-
-            article_layout = layout.article_layout()
-
-            for type in article_layout_search_order:
-
-                article_xpath = article_layout.types[type]["article_xpath"]
+            for layout in sorted_layout_order.values():
 
                 try:
-                    article_elements = self.driver.find_elements_by_xpath(article_xpath)
+                    article_elements = self.driver.find_elements_by_xpath(layout.article_xpath)
 
-                    if len(article_elements) == article_layout.types[type]["article_count_on_page"]:
+                    if type(layout.count_on_page) == int:
 
-                        article_layout.type = type
+                        if layout.count_on_page == len(article_elements):
+                            
+                            match_found = True
 
-                        break
+                    else:
+
+                        for count in layout.count_on_page:
+
+                            if count == len(article_elements):
+
+                                match_found = True
+                                
 
                 except NoSuchElementException:
                     continue
+                
+                if match_found:
 
+                    print(id, link, layout.name)
+
+                    id_layout.append([id, layout.name])
+
+                    break
 
             if set != links_and_ids[-1]:
                 self.__new_tab()
 
-            if len(article_elements) == article_layout.types[article_layout.type]["article_count_on_page"]:
-                
-                print(id, link, type)
-
-                id_layout.append([id, type])
+            if match_found:
 
                 chwd = self.driver.window_handles
 
@@ -121,11 +141,19 @@ class Article_Finder():
         
 class Article_Layout_Structure():
 
-    def __init__(self) -> None:
-        self.name = ""
-        self.type = ""
+    def __init__(self, name: str, article_xpath: str, amount: int, ids: int = None) -> None:
+        self.name = name
 
-        self.article_count_on_page = None
+        self.article_xpath = article_xpath
+
+        self.count_on_page = amount
+
+        self.specialized = False
+
+        if ids is not None:
+            self.ids = ids
+
+            self.specialized = True
 
         self.types = {
             #yes ik this looks like an object job but honestly this is so much less lines
@@ -168,66 +196,110 @@ class Article_Layout_Structure():
             "continue_reading_InitialCaps" : {
                 "article_xpath": "//a[contains(text(),'Continue')]",
                 "article_count_on_page" : 20
+            },
+            "read_more_modification_InitialCaps_15Count" : {
+                "article_xpath": "//a[contains(text(),'Read More')]",
+                "article_count_on_page" : 15
             }
         }
-    
-class Press_Release_Layout():
-    '''this object quantifies all relevant parts of a website that needs to be scanned
-    it has an article layout
-    it has next layout
-    '''
+
+
+class A(Article_Layout_Structure):
+
     def __init__(self) -> None:
         
-        self.article_layout_structure = Article_Layout_Structure()
-        pass
+        name = 'find_press_release_first'
 
-    def article_layout(self) -> Article_Layout_Structure:
+        article_xpath = '//*[text()="Press Release"]//ancestor::div[1]/div[1]//a'
 
-        return self.article_layout_structure
+        article_count_on_page = 10
 
-
-
-class Find_Press_Release_Text(Article_Layout_Structure):
-
-    def __init__(self) -> None:
-        super().__init__()
-
-        self.article_xpath = '//*[text()="Press Release"]//ancestor::div[1]/div[1]//a'
-
-        self.article_count_on_page = 10
+        super().__init__(name, article_xpath, article_count_on_page)
             
-class Table(Article_Layout_Structure):
+class B(Article_Layout_Structure):
 
     def __init__(self) -> None:
-        super().__init__()
 
-        self.article_xpath = "//table//a"
+        name = 'table'
 
-        self.article_count_on_page = 10
+        article_xpath = "//table//a"
 
-class Read_more(Article_Layout_Structure):
+        article_count_on_page = 10
 
-    def __init__(self) -> None:
-        super().__init__()
+        super().__init__(name, article_xpath, article_count_on_page)
 
-        self.article_xpath = "//a[contains(text(),'Read more')]"
-
-        self.article_count_on_page = 10
-
-class Newsie(Article_Layout_Structure):
+class C(Article_Layout_Structure):
 
     def __init__(self) -> None:
-        super().__init__()
+        name = "read_more"
 
-        self.article_xpath = '//h2[@class="newsie-titler"]//a'
+        article_xpath = "//a[contains(text(),'Read more')]"
 
-        self.article_count_on_page = 10
+        article_count_on_page = 10
 
-class Read_more_modified(Article_Layout_Structure):
+        super().__init__(name, article_xpath, article_count_on_page)
+
+
+class D(Article_Layout_Structure):
 
     def __init__(self) -> None:
-        super().__init__()
+        name = "newsie"
 
-        self.article_xpath = "//a[contains(text(),'Read more')]"
+        article_xpath = '//h2[@class="newsie-titler"]//a'
 
-        self.article_count_on_page = 15
+        article_count_on_page = 10
+
+        super().__init__(name, article_xpath, article_count_on_page)
+
+
+class E(Article_Layout_Structure):
+
+    def __init__(self) -> None:
+
+        name = "find_press_release_first_modification_div[1->4]"
+
+        article_xpath = "//a[contains(text(),'Read more')]"
+
+        article_count_on_page = 10
+
+        super().__init__(name, article_xpath, article_count_on_page)
+
+class F(Article_Layout_Structure):
+
+    def __init__(self) -> None:
+
+        name = "read_more_modification_InitialCaps"
+
+        article_xpath = "//a[contains(text(),'Read More')]"
+
+        article_count_on_page = [10, 15]
+
+        super().__init__(name, article_xpath, article_count_on_page)
+
+class D(Article_Layout_Structure):
+
+    def __init__(self) -> None:
+
+        name = "continue_reading_InitialCaps"
+
+        article_xpath = "//a[contains(text(),'Continue')]"
+
+        article_count_on_page = 20
+
+        super().__init__(name, article_xpath, article_count_on_page)
+
+
+class E(Article_Layout_Structure):
+
+    def __init__(self) -> None:
+
+        name = "sablan"
+
+        article_xpath = '//div[@class="list-item"]'
+
+        article_count_on_page = 10
+
+        id = 302
+
+        super().__init__(name, article_xpath, article_count_on_page, id)
+

@@ -28,4 +28,4 @@ VACUUM;
 ALTER TABLE Directory
 ADD COLUMN press_release_layout;
 
-UPDATE Directory SET general_pressrelease_link = 'https://williams.house.gov/media-center/press-releases' where id = 391;
+UPDATE Directory SET general_pressrelease_link = 'https://jayapal.house.gov/category/news/' where id = 426;

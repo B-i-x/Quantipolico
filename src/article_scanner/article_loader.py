@@ -47,22 +47,46 @@ def get_links_from_ids(sql: SQL, id_list: list) -> list:
 
     return sql.get_result_from_query(select, return_type="tuples")
 
+def get_layout_popularity(sql: SQL) -> dict:
+
+    select = sql.create_select_query()
+    select.table("Directory")
+    select.columns(["press_release_layout"])
+
+    where_pr_layout = select.where_paramater_for_col("press_release_layout")
+    where_pr_layout.not_null()
+
+    layouts =  sql.get_result_from_query(select)
+
+    print(layouts)
+
+    popularity = {}
+
+    for layout in layouts:
+
+        if layout not in popularity:
+
+            popularity[layout] = 1
+
+        else:
+
+            popularity[layout] += 1
+
+    #print(popularity)
+
+    sorted_popularity = [k for k, v in sorted(popularity.items(), key = lambda item: item[1], reverse=True)]
+        
+    return sorted_popularity
+
+
 def search_for_articles(sql: SQL, load) -> str:
     '''returns 
     a code of diagnostics like new articles added and 
     success/failure codes'''
 
-    manual_pr_links = [
-        [2, "https://clyde.house.gov/news/documentquery.aspx?DocumentTypeID=27"]
-    ]
-
     crawler = Article_Finder()
 
     if load == "research":
-
-        random_id_set_1 = [420, 324,357,251,218,297,167,302,174,20]
-
-        random_id_set_2 = [296, 75, 243, 411, 136, 221, 106, 247, 407, 201]
 
         random_id_set_length = 25
 
@@ -74,8 +98,11 @@ def search_for_articles(sql: SQL, load) -> str:
 
         #crawler.research(links)
 
-        
-        matches = crawler.find_press_release_website_type(links_w_ids)
+        layout_popularity = get_layout_popularity(sql)
+
+        print(layout_popularity)
+
+        matches = crawler.find_press_release_website_type(links_w_ids, layout_popularity)
        
         for match in matches:
 
@@ -94,4 +121,5 @@ def search_for_articles(sql: SQL, load) -> str:
 
             sql.print_query(update)
 
-            #sql.commit_query(update)
+            sql.commit_query(update)
+        
