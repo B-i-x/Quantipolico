@@ -106,13 +106,13 @@ def search_for_articles(sql: SQL, load) -> str:
 
     if load == "research":
 
-        random_id_set_length = 50
+        random_id_length = 25
 
-        generated_random_id_set = random.sample(range(0,441), random_id_set_length)
+        generated_random_id_set = random.sample(range(0,441), 441)
 
         links_w_ids = get_links_from_ids(sql, generated_random_id_set)
 
-        print(links_w_ids)
+        print(links_w_ids, "ACTUAL TESTING LINKS", len(links_w_ids))
 
         #crawler.research(links)
 
@@ -122,7 +122,7 @@ def search_for_articles(sql: SQL, load) -> str:
 
         sorted_popularity = [k for k, v in sorted(popularity.items(), key = lambda item: item[1], reverse=True)]
 
-        matches = crawler.find_press_release_website_type(links_w_ids, sorted_popularity)
+        matches = crawler.find_press_release_website_type(links_w_ids[0:random_id_length], sorted_popularity)
        
         for match in matches:
 

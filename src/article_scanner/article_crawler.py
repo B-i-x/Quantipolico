@@ -102,7 +102,7 @@ class Article_Finder():
 
             if id in specialized_ids:
 
-                id_layout.append(id, link, specialized_ids[id].name)
+                id_layout.append([id, specialized_ids[id].name])
 
                 match_found = True
 
@@ -250,7 +250,7 @@ class F(Article_Layout_Structure):
 
         article_xpath = "//a[contains(text(),'Read More')]"
 
-        article_count_on_page = [10, 15]
+        article_count_on_page = [10, 15, 18]
 
         super().__init__(name, article_xpath, article_count_on_page)
 
@@ -355,3 +355,43 @@ class K(Article_Layout_Structure):
         amount = 10
 
         super().__init__(name, article_xpath, amount)
+
+class L(Article_Layout_Structure):
+
+    def __init__(self) -> None:
+
+        name = "find_press_release_first_modification_two_more_divs"
+
+        article_xpath = "//*[text()='Press Release']/ancestor::div[4]/div[1]//div[1]/div/div//a"
+
+        amount = 20
+
+        ids = 31
+
+        super().__init__(name, article_xpath, amount, ids)
+
+class M(Article_Layout_Structure):
+
+    def __init__(self) -> None:
+
+        name = "find_press_release_first_modification_news_release"
+
+        article_xpath = "//*[text()='News Releases']/ancestor::div[1]/div[1]//a"
+
+        amount = 20
+
+        super().__init__(name, article_xpath, amount)
+
+class N(Article_Layout_Structure):
+
+    def __init__(self) -> None:
+
+        name = "read_more_modification_go_to_parent"
+
+        article_xpath = "//*[contains(text(),'Read More')]//parent::a"
+
+        amount = 20
+
+        ids = 11
+
+        super().__init__(name, article_xpath, amount, ids)
