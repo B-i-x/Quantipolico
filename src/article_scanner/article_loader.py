@@ -106,7 +106,7 @@ def search_for_articles(sql: SQL, load) -> str:
 
     if load == "research":
 
-        random_id_set_length = 100
+        random_id_set_length = 50
 
         generated_random_id_set = random.sample(range(0,441), random_id_set_length)
 

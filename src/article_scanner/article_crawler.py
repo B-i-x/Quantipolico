@@ -238,7 +238,7 @@ class E(Article_Layout_Structure):
 
         article_xpath = '//*[text()="Press Release"]//ancestor::div[4]/div[1]//a'
 
-        article_count_on_page = [10, 25]
+        article_count_on_page = [10, 25, 100]
 
         super().__init__(name, article_xpath, article_count_on_page)
 
@@ -292,4 +292,40 @@ class F(Article_Layout_Structure):
         amount = 10
 
         ids = 34
+
         super().__init__(name, article_xpath, amount, ids)
+
+class G(Article_Layout_Structure):
+    '''for nancy pelosi'''
+    def __init__(self) -> None:
+
+        name = "read_more_modification_ALLCAPS"
+
+        article_xpath = "//a[contains(text(),'READ MORE')]"
+
+        amount = 10
+        
+        super().__init__(name, article_xpath, amount)
+
+class H(Article_Layout_Structure):
+
+    def __init__(self) -> None:
+
+        name = "date_div_1"
+
+        article_xpath = "//*[contains(text(), 'Jan') or contains(text(), 'Feb') or contains(text(), 'Mar') or  contains(text(), 'Apr') or contains(text(), 'May') or contains(text(), 'Jun') or contains(text(), 'Jul') or contains(text(), 'Aug') or contains(text(), 'Sep') or contains(text(), 'Oct') or contains(text(), 'Nov') or contains(text(), 'Dec')]/ancestor::div[1]//a"
+
+        amount = 10
+        super().__init__(name, article_xpath, amount)
+
+class I(Article_Layout_Structure):
+
+    def __init__(self) -> None:
+
+        name = "date_div_2"
+
+        article_xpath = "//*[contains(text(), 'Jan') or contains(text(), 'Feb') or contains(text(), 'Mar') or  contains(text(), 'Apr') or contains(text(), 'May') or contains(text(), 'Jun') or contains(text(), 'Jul') or contains(text(), 'Aug') or contains(text(), 'Sep') or contains(text(), 'Oct') or contains(text(), 'Nov') or contains(text(), 'Dec')]/ancestor::div[2]//a"
+
+        amount = [10, 11, 25]
+
+        super().__init__(name, article_xpath, amount)

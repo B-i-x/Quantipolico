@@ -29,3 +29,10 @@ ALTER TABLE Directory
 ADD COLUMN press_release_layout;
 
 UPDATE Directory SET general_pressrelease_link = 'https://jayapal.house.gov/category/news/' where id = 426;
+
+UPDATE Directory SET general_pressrelease_link = 'https://clyde.house.gov/news/documentquery.aspx?DocumentTypeID=27' where id = 125;
+UPDATE Directory SET general_pressrelease_link = 'https://cherfilus-mccormick.house.gov/media/press-releases' where id = 109;
+UPDATE Directory SET general_pressrelease_link = 'https://matsui.house.gov/media/press-releases' where id = 28;
+
+UPDATE Directory SET general_pressrelease_link = 'https://mcclain.house.gov/press-releases' where id = 211;
+UPDATE Directory SET general_pressrelease_link = 'https://davis.house.gov/media' where id = 142;
