@@ -503,3 +503,59 @@ class V(Article_Layout_Structure):
         amount = 10
 
         super().__init__(name, article_xpath, amount)
+
+class X(Article_Layout_Structure):
+
+    def __init__(self) -> None:
+
+        name = "cicilline"
+
+        article_xpath = "//*[@id='inner-content']/div/h4/a"
+
+        amount = 10
+
+        ids = 348
+
+        super().__init__(name, article_xpath, amount, ids)
+
+class Y(Article_Layout_Structure):
+
+    def __init__(self) -> None:
+
+        name = "jcurtis"
+
+        article_xpath = "//*[@id='archiveView']/div/div/a[2]"
+
+        amount = 12
+
+        ids = 405
+
+        super().__init__(name, article_xpath, amount, ids)
+
+class Z(Article_Layout_Structure):
+
+    def __init__(self) -> None:
+
+        name = "jayapal"
+
+        article_xpath = "//*[@id='main']//article[1]//header/h2/a"
+
+        amount = 6
+
+        ids = 426
+
+        super().__init__(name, article_xpath, amount, ids)
+
+class AA(Article_Layout_Structure):
+
+    def __init__(self) -> None:
+
+        name = "mooney"
+
+        article_xpath = "/html/body//main//article/a"
+
+        amount = 9
+
+        ids = 431
+
+        super().__init__(name, article_xpath, amount, ids)

@@ -39,8 +39,8 @@ def get_links_from_ids(sql: SQL, id_list: list) -> list:
     select.table("Directory")
     select.columns(["id", "general_pressrelease_link"])
 
-    id = select.where_paramater_for_col("id")
-    id.has_values(id_list)
+    #id = select.where_paramater_for_col("id")
+    #id.has_values(id_list)
 
     where_pr_layout = select.where_paramater_for_col("press_release_layout")
     where_pr_layout.is_null()

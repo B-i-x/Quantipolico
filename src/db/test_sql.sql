@@ -56,3 +56,7 @@ UPDATE Directory SET general_pressrelease_link = 'https://mcmorris.house.gov/pre
 UPDATE Directory SET general_pressrelease_link = 'https://nehls.house.gov/press' where id = 388;
 
 UPDATE Directory SET general_pressrelease_link = 'https://mooney.house.gov/category/press-releases/' where id = 431;
+
+UPDATE Directory SET general_pressrelease_link = 'https://cheney.house.gov/category/press_release/' where id = 441;
+
+UPDATE Directory SET press_release_layout = 'date_div_2' where id = 441;
