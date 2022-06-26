@@ -45,7 +45,7 @@ class Article_Finder():
         return chwd[0]
         
 
-    def find_press_release_website_type(self,links: list, ids: list) -> list:
+    def find_press_release_website_type(self,links_and_ids: list) -> list:
         '''TODO: #14 THIS FUNCTION IS WAY TOO LONG'''
         self.__open("keep open")
 
@@ -62,14 +62,13 @@ class Article_Finder():
 
         id_layout = []
 
-        ids.sort()
-        for set in list(zip(ids, links)):
+        for set in links_and_ids:
 
             id = set[0]
 
             link = set[1]
 
-            print(id, link)
+            #print(id, link)
 
             self.driver.get(link)
 
@@ -94,7 +93,7 @@ class Article_Finder():
                     continue
 
 
-            if id != ids[-1]:
+            if set != links_and_ids[-1]:
                 self.__new_tab()
 
             if len(article_elements) == article_layout.types[article_layout.type]["article_count_on_page"]:

@@ -9,7 +9,7 @@ class WebDriver_Interface:
 
     def init_driver(self, toggle: str = None):
 
-        p = r"C:\Users\alexr\Documents\Projects\Mathematical Politics\repository\dep\chromedriver_win32\chromedriver.exe"
+        p = r"C:\Users\alexr\Documents\Projects\Mathematical Politics\chromedriver_win32_103\chromedriver.exe"
 
         if toggle == "keep open":
             chrome_options = Options()

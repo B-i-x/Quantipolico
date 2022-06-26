@@ -37,7 +37,7 @@ def get_links_from_ids(sql: SQL, id_list: list) -> list:
 
     select = sql.create_select_query()
     select.table("Directory")
-    select.columns(["general_pressrelease_link"])
+    select.columns(["id", "general_pressrelease_link"])
 
     id = select.where_paramater_for_col("id")
     id.has_values(id_list)
@@ -45,7 +45,7 @@ def get_links_from_ids(sql: SQL, id_list: list) -> list:
     where_pr_layout = select.where_paramater_for_col("press_release_layout")
     where_pr_layout.is_null()
 
-    return sql.get_result_from_query(select)
+    return sql.get_result_from_query(select, return_type="tuples")
 
 def search_for_articles(sql: SQL, load) -> str:
     '''returns 
@@ -68,14 +68,14 @@ def search_for_articles(sql: SQL, load) -> str:
 
         generated_random_id_set = random.sample(range(0,441), random_id_set_length)
 
-        links = get_links_from_ids(sql, generated_random_id_set)
+        links_w_ids = get_links_from_ids(sql, generated_random_id_set)
 
-        #print(links)
+        print(links_w_ids)
 
         #crawler.research(links)
 
-        matches = crawler.find_press_release_website_type(links, generated_random_id_set)
-
+        
+        matches = crawler.find_press_release_website_type(links_w_ids)
        
         for match in matches:
 
@@ -92,7 +92,6 @@ def search_for_articles(sql: SQL, load) -> str:
             where_id = update.where_paramater_for_col("id")
             where_id.is_value(id)
 
-            #sql.print_query(update)
+            sql.print_query(update)
 
-            sql.commit_query(update)
-
+            #sql.commit_query(update)
