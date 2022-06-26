@@ -45,3 +45,6 @@ UPDATE Directory SET general_pressrelease_link = 'https://hayes.house.gov/press-
 
 DELETE FROM Directory WHERE id = 44;
 
+UPDATE Directory SET general_pressrelease_link = 'https://teddeutch.house.gov/press' where id = 111;
+
+

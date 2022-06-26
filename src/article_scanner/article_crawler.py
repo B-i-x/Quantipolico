@@ -378,7 +378,7 @@ class M(Article_Layout_Structure):
 
         article_xpath = "//*[text()='News Releases']/ancestor::div[1]/div[1]//a"
 
-        amount = 20
+        amount = 10
 
         super().__init__(name, article_xpath, amount)
 
@@ -407,4 +407,17 @@ class O(Article_Layout_Structure):
         amount = 10
 
         super().__init__(name, article_xpath, amount)
-    
+
+class P(Article_Layout_Structure):
+
+    def __init__(self) -> None:
+
+        name = "see_more"
+
+        article_xpath = "//*[text()='See More']//ancestor::a"
+
+        amount = 6
+
+        ids = [148, 138, 19, 111]
+
+        super().__init__(name, article_xpath, amount)
