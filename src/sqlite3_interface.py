@@ -68,12 +68,11 @@ class SQL_Query:
 
         self.query = str_sql
 
-    def get(self, all: bool = True):
+    def get(self, all: bool = True, return_type: str = "List of Strings"):
         '''returns object of sql query
         returns list by default'''
         cursor = self.execute()
 
-        
         if not cursor or cursor is None:
             
             print("SQL Execution Failed!")
@@ -83,7 +82,11 @@ class SQL_Query:
         if all == False:
             return cursor.fetchone()
 
-        else: return cursor.fetchall()
+        elif all and return_type is None: return cursor.fetchall()
+
+        elif all and return_type == "List of Strings":
+            l = ["".join(x) for x in cursor.fetchall()]
+            return l
             
 class DataTable():
     '''this class makes SQL_Query objects that are relevant to the dataTable
@@ -259,6 +262,12 @@ class DataTable():
         query = str(self.col_from_table("name", "general_pressrelease_link", "NULL"))
 
         self.query.set(query[:len(query) - 1] + " ORDER BY id ASC LIMIT 1;")
+
+        return self.query
+
+    def set_custom_query(self, q: str) -> SQL_Query:
+
+        self.query.set(q)
 
         return self.query
 
