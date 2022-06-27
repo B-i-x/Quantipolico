@@ -29,8 +29,6 @@ def main():
 if __name__ == "__main__":
     main()
 
-    d = {0: "s", 1: 'd', 2: 'g'}
-
     '''
     possible structure
 
