@@ -5,9 +5,6 @@ from directory_scanner.ds_loader import load_directory
 
 from site_scanner.ss_loader import validate_pressReleases_sites
 
-from article_scanner.article_loader import load_articles, search_for_articles
-
-from sql_generation import SQL
 
 def main():
 
@@ -16,15 +13,9 @@ def main():
     if not db_conn:
         return
 
-    sql = SQL(db_conn)
-
-    directory_table = load_directory(db_conn, load="light")
+    directory_table = load_directory(db_conn, load="refactoring")
 
     validate_pressReleases_sites(directory_table)
-
-    articles_table = load_articles(db_conn, load="hard")
-
-    search_for_articles(sql, load="research")
 
 if __name__ == "__main__":
     main()
