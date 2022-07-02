@@ -104,26 +104,35 @@ def get_random_pr_links(active_column: str, amount) -> list:
 
     generated_random_id_set = random.sample(range(0,441), amount)
 
-    links_w_ids = get_pr_link_from_ids_where_col_is_null(sql, generated_random_id_set, active_column)
+    links_w_ids = get_pr_link_from_ids_where_col_is_null(generated_random_id_set, active_column)
 
     return links_w_ids
 
 
-def get_types(active_column: str) -> list:
+def get_types(active_column: str, r: str) -> list:
 
     sorted_layout_order = {}
 
     d = {
         "article_layout" : [cls() for cls in Article_Layout_Structure.__subclasses__()],
-        "next_button" : [cls() for cls in Next_Layout_Structure.__subclasses__()]
+        "next_page_control" : [cls() for cls in Next_Layout_Structure.__subclasses__()]
     }
 
     popularity = get_layout_popularity_for_column(active_column)
 
     sorted_popularity = [k for k, v in sorted(popularity.items(), key = lambda item: item[1], reverse=True)]
     
+    print(sorted_popularity)
+
     all_type_layouts = d[active_column]
 
+    if not len(sorted_popularity):
+
+        {0: c for c in all_type_layouts}
+
+        return all_type_layouts
+
+    
     for index, layout in enumerate(sorted_popularity):
 
             for cls in all_type_layouts:
@@ -141,6 +150,10 @@ def get_types(active_column: str) -> list:
 
     [print(cls.name) for cls in sorted_layout_order.values()]
 
+    if r == "general":
+
+        return sorted_layout_order
+
     specialized_ids = {}
 
     for cls in all_type_layouts:
@@ -157,7 +170,9 @@ def get_types(active_column: str) -> list:
 
                     specialized_ids[id] = cls
 
-    return sorted_layout_order, specialized_ids
+    if r  == "specialized":
+
+        return specialized_ids
 
 def update_col_with_values(col: str, data: list) -> None:
 
@@ -217,9 +232,7 @@ def characeterize_press_release_sites(sql_conn: SQL, load: str, type: str = None
 
         crawler.links_w_ids = press_release_links_w_ids
 
-        general_types, specialized_types = get_types(active_column)
-
-        crawler.set_types(general_types, specialized_types)
+        crawler.set_types(get_types(active_column, "general"),get_types(active_column, "specialized"))
 
         matches = crawler.run_characterization()
 

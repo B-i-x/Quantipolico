@@ -165,6 +165,9 @@ class Press_Release_Organizer():
 
     def run_characterization(self) -> list:
 
+        self.__open("keep open")
+
+
         id_layout = []
 
         for set in self.links_w_ids:

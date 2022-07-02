@@ -23,7 +23,7 @@ class A(Next_Layout_Structure):
 
         xpath = "//a[text()='next ›']"
 
-        super.__init__(xpath, name)
+        super().__init__(xpath, name)
 
 class B(Next_Layout_Structure):
 
@@ -33,7 +33,7 @@ class B(Next_Layout_Structure):
 
         xpath = "//a[@title='Go to next page']"
 
-        super.__init__(xpath, name)
+        super().__init__(xpath, name)
 
 class C(Next_Layout_Structure):
 
@@ -43,7 +43,7 @@ class C(Next_Layout_Structure):
 
         xpath = "//a[text()='Next »']"
 
-        super.__init__(xpath, name)
+        super().__init__(xpath, name)
 
 class D(Next_Layout_Structure):
 
@@ -53,7 +53,7 @@ class D(Next_Layout_Structure):
 
         xpath = "//a[text()='Next >']"
 
-        super.__init__(xpath, name)
+        super().__init__(xpath, name)
 
 class D(Next_Layout_Structure):
 
@@ -65,7 +65,7 @@ class D(Next_Layout_Structure):
 
         ids = [148, 138, 19, 111, 316, 275, 424, 388, 321, 406, 414]
 
-        super.__init__(xpath, name, ids)
+        super().__init__(xpath, name, ids)
 
 
         
