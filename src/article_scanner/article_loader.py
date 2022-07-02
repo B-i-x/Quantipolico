@@ -55,7 +55,7 @@ def get_layout_popularity_for_column(col: str) -> dict:
 
     select = sql.create_select_query()
     select.table("Directory")
-    select.columns(["press_release_layout"])
+    select.columns([col])
 
     where_pr_layout = select.where_paramater_for_col(col)
     where_pr_layout.not_null()
@@ -99,6 +99,7 @@ def summary_col(col: str):
     print(f"{'TOTAL' : <60} {sum_of_matches : ^7} {((sum_of_matches/total)*100):^12.2f}")
 
     print(f"STILL MISSING {total - sum_of_matches}")
+
 
 def get_random_pr_links(active_column: str, amount) -> list:
 
@@ -209,7 +210,7 @@ def characeterize_press_release_sites(sql_conn: SQL, load: str, type: str = None
 
     crawler = Press_Release_Organizer()
 
-    amount_of_sites_to_use = 10
+    amount_of_sites_to_use = 50
 
 
     if load == "research":
