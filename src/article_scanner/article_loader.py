@@ -117,15 +117,35 @@ def get_type_popularity(active_column: str) -> list:
 
     return sorted_popularity
 
+def update_col_with_values(col: str, data: list) -> None:
+
+    for set in data:
+
+        id = set[0]
+
+        value = set[1]
+
+        update = sql.create_update_query()
+
+        update.table("Directory")
+        update.col(col)
+        update.value(value)
+
+        where_id = update.where_paramater_for_col("id")
+        where_id.is_value(id)
+
+        sql.print_query(update)
+
+        sql.commit_query(update)
 
 def characeterize_press_release_sites(sql_conn: SQL, load: str, type: str = None) -> str:
     '''
     defines types of press release article layout and types of next buttons
     '''
-
     global sql
 
     sql = sql_conn
+
 
     crawler = Press_Release_Organizer()
 
@@ -133,8 +153,10 @@ def characeterize_press_release_sites(sql_conn: SQL, load: str, type: str = None
 
 
     if load == "research":
-        
-        crawler.research(links_w_ids)
+
+        press_release_links_w_ids = get_random_pr_links(active_column, amount_of_sites_to_use)
+
+        crawler.research(press_release_links_w_ids)
 
     elif load == "characterize":
 
@@ -149,49 +171,14 @@ def characeterize_press_release_sites(sql_conn: SQL, load: str, type: str = None
             active_column = "next_page_control"
 
 
-        get_random_pr_links(active_column, amount_of_sites_to_use)
+        press_release_links_w_ids = get_random_pr_links(active_column, amount_of_sites_to_use)
 
-        get_type_popularity(active_column)
+        sorted_popularity = get_type_popularity(active_column)
 
+        matches = crawler.find_press_release_website_type(press_release_links_w_ids, sorted_popularity)
 
-    elif load == "match_press_release_layout":
+        update_col_with_values(active_column, matches)
 
-        active_column = "press_release_layout"
+        summary_col(active_column)
 
-        links_w_ids = get_pr_link_from_ids_where_col_is_null(sql, generated_random_id_set, active_column)
-
-        popularity = get_layout_popularity_for_column(sql, active_column)
-
-        #print(layout_popularity)
-
-        sorted_popularity = [k for k, v in sorted(popularity.items(), key = lambda item: item[1], reverse=True)]
-
-        matches = crawler.find_press_release_website_type(links_w_ids, sorted_popularity)
-       
-        for match in matches:
-
-            id = match[0]
-
-            press_release_layout_type = match[1]
-
-            update = sql.create_update_query()
-
-            update.table("Directory")
-            update.col("press_release_layout")
-            update.value(press_release_layout_type)
-
-            where_id = update.where_paramater_for_col("id")
-            where_id.is_value(id)
-
-            sql.print_query(update)
-
-            sql.commit_query(update)
-        
-        summary_col(sql)
-
-    elif load == "match_next_button_layout":
-
-        active_column = "next_page_control"
-
-        find_type_of_press_release_site(active_column, amount=amount_of_sites_to_use)
 
