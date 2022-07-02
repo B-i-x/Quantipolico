@@ -28,6 +28,9 @@ VACUUM;
 ALTER TABLE Directory
 ADD COLUMN press_release_layout;
 
+ALTER TABLE Directory
+ADD COLUMN next_page_control;
+
 UPDATE Directory SET general_pressrelease_link = 'https://jayapal.house.gov/category/news/' where id = 426;
 
 UPDATE Directory SET general_pressrelease_link = 'https://clyde.house.gov/news/documentquery.aspx?DocumentTypeID=27' where id = 125;

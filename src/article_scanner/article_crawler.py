@@ -25,15 +25,17 @@ class Article_Finder():
         else:
             self.driver = self.driver.init_driver(toggle)
 
-    def research(self, links: list) -> None:
+    def research(self, links_w_ids: list) -> None:
 
         self.__open("keep open")
 
-        for l in links:
+        for set in links_w_ids:
 
+            l = set[1]
+            
             self.driver.get(l)
 
-            if l != links[-1]:
+            if l != links_w_ids[-1]:
 
                 self.driver.execute_script("window.open('');")
                 chwd = self.driver.window_handles

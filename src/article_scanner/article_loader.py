@@ -33,16 +33,16 @@ def load_articles(db_conn: Database, load: str) -> DataTable:
 
     return articles_table
 
-def get_links_from_ids(sql: SQL, id_list: list) -> list:
+def get_col_from_ids(sql: SQL, id_list: list, col: str) -> list:
 
     select = sql.create_select_query()
     select.table("Directory")
     select.columns(["id", "general_pressrelease_link"])
 
-    #id = select.where_paramater_for_col("id")
-    #id.has_values(id_list)
+    id = select.where_paramater_for_col("id")
+    id.has_values(id_list)
 
-    where_pr_layout = select.where_paramater_for_col("press_release_layout")
+    where_pr_layout = select.where_paramater_for_col(col)
     where_pr_layout.is_null()
 
     return sql.get_result_from_query(select, return_type="tuples")
@@ -104,17 +104,20 @@ def search_for_articles(sql: SQL, load) -> str:
 
     crawler = Article_Finder()
 
+    random_id_length = 10
+
+    generated_random_id_set = random.sample(range(0,441), random_id_length)
+
+    links_w_ids = get_col_from_ids(sql, generated_random_id_set, "next_page_control")
+
+    print(links_w_ids, "ACTUAL TESTING LINKS", len(links_w_ids))
+
+
     if load == "research":
+        
+        crawler.research(links_w_ids)
 
-        random_id_length = 25
-
-        generated_random_id_set = random.sample(range(0,441), 441)
-
-        links_w_ids = get_links_from_ids(sql, generated_random_id_set)
-
-        print(links_w_ids, "ACTUAL TESTING LINKS", len(links_w_ids))
-
-        #crawler.research(links)
+    elif load == "match_press_release_layout":
 
         popularity = get_layout_popularity(sql)
 
