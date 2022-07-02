@@ -36,14 +36,11 @@ def load_articles(db_conn: Database, load: str) -> DataTable:
 
     return articles_table
 
-def get_pr_link_from_ids_where_col_is_null(id_list: list, col: str) -> list:
+def get_pr_link_from_ids_where_col_is_null(col: str) -> list:
 
     select = sql.create_select_query()
     select.table("Directory")
     select.columns(["id", "general_pressrelease_link"])
-
-    id = select.where_paramater_for_col("id")
-    id.has_values(id_list)
 
     where_pr_layout = select.where_paramater_for_col(col)
     where_pr_layout.is_null()
@@ -103,11 +100,11 @@ def summary_col(col: str):
 
 def get_random_pr_links(active_column: str, amount) -> list:
 
-    generated_random_id_set = random.sample(range(0,441), amount)
+    links_w_ids = get_pr_link_from_ids_where_col_is_null(active_column)
 
-    links_w_ids = get_pr_link_from_ids_where_col_is_null(generated_random_id_set, active_column)
+    generated_random_set = random.sample(links_w_ids, amount)
 
-    return links_w_ids
+    return generated_random_set
 
 
 def get_types(active_column: str, r: str) -> list:
