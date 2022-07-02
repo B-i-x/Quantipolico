@@ -5,7 +5,7 @@ from directory_scanner.ds_loader import load_directory
 
 from site_scanner.ss_loader import validate_pressReleases_sites
 
-from article_scanner.article_loader import load_articles, search_for_articles
+from article_scanner.article_loader import load_articles, characeterize_press_release_sites
 
 from sql_generation import SQL
 
@@ -24,7 +24,7 @@ def main():
 
     articles_table = load_articles(db_conn, load="hard")
 
-    search_for_articles(sql, load="research")
+    characeterize_press_release_sites(sql, load="characterize", type="next_button")
 
 if __name__ == "__main__":
     main()

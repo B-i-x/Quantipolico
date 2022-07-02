@@ -1,9 +1,10 @@
-from certifi import where
 from sqlite3_interface import Database, DataTable
-from article_scanner.article_crawler import Article_Finder
+from article_scanner.article_crawler import Press_Release_Organizer
 from sql_generation import SQL
 
 import random
+
+sql = None
 
 def load_articles(db_conn: Database, load: str) -> DataTable:
 
@@ -33,7 +34,7 @@ def load_articles(db_conn: Database, load: str) -> DataTable:
 
     return articles_table
 
-def get_col_from_ids(sql: SQL, id_list: list, col: str) -> list:
+def get_pr_link_from_ids_where_col_is_null(id_list: list, col: str) -> list:
 
     select = sql.create_select_query()
     select.table("Directory")
@@ -48,13 +49,13 @@ def get_col_from_ids(sql: SQL, id_list: list, col: str) -> list:
     return sql.get_result_from_query(select, return_type="tuples")
 
     
-def get_layout_popularity(sql: SQL) -> dict:
+def get_layout_popularity_for_column(col: str) -> dict:
 
     select = sql.create_select_query()
     select.table("Directory")
     select.columns(["press_release_layout"])
 
-    where_pr_layout = select.where_paramater_for_col("press_release_layout")
+    where_pr_layout = select.where_paramater_for_col(col)
     where_pr_layout.not_null()
 
     layouts =  sql.get_result_from_query(select)
@@ -75,9 +76,10 @@ def get_layout_popularity(sql: SQL) -> dict:
         
     return popularity
 
-def summary(sql: SQL):
+def summary_col(col: str):
 
-    popularity = get_layout_popularity(sql)
+    popularity = get_layout_popularity_for_column(col)
+
     total = 440
     sum_of_matches = 0
     
@@ -96,30 +98,69 @@ def summary(sql: SQL):
 
     print(f"STILL MISSING {total - sum_of_matches}")
 
+def get_random_pr_links(active_column: str, amount) -> list:
 
-def search_for_articles(sql: SQL, load) -> str:
-    '''returns 
-    a code of diagnostics like new articles added and 
-    success/failure codes'''
+    generated_random_id_set = random.sample(range(0,441), amount)
 
-    crawler = Article_Finder()
+    links_w_ids = get_pr_link_from_ids_where_col_is_null(sql, generated_random_id_set, active_column)
 
-    random_id_length = 10
+    return links_w_ids
 
-    generated_random_id_set = random.sample(range(0,441), random_id_length)
 
-    links_w_ids = get_col_from_ids(sql, generated_random_id_set, "next_page_control")
+def get_type_popularity(active_column: str) -> list:
 
-    print(links_w_ids, "ACTUAL TESTING LINKS", len(links_w_ids))
+    popularity = get_layout_popularity_for_column(active_column)
+
+    #print(layout_popularity)
+
+    sorted_popularity = [k for k, v in sorted(popularity.items(), key = lambda item: item[1], reverse=True)]
+
+    return sorted_popularity
+
+
+def characeterize_press_release_sites(sql_conn: SQL, load: str, type: str = None) -> str:
+    '''
+    defines types of press release article layout and types of next buttons
+    '''
+
+    global sql
+
+    sql = sql_conn
+
+    crawler = Press_Release_Organizer()
+
+    amount_of_sites_to_use = 10
 
 
     if load == "research":
         
         crawler.research(links_w_ids)
 
+    elif load == "characterize":
+
+        active_column = None
+
+        if type == "article_layout":
+
+            active_column = "press_release_layout"
+
+        elif type == "next_button":
+
+            active_column = "next_page_control"
+
+
+        get_random_pr_links(active_column, amount_of_sites_to_use)
+
+        get_type_popularity(active_column)
+
+
     elif load == "match_press_release_layout":
 
-        popularity = get_layout_popularity(sql)
+        active_column = "press_release_layout"
+
+        links_w_ids = get_pr_link_from_ids_where_col_is_null(sql, generated_random_id_set, active_column)
+
+        popularity = get_layout_popularity_for_column(sql, active_column)
 
         #print(layout_popularity)
 
@@ -146,4 +187,11 @@ def search_for_articles(sql: SQL, load) -> str:
 
             sql.commit_query(update)
         
-        summary(sql)
+        summary_col(sql)
+
+    elif load == "match_next_button_layout":
+
+        active_column = "next_page_control"
+
+        find_type_of_press_release_site(active_column, amount=amount_of_sites_to_use)
+

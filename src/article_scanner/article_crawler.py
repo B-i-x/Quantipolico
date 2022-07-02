@@ -11,7 +11,7 @@ class article():
         
         self.day = self.month = self.year = None
 
-class Article_Finder():
+class Press_Release_Organizer():
 
     def __init__(self) -> None:
 
@@ -49,6 +49,23 @@ class Article_Finder():
 
         return chwd[0]
         
+    def __check_list_and_int_for_condition(self, list_or_int_var, condition) -> bool:
+
+        if type(list_or_int_var) == int:
+
+            if list_or_int_var == condition:
+
+                return True
+
+        elif type(list_or_int_var) == list:
+
+            for elemt in list_or_int_var:
+
+                if elemt == condition:
+
+                    return True
+
+        return False
 
     def find_press_release_website_type(self,links_and_ids: list, search_order) -> list:
         '''TODO: #14 THIS FUNCTION IS WAY TOO LONG'''
