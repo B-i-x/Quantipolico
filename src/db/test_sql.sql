@@ -67,3 +67,6 @@ UPDATE Directory SET press_release_layout = 'date_div_2' where id = 441;
 UPDATE Directory SET general_pressrelease_link = 'https://guthrie.house.gov/news/documentquery.aspx?DocumentTypeID=2381' where id = 172;
 
 UPDATE Directory SET general_pressrelease_link = 'https://timmons.house.gov/news/documentquery.aspx?DocumentTypeID=27' where id = 353;
+
+UPDATE Directory SET general_pressrelease_link = 'https://phillips.house.gov/news/documentquery.aspx?DocumentTypeID=27' where id = 218;
+UPDATE Directory SET general_pressrelease_link = 'https://jackson.house.gov/news/documentquery.aspx?DocumentTypeID=27' where id = 379;

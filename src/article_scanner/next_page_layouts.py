@@ -55,7 +55,7 @@ class D(Next_Layout_Structure):
 
         super().__init__(xpath, name)
 
-class D(Next_Layout_Structure):
+class E(Next_Layout_Structure):
 
     def __init__(self) -> None:
 
@@ -66,6 +66,30 @@ class D(Next_Layout_Structure):
         ids = [148, 138, 19, 111, 316, 275, 424, 388, 321, 406, 414]
 
         super().__init__(xpath, name, ids)
+
+class F(Next_Layout_Structure):
+
+    def __init__(self) -> None:
+
+        name = "arrow"
+
+        xpath = "//a[text()='›']"
+
+        super().__init__(xpath, name)
+
+class G(Next_Layout_Structure):
+
+    def __init__(self) -> None:
+
+        name = "Next"
+
+        xpath = "//a[text()='Next']"
+
+        super().__init__(xpath, name)
+
+
+
+
 
 
         
