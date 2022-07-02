@@ -139,6 +139,18 @@ class L(Next_Layout_Structure):
 
         super().__init__(xpath, name)
 
+class M(Next_Layout_Structure):
+
+    def __init__(self) -> None:
+
+        name = "next_page_label"
+
+        xpath = "//a[@aria-label='Next Page']"
+
+        ids = 426
+
+        super().__init__(xpath, name, ids=ids)
+
 
 
 

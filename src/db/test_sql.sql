@@ -70,3 +70,5 @@ UPDATE Directory SET general_pressrelease_link = 'https://timmons.house.gov/news
 
 UPDATE Directory SET general_pressrelease_link = 'https://phillips.house.gov/news/documentquery.aspx?DocumentTypeID=27' where id = 218;
 UPDATE Directory SET general_pressrelease_link = 'https://jackson.house.gov/news/documentquery.aspx?DocumentTypeID=27' where id = 379;
+
+UPDATE Directory SET general_pressrelease_link = 'https://pfluger.house.gov/news/documentquery.aspx?DocumentTypeID=27' where id = 377;
