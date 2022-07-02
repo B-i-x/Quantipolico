@@ -28,7 +28,7 @@ class Press_Release_Organizer():
         else:
             self.driver = self.driver.init_driver(toggle)
 
-    def set_types(self, general: list, specialized: list) -> None:
+    def set_types(self, general: dict, specialized: dict) -> None:
 
         self.general_types = general
 
@@ -194,6 +194,8 @@ class Press_Release_Organizer():
 
                     try:
                         article_elements = self.driver.find_elements_by_xpath(layout.xpath)
+
+                        print(layout.xpath)
 
                         if self.__check_list_and_int_for_condition(layout.count_on_page, len(article_elements)):
 

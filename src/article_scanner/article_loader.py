@@ -126,12 +126,6 @@ def get_types(active_column: str, r: str) -> list:
 
     all_type_layouts = d[active_column]
 
-    if not len(sorted_popularity):
-
-        {0: c for c in all_type_layouts}
-
-        return all_type_layouts
-
     
     for index, layout in enumerate(sorted_popularity):
 
@@ -141,12 +135,21 @@ def get_types(active_column: str, r: str) -> list:
 
                     sorted_layout_order[index] = cls
 
+    temp = 0
 
     for index, cls in enumerate(all_type_layouts):
 
         if cls not in sorted_layout_order.values() and not cls.specialized:
+
+            if not len(sorted_layout_order):
+
+                sorted_layout_order[temp] = cls
+
+                temp += 1
+                
+            else:
             
-            sorted_layout_order[max(sorted_layout_order) + 1] = cls
+                sorted_layout_order[max(sorted_layout_order) + 1] = cls
 
     [print(cls.name) for cls in sorted_layout_order.values()]
 
