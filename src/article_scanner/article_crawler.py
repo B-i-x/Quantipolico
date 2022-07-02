@@ -1,3 +1,4 @@
+from socket import INADDR_ALLHOSTS_GROUP
 from webdriver_interface import WebDriver_Interface
 from selenium.common.exceptions import NoSuchElementException
 from selenium import webdriver
@@ -17,6 +18,8 @@ class Press_Release_Organizer():
 
         self.driver = WebDriver_Interface()
 
+        self.links_w_ids = None
+
     def __open(self, toggle: str = None) -> None:
         '''opens the chrome browser'''
 
@@ -24,6 +27,12 @@ class Press_Release_Organizer():
             self.driver = self.driver.init_driver()
         else:
             self.driver = self.driver.init_driver(toggle)
+
+    def set_types(self, general: list, specialized: list) -> None:
+
+        self.general_types = general
+
+        self.specialized_types = specialized
 
     def research(self, links_w_ids: list) -> None:
 
@@ -70,44 +79,6 @@ class Press_Release_Organizer():
     def find_press_release_website_type(self,links_and_ids: list, search_order) -> list:
         '''TODO: #14 THIS FUNCTION IS WAY TOO LONG'''
         self.__open("keep open")
-
-        sorted_layout_order = {}
-
-        all_article_layouts =  [cls() for cls in Article_Layout_Structure.__subclasses__()]
-        
-        for index, layout in enumerate(search_order):
-
-            for cls in all_article_layouts:
-
-                if cls.name == layout and not cls.specialized:
-
-                    sorted_layout_order[index] = cls
-
-
-        for index, cls in enumerate(all_article_layouts):
-
-            if cls not in sorted_layout_order.values() and not cls.specialized:
-                
-                sorted_layout_order[max(sorted_layout_order) + 1] = cls
-
-        [print(cls.name) for cls in sorted_layout_order.values()]
-
-        specialized_ids = {}
-
-        for cls in all_article_layouts:
-
-            if cls.specialized:
-
-                if type(cls.ids) == int:
-
-                    specialized_ids[cls.ids] = cls
-
-                elif type(cls.ids) == list:
-
-                    for id in cls.ids:
-
-                        specialized_ids[id] = cls
-
 
         id_layout = []
 
@@ -173,6 +144,70 @@ class Press_Release_Organizer():
                         break
 
             if set != links_and_ids[-1]:
+                self.__new_tab()
+
+            if match_found:
+
+                chwd = self.driver.window_handles
+
+                self.driver.switch_to.window(chwd[-2])
+
+                self.driver.close()
+
+                chwd = self.driver.window_handles
+
+                self.driver.switch_to.window(chwd[-1])
+
+
+        print(id_layout)
+
+        return id_layout
+
+    def run_characterization(self) -> list:
+
+        id_layout = []
+
+        for set in self.links_w_ids:
+
+            match_found = False
+
+            id = set[0]
+
+            link = set[1]
+
+            self.driver.get(link)
+
+            if id in self.specialized_types:
+
+                id_layout.append([id, self.specialized_types[id].name])
+
+                match_found = True
+
+                print(id, link, self.specialized_types[id].name)
+
+            if not match_found:
+
+                for layout in self.general_types.values():
+
+                    try:
+                        article_elements = self.driver.find_elements_by_xpath(layout.xpath)
+
+                        if self.__check_list_and_int_for_condition(layout.count_on_page, len(article_elements)):
+
+                            match_found = True
+                    
+                    except NoSuchElementException:
+                        continue
+                    
+                    if match_found:
+
+                        print(id, link, layout.name)
+
+                        id_layout.append([id, layout.name])
+
+                        break
+
+            if set != self.links_w_ids[-1]:
                 self.__new_tab()
 
             if match_found:

@@ -1,5 +1,7 @@
 from sqlite3_interface import Database, DataTable
 from article_scanner.article_crawler import Press_Release_Organizer
+from article_scanner.article_layouts import Article_Layout_Structure
+from article_scanner.next_page_layouts import Next_Layout_Structure
 from sql_generation import SQL
 
 import random
@@ -107,15 +109,55 @@ def get_random_pr_links(active_column: str, amount) -> list:
     return links_w_ids
 
 
-def get_type_popularity(active_column: str) -> list:
+def get_types(active_column: str) -> list:
+
+    sorted_layout_order = {}
+
+    d = {
+        "article_layout" : [cls() for cls in Article_Layout_Structure.__subclasses__()],
+        "next_button" : [cls() for cls in Next_Layout_Structure.__subclasses__()]
+    }
 
     popularity = get_layout_popularity_for_column(active_column)
 
-    #print(layout_popularity)
-
     sorted_popularity = [k for k, v in sorted(popularity.items(), key = lambda item: item[1], reverse=True)]
+    
+    all_type_layouts = d[active_column]
 
-    return sorted_popularity
+    for index, layout in enumerate(sorted_popularity):
+
+            for cls in all_type_layouts:
+
+                if cls.name == layout and not cls.specialized:
+
+                    sorted_layout_order[index] = cls
+
+
+    for index, cls in enumerate(all_type_layouts):
+
+        if cls not in sorted_layout_order.values() and not cls.specialized:
+            
+            sorted_layout_order[max(sorted_layout_order) + 1] = cls
+
+    [print(cls.name) for cls in sorted_layout_order.values()]
+
+    specialized_ids = {}
+
+    for cls in all_type_layouts:
+
+        if cls.specialized:
+
+            if type(cls.ids) == int:
+
+                specialized_ids[cls.ids] = cls
+
+            elif type(cls.ids) == list:
+
+                for id in cls.ids:
+
+                    specialized_ids[id] = cls
+
+    return sorted_layout_order, specialized_ids
 
 def update_col_with_values(col: str, data: list) -> None:
 
@@ -173,9 +215,13 @@ def characeterize_press_release_sites(sql_conn: SQL, load: str, type: str = None
 
         press_release_links_w_ids = get_random_pr_links(active_column, amount_of_sites_to_use)
 
-        sorted_popularity = get_type_popularity(active_column)
+        crawler.links_w_ids = press_release_links_w_ids
 
-        matches = crawler.find_press_release_website_type(press_release_links_w_ids, sorted_popularity)
+        general_types, specialized_types = get_types(active_column)
+
+        crawler.set_types(general_types, specialized_types)
+
+        matches = crawler.run_characterization()
 
         update_col_with_values(active_column, matches)
 

@@ -2,9 +2,11 @@ class Next_Layout_Structure():
 
     def __init__(self, next_button_xpath: str, name: str, ids: int = None) -> None:
 
-        self.next_button_xpath = next_button_xpath
+        self.xpath = next_button_xpath
 
         self.name = name
+
+        self.count_on_page = 1
         
         self.specialized = False
 

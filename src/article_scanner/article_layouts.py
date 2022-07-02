@@ -3,7 +3,7 @@ class Article_Layout_Structure():
     def __init__(self, name: str, article_xpath: str, amount: int, ids: int = None) -> None:
         self.name = name
 
-        self.article_xpath = article_xpath
+        self.xpath = article_xpath
 
         self.count_on_page = amount
 
