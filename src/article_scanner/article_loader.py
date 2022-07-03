@@ -207,7 +207,7 @@ def characeterize_press_release_sites(sql_conn: SQL, load: str, type: str = None
 
     crawler = Press_Release_Organizer()
 
-    amount_of_sites_to_use = 100
+    amount_of_sites_to_use = 50
 
 
     if load == "research":

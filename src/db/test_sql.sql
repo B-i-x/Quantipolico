@@ -72,3 +72,9 @@ UPDATE Directory SET general_pressrelease_link = 'https://phillips.house.gov/new
 UPDATE Directory SET general_pressrelease_link = 'https://jackson.house.gov/news/documentquery.aspx?DocumentTypeID=27' where id = 379;
 
 UPDATE Directory SET general_pressrelease_link = 'https://pfluger.house.gov/news/documentquery.aspx?DocumentTypeID=27' where id = 377;
+
+UPDATE Directory SET general_pressrelease_link = 'https://mikegarcia.house.gov/news/documentquery.aspx?DocumentTypeID=27' where id = 47;
+UPDATE Directory SET general_pressrelease_link = 'https://carter.house.gov/news/documentquery.aspx?DocumentTypeID=27' where id = 397;
+UPDATE Directory SET general_pressrelease_link = 'https://valadao.house.gov/news/documentquery.aspx?DocumentTypeID=27' where id = 43;
+UPDATE Directory SET general_pressrelease_link = 'https://neal.house.gov/news/documentquery.aspx?DocumentTypeID=27' where id = 193;
+UPDATE Directory SET general_pressrelease_link = 'https://chrissmith.house.gov/news/documentquery.aspx?Year=2022' where id = 249;
