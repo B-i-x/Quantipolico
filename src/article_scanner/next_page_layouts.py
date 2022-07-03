@@ -150,7 +150,79 @@ class M(Next_Layout_Structure):
         super().__init__(xpath, name)
 
 
+class N(Next_Layout_Structure):
 
+    def __init__(self) -> None:
+
+        name = "single_page_no_next_button"
+
+        xpath = ""
+
+        ids = 11
+
+        super().__init__(xpath, name, ids=ids)
+
+class O(Next_Layout_Structure):
+
+    def __init__(self) -> None:
+
+        name = "more_than_brownley"
+
+        xpath = "//a[@class='next page-numbers' and text()='>']"
+
+        ids = 48
+
+        super().__init__(xpath, name, ids=ids)
+
+class P(Next_Layout_Structure):
+
+    def __init__(self) -> None:
+
+        name = "double_next"
+
+        xpath = "//a[text()='Next']"
+
+        ids = [127, 97]
+
+        super().__init__(xpath, name, ids=ids)
+
+        self.count_on_page = 2
+
+class Q(Next_Layout_Structure):
+
+    def __init__(self) -> None:
+
+        name = "page_arrow_maloney"
+
+        xpath = "//a[text()='page ›']"
+
+        ids = 272
+
+        super().__init__(xpath, name, ids=ids)
+
+class R(Next_Layout_Structure):
+
+    def __init__(self) -> None:
+
+        name = "Next_Page_Mooney"
+
+        xpath = "//a[text()='Next Page']"
+
+        ids = 431
+
+        super().__init__(xpath, name, ids=ids)
+
+class S(Next_Layout_Structure):
+
+    def __init__(self) -> None:
+
+        name = "cheney"
+
+        xpath = "//a[@aria-label='next arrow']"
+
+        ids = 441
+
+        super().__init__(xpath, name, ids=ids)
 
 
 

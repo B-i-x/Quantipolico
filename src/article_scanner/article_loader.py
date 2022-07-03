@@ -36,7 +36,7 @@ def load_articles(db_conn: Database, load: str) -> DataTable:
 
     return articles_table
 
-def get_pr_link_from_ids_where_col_is_null(col: str) -> list:
+def get_pr_link_where_col_is_null(col: str) -> list:
 
     select = sql.create_select_query()
     select.table("Directory")
@@ -75,11 +75,24 @@ def get_layout_popularity_for_column(col: str) -> dict:
         
     return popularity
 
+def get_count_of_rows_in_table() -> int:
+
+    select = sql.create_select_query()
+
+    select.table("Directory")
+
+    select.count_all_rows()
+
+    c = sql.get_result_from_query(select, return_type= "tuples")
+
+    return c[0][0]
+
+
 def summary_col(col: str):
 
     popularity = get_layout_popularity_for_column(col)
 
-    total = 440
+    total = get_count_of_rows_in_table()
     sum_of_matches = 0
     
     for count in popularity.values():
@@ -100,11 +113,13 @@ def summary_col(col: str):
 
 def get_random_pr_links(active_column: str, amount) -> list:
 
-    links_w_ids = get_pr_link_from_ids_where_col_is_null(active_column)
+    links_w_ids = get_pr_link_where_col_is_null(active_column)
 
-    generated_random_set = random.sample(links_w_ids, amount)
+    if amount >= len(links_w_ids):
 
-    return generated_random_set
+        return links_w_ids
+
+    else: return random.sample(links_w_ids, amount)
 
 
 def get_types(active_column: str, r: str) -> list:
@@ -207,8 +222,7 @@ def characeterize_press_release_sites(sql_conn: SQL, load: str, type: str = None
 
     crawler = Press_Release_Organizer()
 
-    amount_of_sites_to_use = 50
-
+    amount_of_sites_to_use = 20
 
     if load == "research":
 

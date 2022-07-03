@@ -1,5 +1,4 @@
 
-from re import sub
 from sqlite3 import Error
 
 class Query_Generator():
@@ -91,8 +90,11 @@ class Select(Query_Generator):
 
     def __init__(self) -> None:
 
-        super().__init__("SELECT")
+        super().__init__("SELECT")     
+
+    def count_all_rows(self) -> None:
         
+        self.query_data["count"] = True
 
     def table(self, table_name: str) -> None:
         '''sets the table that the query will use'''
@@ -119,15 +121,21 @@ class Select(Query_Generator):
 
         q = "SELECT"
 
-        for col in self.query_data["columns"]:
+        if "count" in self.query_data:
 
-            q += " " + col
+            q += " COUNT(1)"
 
-            if col != self.query_data["columns"][-1]:
+        if "columns" in self.query_data:
 
-                q += ","
+            for col in self.query_data["columns"]:
 
-        q += " " + f'FROM {self.query_data["table_name"]} '
+                q += " " + col
+
+                if col != self.query_data["columns"][-1]:
+
+                    q += ","
+
+        q += f' FROM {self.query_data["table_name"]} '
 
         if "WHERE" in self.query_data:
 
