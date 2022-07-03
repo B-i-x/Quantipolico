@@ -42,8 +42,8 @@ def get_pr_link_where_col_is_null(col: str) -> list:
     select.table("Directory")
     select.columns(["id", "general_pressrelease_link"])
 
-    where_pr_layout = select.where_paramater_for_col(col)
-    where_pr_layout.is_null()
+    #where_pr_layout = select.where_paramater_for_col(col)
+    #where_pr_layout.is_null()
 
     return sql.get_result_from_query(select, return_type="tuples")
 
@@ -224,6 +224,17 @@ def characeterize_press_release_sites(sql_conn: SQL, load: str, type: str = None
 
     amount_of_sites_to_use = 20
 
+    active_column = None
+
+    if type == "article_layout":
+
+        active_column = "press_release_layout"
+
+    elif type == "next_button":
+
+        active_column = "next_page_control"
+
+
     if load == "research":
 
         press_release_links_w_ids = get_random_pr_links(active_column, amount_of_sites_to_use)
@@ -231,17 +242,6 @@ def characeterize_press_release_sites(sql_conn: SQL, load: str, type: str = None
         crawler.research(press_release_links_w_ids)
 
     elif load == "characterize":
-
-        active_column = None
-
-        if type == "article_layout":
-
-            active_column = "press_release_layout"
-
-        elif type == "next_button":
-
-            active_column = "next_page_control"
-
 
         press_release_links_w_ids = get_random_pr_links(active_column, amount_of_sites_to_use)
 

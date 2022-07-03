@@ -24,7 +24,7 @@ def main():
 
     articles_table = load_articles(db_conn, load="hard")
 
-    characeterize_press_release_sites(sql, load="characterize", type="next_button")
+    characeterize_press_release_sites(sql, load="research", type="article_layout")
 
 if __name__ == "__main__":
     main()
