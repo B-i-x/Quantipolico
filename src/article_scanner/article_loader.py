@@ -226,13 +226,13 @@ def characeterize_press_release_sites(sql_conn: SQL, load: str, type: str = None
 
     active_column = None
 
-    if type == "article_layout":
+    attributes_active_column = {
+        "article_layout" : "press_release_layout",
+        "next_button" :  "next_page_control",
+        "title" : "title_layout"
+    }
 
-        active_column = "press_release_layout"
-
-    elif type == "next_button":
-
-        active_column = "next_page_control"
+    active_column = attributes_active_column[type]
 
 
     if load == "research":
@@ -253,6 +253,6 @@ def characeterize_press_release_sites(sql_conn: SQL, load: str, type: str = None
 
         update_col_with_values(active_column, matches)
 
-        summary_col(active_column)
+        summary_col(active_column) 
 
 

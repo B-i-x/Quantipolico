@@ -29,7 +29,7 @@ ALTER TABLE Directory
 ADD COLUMN press_release_layout;
 
 ALTER TABLE Directory
-ADD COLUMN next_page_control;
+ADD COLUMN title_layout;
 
 UPDATE Directory SET general_pressrelease_link = 'https://jayapal.house.gov/category/news/' where id = 426;
 
