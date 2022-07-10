@@ -6,7 +6,7 @@ class Article_Layout_Structure(Site_Attribute):
     a property of this attribute are its child classes'''
     def __init__(self) -> None:
         
-        super().__init__()
+        super(Site_Attribute, self).__init__()
 
         self.attribute_column_name = 'press_release_layout'
 
@@ -15,7 +15,7 @@ class A(Article_Layout_Structure):
 
     def __init__(self) -> None:
 
-        super().__init__()
+        super(Article_Layout_Structure, self).__init__()
         
         self.name = 'find_press_release_first'
 

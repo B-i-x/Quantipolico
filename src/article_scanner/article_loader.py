@@ -132,15 +132,20 @@ def get_active_property_classes(active_column: str) -> list:
 
     attribute_classes = [attr_cls() for attr_cls in Site_Attribute.__subclasses__()]
 
+    print(attribute_classes)
     for attr_class in attribute_classes:
 
         if attr_class.attribute_column_name == active_column:
+
+            Article_Layout_Structure.__subclasses__()
                 
             active_classes = [property_cls() for property_cls in attr_class.__subclasses__()]
 
             print(active_classes)
 
     return active_classes
+
+    '''
     d = {
         "article_layout" : [cls() for cls in Article_Layout_Structure.__subclasses__()],
         "next_page_control" : [cls() for cls in Next_Layout_Structure.__subclasses__()],
@@ -206,6 +211,8 @@ def get_active_property_classes(active_column: str) -> list:
 
         return specialized_ids
 
+    '''
+
 def update_col_with_values(col: str, data: list) -> None:
 
     for set in data:
@@ -253,7 +260,7 @@ def characeterize_press_release_sites(sql_conn: SQL, load: str, active_column: s
 
         crawler.links_w_ids = press_release_links_w_ids
 
-        crawler.set_types(get_types(active_column, "general"),get_types(active_column, "specialized"))
+        #crawler.set_types(get_types(active_column, "general"),get_types(active_column, "specialized"))
 
         matches = crawler.run_characterization()
 
