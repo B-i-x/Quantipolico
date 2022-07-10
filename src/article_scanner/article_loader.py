@@ -135,9 +135,11 @@ def get_active_property_classes(active_column: str) -> list:
     for attr_class in attribute_classes:
 
         if attr_class.attribute_column_name == active_column:
-
+                
             active_classes = [property_cls() for property_cls in attr_class.__subclasses__()]
-    
+
+            print(active_classes)
+
     return active_classes
     d = {
         "article_layout" : [cls() for cls in Article_Layout_Structure.__subclasses__()],
@@ -225,7 +227,7 @@ def update_col_with_values(col: str, data: list) -> None:
 
         sql.commit_query(update)
 
-def characeterize_press_release_sites(sql_conn: SQL, load: str, type: str = None) -> str:
+def characeterize_press_release_sites(sql_conn: SQL, load: str, active_column: str = None) -> str:
     '''
     defines types of press release article layout and types of next buttons
     '''
@@ -233,21 +235,11 @@ def characeterize_press_release_sites(sql_conn: SQL, load: str, type: str = None
 
     sql = sql_conn
 
-
     crawler = Press_Release_Organizer()
 
     amount_of_sites_to_use = 20
-
-    active_column = None
-
-    attributes_active_column = {
-        "article_layout" : "press_release_layout",
-        "next_button" :  "next_page_control",
-        "title" : "title_layout"
-    }
-
-    active_column = attributes_active_column[type]
-
+    
+    get_active_property_classes(active_column)
 
     if load == "research":
 

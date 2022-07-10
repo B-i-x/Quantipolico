@@ -3,9 +3,11 @@ from article_scanner.website_attribute import Site_Attribute
 
 class Next_Layout_Structure(Site_Attribute):
 
-    def __init__(self, next_button_xpath: str, name: str, ids: int = None) -> None:
+    def __init__(self) -> None:
 
-        super().__init__(next_button_xpath, name, 1, ids)
+        super().__init__()
+
+        self.amount = 1
 
         self.attribute_column_name = 'next_page_control'
 
@@ -13,211 +15,211 @@ class Next_Layout_Structure(Site_Attribute):
 class A(Next_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "next_arrow"
+        self.name = "next_arrow"
 
-        xpath = "//a[text()='next ›']"
+        self.xpath = "//a[text()='next ›']"
 
-        super().__init__(xpath, name)
 
 class B(Next_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "double_arrow"
+        self.name = "double_arrow"
 
-        xpath = "//a[@title='Go to next page']"
+        self.xpath = "//a[@title='Go to next page']"
 
-        super().__init__(xpath, name)
 
 class C(Next_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "Next_double_arrow"
+        self.name = "Next_double_arrow"
 
-        xpath = "//a[text()='Next »']"
+        self.xpath = "//a[text()='Next »']"
 
-        super().__init__(xpath, name)
 
 class D(Next_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "Next_arrow"
+        self.name = "Next_arrow"
 
-        xpath = "//a[text()='Next >']"
+        self.xpath = "//a[text()='Next >']"
 
-        super().__init__(xpath, name)
 
 class E(Next_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "See_More"
+        self.name = "See_More"
 
-        xpath = "//*[text()='See More' and not(ancestor::a)]"
+        self.xpath = "//*[text()='See More' and not(ancestor::a)]"
 
-        ids = [148, 138, 19, 111, 316, 275, 424, 388, 321, 406, 414]
+        self.ids = [148, 138, 19, 111, 316, 275, 424, 388, 321, 406, 414]
 
-        super().__init__(xpath, name, ids)
 
 class F(Next_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "arrow"
+        self.name = "arrow"
 
-        xpath = "//a[text()='›']"
+        self.xpath = "//a[text()='›']"
 
-        super().__init__(xpath, name)
 
 class G(Next_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "Next"
+        self.name = "Next"
 
-        xpath = "//a[text()='Next']"
+        self.xpath = "//a[text()='Next']"
 
-        super().__init__(xpath, name)
 
 class H(Next_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "Next_big_arrow"
+        self.name = "Next_big_arrow"
 
-        xpath = "//a[text()='Next ›']"
+        self.xpath = "//a[text()='Next ›']"
 
-        super().__init__(xpath, name)
 
 class I(Next_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "next_double_arrow"
+        self.name = "next_double_arrow"
 
-        xpath = "//a[text()='next ›']"
+        self.xpath = "//a[text()='next ›']"
 
-        super().__init__(xpath, name)
 
 class J(Next_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "contains_next"
+        self.name = "contains_next"
 
-        xpath = "//a[contains(text(),'next')]"
+        self.xpath = "//a[contains(text(),'next')]"
 
-        super().__init__(xpath, name)
 
 class K(Next_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "stupid_svg"
+        self.name = "stupid_svg"
 
-        xpath = "//a[@aria-label='Next']"
+        self.xpath = "//a[@aria-label='Next']"
 
-        ids = 405
+        self.ids = 405
 
-        super().__init__(xpath, name, ids=ids)
 
 class L(Next_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "double_small_arrow"
+        self.name = "double_small_arrow"
 
-        xpath = "//a[text()='»']"
+        self.xpath = "//a[text()='»']"
 
-        super().__init__(xpath, name)
 
 class M(Next_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "next_page_label"
+        self.name = "next_page_label"
 
-        xpath = "//a[@aria-label='Next Page']"
+        self.xpath = "//a[@aria-label='Next Page']"
 
-        super().__init__(xpath, name)
 
 
 class N(Next_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "single_page_no_next_button"
+        self.name = "single_page_no_next_button"
 
-        xpath = ""
+        self.xpath = ""
 
-        ids = 11
+        self.ids = 11
 
-        super().__init__(xpath, name, ids=ids)
 
 class O(Next_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "more_than_brownley"
+        self.name = "more_than_brownley"
 
-        xpath = "//a[@class='next page-numbers' and text()='>']"
+        self.xpath = "//a[@class='next page-numbers' and text()='>']"
 
-        ids = 48
+        self.ids = 48
 
-        super().__init__(xpath, name, ids=ids)
 
 class P(Next_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "double_next"
+        self.name = "double_next"
 
-        xpath = "//a[text()='Next']"
+        self.xpath = "//a[text()='Next']"
 
-        ids = [127, 97]
+        self.ids = [127, 97]
 
-        super().__init__(xpath, name, ids=ids)
+        self.amount = 2
 
-        self.count_on_page = 2
 
 class Q(Next_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "page_arrow_maloney"
+        self.name = "page_arrow_maloney"
 
-        xpath = "//a[text()='page ›']"
+        self.xpath = "//a[text()='page ›']"
 
-        ids = 272
+        self.ids = 272
 
-        super().__init__(xpath, name, ids=ids)
 
 class R(Next_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "Next_Page_Mooney"
+        self.name = "Next_Page_Mooney"
 
-        xpath = "//a[text()='Next Page']"
+        self.xpath = "//a[text()='Next Page']"
 
-        ids = 431
+        self.ids = 431
 
-        super().__init__(xpath, name, ids=ids)
 
 class S(Next_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "cheney"
+        self.name = "cheney"
 
-        xpath = "//a[@aria-label='next arrow']"
+        self.xpath = "//a[@aria-label='next arrow']"
 
-        ids = 441
+        self.ids = 441
 
-        super().__init__(xpath, name, ids=ids)
 
 
 

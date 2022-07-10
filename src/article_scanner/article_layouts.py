@@ -4,9 +4,9 @@ class Article_Layout_Structure(Site_Attribute):
     '''this is a class for a general attribute of the website, specifically the article links
     
     a property of this attribute are its child classes'''
-    def __init__(self, name: str, article_xpath: str, amount: int, ids = None) -> None:
+    def __init__(self) -> None:
         
-        super().__init__(article_xpath, name, amount, ids)
+        super().__init__()
 
         self.attribute_column_name = 'press_release_layout'
 
@@ -14,369 +14,378 @@ class Article_Layout_Structure(Site_Attribute):
 class A(Article_Layout_Structure):
 
     def __init__(self) -> None:
+
+        super().__init__()
         
-        name = 'find_press_release_first'
+        self.name = 'find_press_release_first'
 
-        article_xpath = '//*[text()="Press Release"]//ancestor::div[1]/div[1]//a'
+        self.xpath = '//*[text()="Press Release"]//ancestor::div[1]/div[1]//a'
 
-        article_count_on_page = 10
-
-        super().__init__(name, article_xpath, article_count_on_page)
+        self.amount = 10
+        
             
 class B(Article_Layout_Structure):
 
     def __init__(self) -> None:
+        
+        super().__init__()
 
-        name = 'table'
+        self.name = 'table'
 
-        article_xpath = "//table//a"
+        self.xpath = "//table//a"
 
-        article_count_on_page = 10
+        self.amount = 10
 
-        super().__init__(name, article_xpath, article_count_on_page)
 
 class C(Article_Layout_Structure):
 
     def __init__(self) -> None:
-        name = "read_more"
 
-        article_xpath = "//a[contains(text(),'Read more')]"
+        super().__init__()
 
-        article_count_on_page = 10
+        self.name = "read_more"
 
-        super().__init__(name, article_xpath, article_count_on_page)
+        self.xpath = "//a[contains(text(),'Read more')]"
+
+        self.amount = 10   
 
 
 class D(Article_Layout_Structure):
 
     def __init__(self) -> None:
-        name = "newsie"
+        
+        super().__init__()
 
-        article_xpath = '//h2[@class="newsie-titler"]//a'
+        self.name = "newsie"
 
-        article_count_on_page = 10
+        self.xpath = '//h2[@class="newsie-titler"]//a'
 
-        super().__init__(name, article_xpath, article_count_on_page)
+        self.amount = 10
 
 
 class E(Article_Layout_Structure):
 
     def __init__(self) -> None:
 
-        name = "find_press_release_first_modification_div[1->4]"
+        super().__init__()
 
-        article_xpath = '//*[text()="Press Release"]//ancestor::div[4]/div[1]//a'
+        self.name = "find_press_release_first_modification_div[1->4]"
 
-        article_count_on_page = [10, 25, 100]
+        self.xpath = '//*[text()="Press Release"]//ancestor::div[4]/div[1]//a'
 
-        super().__init__(name, article_xpath, article_count_on_page)
+        self.amount = [10, 25, 100]
 
+        
 class F(Article_Layout_Structure):
 
     def __init__(self) -> None:
 
-        name = "read_more_modification_InitialCaps"
+        super().__init__()
 
-        article_xpath = "//a[contains(text(),'Read More')]"
+        self.name = "read_more_modification_InitialCaps"
 
-        article_count_on_page = [10, 15, 18]
+        self.xpath = "//a[contains(text(),'Read More')]"
 
-        super().__init__(name, article_xpath, article_count_on_page)
+        self.amount = [10, 15, 18]
 
+        
 class D(Article_Layout_Structure):
 
     def __init__(self) -> None:
 
-        name = "continue_reading_InitialCaps"
+        super().__init__()
 
-        article_xpath = "//a[contains(text(),'Continue')]"
+        self.name = "continue_reading_InitialCaps"
 
-        article_count_on_page = 20
+        self.xpath = "//a[contains(text(),'Continue')]"
 
-        super().__init__(name, article_xpath, article_count_on_page)
+        self.amount = 20
 
 
 class E(Article_Layout_Structure):
 
     def __init__(self) -> None:
 
-        name = "sablan"
+        super().__init__()
 
-        article_xpath = '//div[@class="list-item"]'
+        self.name = "sablan"
 
-        article_count_on_page = 10
+        self.xpath = '//div[@class="list-item"]'
 
-        id = 302
+        self.amount = 10
 
-        super().__init__(name, article_xpath, article_count_on_page, id)
+        self.ids = 302
+
 
 class F(Article_Layout_Structure):
     '''for nancy pelosi'''
     def __init__(self) -> None:
 
-        name = "nancy"
+        super().__init__()
 
-        article_xpath = "//*[contains(text(),'Press Release')]/parent::div//a[contains(text(),'Press Release')]//ancestor::div[1]/div[1]//a"
+        self.name = "nancy"
 
-        amount = 10
+        self.xpath = "//*[contains(text(),'Press Release')]/parent::div//a[contains(text(),'Press Release')]//ancestor::div[1]/div[1]//a"
 
-        ids = 34
+        self.amount = 10
 
-        super().__init__(name, article_xpath, amount, ids)
+        self.ids = 34
+    
 
 class G(Article_Layout_Structure):
     '''for nancy pelosi'''
     def __init__(self) -> None:
 
-        name = "read_more_modification_ALLCAPS"
+        super().__init__()
 
-        article_xpath = "//a[contains(text(),'READ MORE')]"
+        self.name = "read_more_modification_ALLCAPS"
 
-        amount = 10
-        
-        super().__init__(name, article_xpath, amount)
+        self.xpath = "//a[contains(text(),'READ MORE')]"
+
+        self.amount = 10
+            
 
 class H(Article_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "date_div_1"
+        self.name = "date_div_1"
 
-        article_xpath = "//*[contains(text(), 'Jan') or contains(text(), 'Feb') or contains(text(), 'Mar') or  contains(text(), 'Apr') or contains(text(), 'May') or contains(text(), 'Jun') or contains(text(), 'Jul') or contains(text(), 'Aug') or contains(text(), 'Sep') or contains(text(), 'Oct') or contains(text(), 'Nov') or contains(text(), 'Dec')]/ancestor::div[1]//a"
+        self.xpath = "//*[contains(text(), 'Jan') or contains(text(), 'Feb') or contains(text(), 'Mar') or  contains(text(), 'Apr') or contains(text(), 'May') or contains(text(), 'Jun') or contains(text(), 'Jul') or contains(text(), 'Aug') or contains(text(), 'Sep') or contains(text(), 'Oct') or contains(text(), 'Nov') or contains(text(), 'Dec')]/ancestor::div[1]//a"
 
-        amount = 10
-        super().__init__(name, article_xpath, amount)
+        self.amount = 10
+
 
 class I(Article_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "date_div_2"
+        self.name = "date_div_2"
 
-        article_xpath = "//*[contains(text(), 'Jan') or contains(text(), 'Feb') or contains(text(), 'Mar') or  contains(text(), 'Apr') or contains(text(), 'May') or contains(text(), 'Jun') or contains(text(), 'Jul') or contains(text(), 'Aug') or contains(text(), 'Sep') or contains(text(), 'Oct') or contains(text(), 'Nov') or contains(text(), 'Dec')]/ancestor::div[2]//a"
+        self.xpath = "//*[contains(text(), 'Jan') or contains(text(), 'Feb') or contains(text(), 'Mar') or  contains(text(), 'Apr') or contains(text(), 'May') or contains(text(), 'Jun') or contains(text(), 'Jul') or contains(text(), 'Aug') or contains(text(), 'Sep') or contains(text(), 'Oct') or contains(text(), 'Nov') or contains(text(), 'Dec')]/ancestor::div[2]//a"
 
-        amount = [10, 11, 25]
+        self.amount = [10, 11, 25]
 
-        super().__init__(name, article_xpath, amount)
 
 class J(Article_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "click_here_to_read_the_full_news_release"
+        self.name = "click_here_to_read_the_full_news_release"
 
-        article_xpath = "//a[contains(text(),'Click here to read the full news release')]"
+        self.xpath = "//a[contains(text(),'Click here to read the full news release')]"
 
-        amount = 10
+        self.amount = 10
 
-        ids = 119
+        self.ids = 119
 
-        super().__init__(name, article_xpath, amount, ids)
 
 class K(Article_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "more"
+        self.name = "more"
 
-        article_xpath = "//a[contains(text(),'More')]"
+        self.xpath = "//a[contains(text(),'More')]"
 
-        amount = 10
+        self.amount = 10
 
-        super().__init__(name, article_xpath, amount)
 
 class L(Article_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "find_press_release_first_modification_two_more_divs"
+        self.name = "find_press_release_first_modification_two_more_divs"
 
-        article_xpath = "//*[text()='Press Release']/ancestor::div[4]/div[1]//div[1]/div/div//a"
+        self.xpath = "//*[text()='Press Release']/ancestor::div[4]/div[1]//div[1]/div/div//a"
 
-        amount = 20
+        self.amount = 20
 
-        ids = 31
+        self.ids = 31
 
-        super().__init__(name, article_xpath, amount, ids)
 
 class M(Article_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "find_press_release_first_modification_news_release"
+        self.name = "find_press_release_first_modification_news_release"
 
-        article_xpath = "//*[text()='News Releases']/ancestor::div[1]/div[1]//a"
+        self.xpath = "//*[text()='News Releases']/ancestor::div[1]/div[1]//a"
 
-        amount = 10
+        self.amount = 10
 
-        super().__init__(name, article_xpath, amount)
 
 class N(Article_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "read_more_modification_go_to_parent"
+        self.name = "read_more_modification_go_to_parent"
 
-        article_xpath = "//*[contains(text(),'Read More')]//parent::a"
+        self.xpath = "//*[contains(text(),'Read More')]//parent::a"
 
-        amount = [20, 6]
+        self.amount = [20, 6]
 
-        ids = [11, 269]
+        self.ids = [11, 269]
 
-        super().__init__(name, article_xpath, amount, ids)
 
 class O(Article_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "table_modification_no_attachments"
+        self.name = "table_modification_no_attachments"
 
-        article_xpath = "//table//a[1]"
+        self.xpath = "//table//a[1]"
 
-        amount = [10, 15]
+        self.amount = [10, 15]
 
-        super().__init__(name, article_xpath, amount)
 
 class P(Article_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "see_more"
+        self.name = "see_more"
 
-        article_xpath = "//*[text()='See More']//ancestor::a"
+        self.xpath = "//*[text()='See More']//ancestor::a"
 
-        amount = 6
+        self.amount = 6
 
-        ids = [148, 138, 19, 111, 316, 275, 424, 388, 321, 406, 414]
+        self.ids = [148, 138, 19, 111, 316, 275, 424, 388, 321, 406, 414]
 
-        super().__init__(name, article_xpath, amount, ids)
 
 class Q(Article_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "find_press_release_first_modification_uses_headings"
+        self.name = "find_press_release_first_modification_uses_headings"
 
-        article_xpath = "//a[text()='Press Releases']//ancestor::div[1]//h2//a"
+        self.xpath = "//a[text()='Press Releases']//ancestor::div[1]//h2//a"
 
-        amount = 10
+        self.amount = 10
 
-        super().__init__(name, article_xpath, amount)
 
 class U(Article_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "date_div_2_modification_uses_headings"
+        self.name = "date_div_2_modification_uses_headings"
 
-        article_xpath = "//*[contains(text(), 'Jan') or contains(text(), 'Feb') or contains(text(), 'Mar') or  contains(text(), 'Apr') or contains(text(), 'May') or contains(text(), 'Jun') or contains(text(), 'Jul') or contains(text(), 'Aug') or contains(text(), 'Sep') or contains(text(), 'Oct') or contains(text(), 'Nov') or contains(text(), 'Dec')]/ancestor::div[1]//h2//a"
+        self.xpath = "//*[contains(text(), 'Jan') or contains(text(), 'Feb') or contains(text(), 'Mar') or  contains(text(), 'Apr') or contains(text(), 'May') or contains(text(), 'Jun') or contains(text(), 'Jul') or contains(text(), 'Aug') or contains(text(), 'Sep') or contains(text(), 'Oct') or contains(text(), 'Nov') or contains(text(), 'Dec')]/ancestor::div[1]//h2//a"
 
-        amount = [4,10]
+        self.amount = [4,10]
 
-        super().__init__(name, article_xpath, amount)
 
 class R(Article_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "date_div_2_modification_uses_class_name_body"
+        self.name = "date_div_2_modification_uses_class_name_body"
 
-        article_xpath = "//*[contains(text(), 'Jan') or contains(text(), 'Feb') or contains(text(), 'Mar') or  contains(text(), 'Apr') or contains(text(), 'May') or contains(text(), 'Jun') or contains(text(), 'Jul') or contains(text(), 'Aug') or contains(text(), 'Sep') or contains(text(), 'Oct') or contains(text(), 'Nov') or contains(text(), 'Dec')]/ancestor::div[2]//a[@class='media-digest-body-link']"
+        self.xpath = "//*[contains(text(), 'Jan') or contains(text(), 'Feb') or contains(text(), 'Mar') or  contains(text(), 'Apr') or contains(text(), 'May') or contains(text(), 'Jun') or contains(text(), 'Jul') or contains(text(), 'Aug') or contains(text(), 'Sep') or contains(text(), 'Oct') or contains(text(), 'Nov') or contains(text(), 'Dec')]/ancestor::div[2]//a[@class='media-digest-body-link']"
 
-        amount = 10
+        self.amount = 10
 
-        ids = 86
+        self.ids = 86
 
-        super().__init__(name, article_xpath, amount, ids)
 
 class S(Article_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "date_div_2_modification_uses_heading_3"
+        self.name = "date_div_2_modification_uses_heading_3"
 
-        article_xpath = "//*[contains(text(), 'Jan') or contains(text(), 'Feb') or contains(text(), 'Mar') or  contains(text(), 'Apr') or contains(text(), 'May') or contains(text(), 'Jun') or contains(text(), 'Jul') or contains(text(), 'Aug') or contains(text(), 'Sep') or contains(text(), 'Oct') or contains(text(), 'Nov') or contains(text(), 'Dec')]/ancestor::div[1]//h3/a"
+        self.xpath = "//*[contains(text(), 'Jan') or contains(text(), 'Feb') or contains(text(), 'Mar') or  contains(text(), 'Apr') or contains(text(), 'May') or contains(text(), 'Jun') or contains(text(), 'Jul') or contains(text(), 'Aug') or contains(text(), 'Sep') or contains(text(), 'Oct') or contains(text(), 'Nov') or contains(text(), 'Dec')]/ancestor::div[1]//h3/a"
 
-        amount = 10
+        self.amount = 10
 
-        super().__init__(name, article_xpath, amount)
 
 class T(Article_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "date_div_2_modification_uses_heading_3_div[1->3]"
+        self.name = "date_div_2_modification_uses_heading_3_div[1->3]"
 
-        article_xpath = "//*[contains(text(), 'Jan') or contains(text(), 'Feb') or contains(text(), 'Mar') or  contains(text(), 'Apr') or contains(text(), 'May') or contains(text(), 'Jun') or contains(text(), 'Jul') or contains(text(), 'Aug') or contains(text(), 'Sep') or contains(text(), 'Oct') or contains(text(), 'Nov') or contains(text(), 'Dec')]/ancestor::div[3]//h3//a"
+        self.xpath = "//*[contains(text(), 'Jan') or contains(text(), 'Feb') or contains(text(), 'Mar') or  contains(text(), 'Apr') or contains(text(), 'May') or contains(text(), 'Jun') or contains(text(), 'Jul') or contains(text(), 'Aug') or contains(text(), 'Sep') or contains(text(), 'Oct') or contains(text(), 'Nov') or contains(text(), 'Dec')]/ancestor::div[3]//h3//a"
 
-        amount = 10
+        self.amount = 10
 
-        super().__init__(name, article_xpath, amount)
 
 class V(Article_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "date_div_2_modification_uses_spans"
+        self.name = "date_div_2_modification_uses_spans"
 
-        article_xpath = "//*[contains(text(), 'Jan') or contains(text(), 'Feb') or contains(text(), 'Mar') or  contains(text(), 'Apr') or contains(text(), 'May') or contains(text(), 'Jun') or contains(text(), 'Jul') or contains(text(), 'Aug') or contains(text(), 'Sep') or contains(text(), 'Oct') or contains(text(), 'Nov') or contains(text(), 'Dec')]//ancestor::table[1]//span//span//a"
+        self.xpath = "//*[contains(text(), 'Jan') or contains(text(), 'Feb') or contains(text(), 'Mar') or  contains(text(), 'Apr') or contains(text(), 'May') or contains(text(), 'Jun') or contains(text(), 'Jul') or contains(text(), 'Aug') or contains(text(), 'Sep') or contains(text(), 'Oct') or contains(text(), 'Nov') or contains(text(), 'Dec')]//ancestor::table[1]//span//span//a"
 
-        amount = 10
+        self.amount = 10
 
-        super().__init__(name, article_xpath, amount)
 
 class X(Article_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "cicilline"
+        self.name = "cicilline"
 
-        article_xpath = "//*[@id='inner-content']/div/h4/a"
+        self.xpath = "//*[@id='inner-content']/div/h4/a"
 
-        amount = 10
+        self.amount = 10
 
-        ids = 348
+        self.ids = 348
 
-        super().__init__(name, article_xpath, amount, ids)
 
 class Y(Article_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "jcurtis"
+        self.name = "jcurtis"
 
-        article_xpath = "//*[@id='archiveView']/div/div/a[2]"
+        self.xpath = "//*[@id='archiveView']/div/div/a[2]"
 
-        amount = 12
+        self.amount = 12
 
-        ids = 405
+        self.ids = 405
 
-        super().__init__(name, article_xpath, amount, ids)
 
 class Z(Article_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "jayapal"
+        self.name = "jayapal"
 
-        article_xpath = "//*[@id='main']//article[1]//header/h2/a"
+        self.xpath = "//*[@id='main']//article[1]//header/h2/a"
 
-        amount = 6
+        self.amount = 6
 
-        ids = 426
+        self.ids = 426
 
-        super().__init__(name, article_xpath, amount, ids)
 
 class AA(Article_Layout_Structure):
 
     def __init__(self) -> None:
+        super().__init__()
 
-        name = "mooney"
+        self.name = "mooney"
 
-        article_xpath = "/html/body//main//article/a"
+        self.xpath = "/html/body//main//article/a"
 
-        amount = 9
+        self.amount = 9
 
-        ids = 431
-
-        super().__init__(name, article_xpath, amount, ids)
+        self.ids = 431

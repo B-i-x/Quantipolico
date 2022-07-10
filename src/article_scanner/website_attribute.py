@@ -1,14 +1,14 @@
 class Site_Attribute():
 
-    def __init__(self, xpath: str, name : str, amount, ids = None) -> None:
+    def __init__(self) -> None:
         
-        self.xpath = xpath
+        self.xpath = None
 
-        self.name = name
+        self.name = None
 
-        self.amount = amount
+        self.amount = None
 
-        self.ids = ids
+        self.ids = None
 
         self.attribute_column_name = None
 
