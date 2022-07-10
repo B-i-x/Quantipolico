@@ -1,18 +1,14 @@
-class Article_Layout_Structure():
+from article_scanner.website_attribute import Site_Attribute
 
-    def __init__(self, name: str, article_xpath: str, amount: int, ids: int = None) -> None:
-        self.name = name
+class Article_Layout_Structure(Site_Attribute):
+    '''this is a class for a general attribute of the website, specifically the article links
+    
+    a property of this attribute are its child classes'''
+    def __init__(self, name: str, article_xpath: str, amount: int, ids = None) -> None:
+        
+        super().__init__(article_xpath, name, amount, ids)
 
-        self.xpath = article_xpath
-
-        self.count_on_page = amount
-
-        self.specialized = False
-
-        if ids is not None:
-            self.ids = ids
-
-            self.specialized = True
+        self.attribute_column_name = 'press_release_layout'
 
 
 class A(Article_Layout_Structure):

@@ -2,9 +2,13 @@ from sqlite3_interface import Database, DataTable
 from article_scanner.article_crawler import Press_Release_Organizer
 from article_scanner.article_layouts import Article_Layout_Structure
 from article_scanner.next_page_layouts import Next_Layout_Structure
+from article_scanner.title_layouts import Title_Layout_Structure
+from article_scanner.website_attribute import Site_Attribute
+
 from sql_generation import SQL
 
 import random
+
 
 sql = None
 
@@ -122,13 +126,23 @@ def get_random_pr_links(active_column: str, amount) -> list:
     else: return random.sample(links_w_ids, amount)
 
 
-def get_types(active_column: str, r: str) -> list:
+def get_active_property_classes(active_column: str) -> list:
 
     sorted_layout_order = {}
 
+    attribute_classes = [attr_cls() for attr_cls in Site_Attribute.__subclasses__()]
+
+    for attr_class in attribute_classes:
+
+        if attr_class.attribute_column_name == active_column:
+
+            active_classes = [property_cls() for property_cls in attr_class.__subclasses__()]
+    
+    return active_classes
     d = {
         "article_layout" : [cls() for cls in Article_Layout_Structure.__subclasses__()],
-        "next_page_control" : [cls() for cls in Next_Layout_Structure.__subclasses__()]
+        "next_page_control" : [cls() for cls in Next_Layout_Structure.__subclasses__()],
+        "title_layout" : [cls() for cls in Title_Layout_Structure.__subclasses__()]
     }
 
     popularity = get_layout_popularity_for_column(active_column)
@@ -142,11 +156,11 @@ def get_types(active_column: str, r: str) -> list:
     
     for index, layout in enumerate(sorted_popularity):
 
-            for cls in all_type_layouts:
+        for cls in all_type_layouts:
 
-                if cls.name == layout and not cls.specialized:
+            if cls.name == layout and not cls.specialized:
 
-                    sorted_layout_order[index] = cls
+                sorted_layout_order[index] = cls
 
     temp = 0
 

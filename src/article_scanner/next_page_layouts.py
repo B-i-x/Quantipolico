@@ -1,19 +1,14 @@
-class Next_Layout_Structure():
+from article_scanner.website_attribute import Site_Attribute
+
+
+class Next_Layout_Structure(Site_Attribute):
 
     def __init__(self, next_button_xpath: str, name: str, ids: int = None) -> None:
 
-        self.xpath = next_button_xpath
+        super().__init__(next_button_xpath, name, 1, ids)
 
-        self.name = name
+        self.attribute_column_name = 'next_page_control'
 
-        self.count_on_page = 1
-        
-        self.specialized = False
-
-        if ids is not None:
-            self.ids = ids
-
-            self.specialized = True
 
 class A(Next_Layout_Structure):
 
