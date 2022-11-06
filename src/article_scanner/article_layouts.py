@@ -10,6 +10,8 @@ class Article_Layout_Structure(Site_Attribute):
 
         self.attribute_column_name = 'press_release_layout'
 
+A = Site_Attribute()
+    
 
 class A(Article_Layout_Structure):
 
