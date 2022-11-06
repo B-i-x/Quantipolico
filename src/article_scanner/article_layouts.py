@@ -10,9 +10,13 @@ class Article_Layout_Structure(Site_Attribute):
 
         self.attribute_column_name = 'press_release_layout'
 
-A = Site_Attribute()
-    
+press_release_object_list = [
+    Site_Attribute()
+]    
 
+for object in press_release_object_list:
+    object.attribute_column_name = 'press_release_layout'
+    
 class A(Article_Layout_Structure):
 
     def __init__(self) -> None:
