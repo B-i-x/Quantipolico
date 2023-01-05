@@ -256,9 +256,7 @@ def characeterize_press_release_sites(sql_conn: SQL, load: str, active_column: s
 
     elif load == "characterize":
 
-        press_release_links_w_ids = get_random_pr_links(active_column, amount_of_sites_to_use)
-
-        crawler.links_w_ids = press_release_links_w_ids
+        crawler.links_w_ids = get_random_pr_links(active_column, amount_of_sites_to_use)
 
         #crawler.set_types(get_types(active_column, "general"),get_types(active_column, "specialized"))
 

@@ -1,15 +1,14 @@
-from matplotlib.pyplot import title
 from article_scanner.website_attribute import Site_Attribute
 
 class Title_Layout_Structure(Site_Attribute):
 
      def __init__(self) -> None:
         
-         super().__init__()
+        super().__init__()
 
-         self.attribute_column_name = 'title_layout'
+        self.attribute_column_name = 'title_layout'
 
-         self.x = 1
+        self.x = 1
         
 
     

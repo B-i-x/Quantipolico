@@ -1,4 +1,3 @@
-from socket import INADDR_ALLHOSTS_GROUP
 from webdriver_interface import WebDriver_Interface
 from selenium.common.exceptions import NoSuchElementException
 from selenium import webdriver
